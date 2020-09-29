@@ -18,6 +18,7 @@
 		"url": "https://gitlab.com/vasschu/telerik-v-library/issues"
 	},
 	"homepage": "https://gitlab.com/vasschu/telerik-v-library#readme",
+	"type": "module",
 	"dependencies": {
 		"@babel/plugin-syntax-dynamic-import": "^7.8.3",
 		"@babel/preset-env": "^7.11.5",
@@ -28,6 +29,7 @@
 		"eslint": "^7.10.0",
 		"express": "^4.17.1",
 		"helmet": "^4.1.1",
+		"jsdoc": "^3.6.6",
 		"mariadb": "^2.4.2",
 		"nodemon": "^2.0.4",
 		"regenerator-runtime": "^0.13.7",
