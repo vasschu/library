@@ -9,6 +9,12 @@ const getAll = async (table) => {
 	return await pool.query(sql);
 };
 
+/**
+ *
+ *
+ *
+ *
+ */
 const getBy = async (table, column, value) => {
 	const sql = `
         SELECT *  
