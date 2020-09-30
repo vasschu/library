@@ -6,6 +6,7 @@ const libraryController = express.Router();
 
 // common string parameters - we can add common file to collect those. Will make the code pretty clean
 const tableBooks = 'books';
+const tableBorrowed = 'borrowed_books';
 
 libraryController
 	// get all books
@@ -15,11 +16,9 @@ libraryController
 				tableBooks,
 				req.query.search,
 			);
-
 			res.status(200).send(books);
 		} else {
 			const books = await libraryService.getAllRecords(tableBooks);
-
 			res.status(200).send(books);
 		}
 	})
@@ -33,8 +32,15 @@ libraryController
 				message: 'Book is not found with this ID!',
 			});
 		}
-
 		res.status(200).send(book);
+	})
+
+	//borrow book by id
+	.post('/:id', async (req, res) => {
+		const { id } = req.params;
+		const borrowedBook = await libraryService.borrowBook(tableBorrowed, id);
+
+		res.status(200).send(borrowedBook);
 	})
 
 	//get reviews for specific book by ID
