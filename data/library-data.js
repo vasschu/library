@@ -1,24 +1,22 @@
 import pool from './pool.js';
 
-const getAll = async (database) => {
+const getAll = async (table) => {
 	const sql = `
-        SELECT idbooks, name 
-        FROM ${database}
+        SELECT * 
+        FROM ${table}
     `;
 
 	return await pool.query(sql);
 };
 
-const getBy = async (database, column, value) => {
+const getBy = async (table, column, value) => {
 	const sql = `
-        SELECT idbooks, name  
-        FROM ${database}
-        WHERE ${column} = ?
+        SELECT *  
+        FROM ${table}
+        WHERE ${column} like "%${value}%"
     `;
 
-	const result = await pool.query(sql, [value]);
-
-	return result[0];
+	return await pool.query(sql, [value]);
 };
 
 export default {
