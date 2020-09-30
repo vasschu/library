@@ -2,7 +2,7 @@ import pool from './pool.js';
 
 const getAll = async (database) => {
 	const sql = `
-        SELECT idbooks, name 
+        SELECT *
         FROM ${database}
     `;
 
