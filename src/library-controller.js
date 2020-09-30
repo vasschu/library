@@ -7,10 +7,18 @@ const libraryController = express.Router();
 libraryController
 	// get all books
 	.get('/', async (req, res) => {
-		console.log('route get all');
-		const books = await libraryService.getAllBooks('books');
+		if (typeof req.query.search === 'string' && req.query.search) {
+			const books = await libraryService.filterBooksByName(
+				'books',
+				req.query.search,
+			);
 
-		res.status(200).send(books);
+			res.status(200).send(books);
+		} else {
+			const books = await libraryService.getAllRecords('books');
+
+			res.status(200).send(books);
+		}
 	})
 
 	.get('/:id/reviews', async (req, res) => {
@@ -26,6 +34,7 @@ libraryController
 		const reviews = await reviewsService.postReview(body);
 
 		res.status(200).send(reviews);
+		
 	});
 
 export default libraryController;
