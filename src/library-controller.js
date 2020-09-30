@@ -1,24 +1,21 @@
 import express from 'express';
 import libraryService from './library-service.js';
 import reviewsService from './reviews-service.js';
+import * as booksCommon from './../common/books-table-common.js';
 
 const libraryController = express.Router();
-
-// common string parameters - we can add common file to collect those. Will make the code pretty clean
-const tableBooks = 'books';
-const tableBorrowed = 'borrowed_books';
 
 libraryController
 	// get all books
 	.get('/', async (req, res) => {
 		if (typeof req.query.search === 'string' && req.query.search) {
 			const books = await libraryService.filterBooksByName(
-				tableBooks,
+				booksCommon.tableBooks,
 				req.query.search,
 			);
 			res.status(200).send(books);
 		} else {
-			const books = await libraryService.getAllRecords(tableBooks);
+			const books = await libraryService.getAllRecords(booksCommon.tableBooks);
 			res.status(200).send(books);
 		}
 	})
@@ -26,7 +23,7 @@ libraryController
 	// view details for indivudal book by ID
 	.get('/:id', async (req, res) => {
 		const { id } = req.params;
-		const book = await libraryService.getBookById(tableBooks, +id);
+		const book = await libraryService.getBookById(booksCommon.tableBooks, +id);
 		if (!book[0]) {
 			return res.status(404).send({
 				message: 'Book is not found with this ID!',
@@ -35,10 +32,12 @@ libraryController
 		res.status(200).send(book);
 	})
 
-	//borrow book by id
+	//borrow book by id - need to add parameter for userID
 	.post('/:id', async (req, res) => {
 		const { id } = req.params;
-		const borrowedBook = await libraryService.borrowBook(tableBorrowed, id);
+		const userId = req.body.userId;
+
+		const borrowedBook = await libraryService.borrowBook(id, userId);
 
 		res.status(200).send(borrowedBook);
 	})

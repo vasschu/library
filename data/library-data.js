@@ -1,4 +1,6 @@
 import pool from './pool.js';
+import * as booksCommon from './../common/books-table-common.js';
+import * as borrowedBooksCommon from './../common/borrowed-books-table-common.js';
 
 const getAll = async (table) => {
 	const sql = `
@@ -19,33 +21,26 @@ const getBy = async (table, column, value) => {
 	return await pool.query(sql, [value]);
 };
 
-const borrowBookById = async (table, column, value) => {
-	const isBookBorrowed = await getBy('books', 'idbooks', value);
+const borrowBookById = async (bookId, userId) => {
+	const isBookBorrowed = await getBy(
+		booksCommon.tableBooks,
+		booksCommon.columnid,
+		bookId,
+	);
 	const bookStatus = isBookBorrowed[0].is_borrowed;
-	if (bookStatus) {
-		const sql = 'query';
+	if (!bookStatus) {
+		const sql = `UPDATE  ${booksCommon.tableBooks} 
+        SET ${booksCommon.columnIsBorrowed} = 1
+        WHERE ${booksCommon.columnid} = ${bookId};
+             
+        INSERT INTO ${borrowedBooksCommon.tableBorrowedBooks} (${borrowedBooksCommon.columnBookId}, ${borrowedBooksCommon.columnUserId})
+        VALUES (?, ?);`;
 
-		return await pool.query(sql, [value]);
+		return await pool.query(sql, [bookId, userId]);
 	} else {
 		return 'This book is already borrowed. I will tell you when it will be available once i build up this functionality, which can be pretty much never, never, ever';
 	}
 };
-
-// const borrowBookById = async (table, column, value) => {
-// 	const isBookBorrowed = async (tab, col, val) => {
-// 		const sql = `SELECT ${col} FROM ${tab}
-//         where ${col} = ${val}`;
-// 		const bookStatus = await pool.query(sql, [val]);
-// 		return bookStatus;
-// 	};
-// 	const bookAvailable = await isBookBorrowed(table, column, value);
-// 	if (bookAvailable[0]) {
-// 		const sql = `INSERT INTO ${table} (users_borrowed_books, books_borrowed_by_users)
-//         VALUES (1, 2);`;
-
-// 		return await pool.query(sql, [value]);
-// 	}
-// };
 
 export default {
 	getAll,

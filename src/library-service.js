@@ -1,24 +1,20 @@
 import libraryData from '../data/library-data.js';
-
-// common string parameters - we can add common.js file to collect those. Will make the code pretty clean
-const bookName = 'name';
-const bookId = 'idbooks';
-const listOfBorrowedBooks = 'books_borrowed_by_users';
+import * as booksCommon from './../common/books-table-common.js';
 
 const getAllRecords = async (table) => {
 	return await libraryData.getAll(table);
 };
 
 const filterBooksByName = async (table, searchTerm) => {
-	return await libraryData.getBy(table, bookName, searchTerm);
+	return await libraryData.getBy(table, booksCommon.columnName, searchTerm);
 };
 
 const getBookById = async (table, id) => {
-	return await libraryData.getBy(table, bookId, id);
+	return await libraryData.getBy(table, booksCommon.columnid, id);
 };
 
-const borrowBook = async (table, id) => {
-	return await libraryData.borrowBookById(table, bookId, id);
+const borrowBook = async (bookId, userId) => {
+	return await libraryData.borrowBookById(bookId, userId);
 };
 
 export default {
