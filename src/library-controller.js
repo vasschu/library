@@ -3,6 +3,10 @@ import libraryService from './library-service.js';
 import reviewsService from './reviews-service.js';
 import * as booksCommon from './../common/books-table-common.js';
 
+
+import {validateBody} from './middleware/body-validator.js';
+import {reviewShema} from './validators/create-review.js';
+
 const libraryController = express.Router();
 
 libraryController
@@ -44,19 +48,34 @@ libraryController
 
 	//get reviews for specific book by ID
 	.get('/:id/reviews', async (req, res) => {
-		const { id } = req.params;
-		const reviews = await reviewsService.getAllBookReviews(id);
+		try {
+			const { id } = req.params;
 
-		res.status(200).send(reviews);
+			const reviews = await reviewsService.getAllBookReviews(id);
+
+			if (!reviews) {
+				return res.status(404).send( {Message: 'No such reveiws'} );
+			}
+			
+			res.status(200).send(reviews);
+
+		} catch (err) {
+			throw new Error(err);
+		}
 	})
 
 	//post review to specific book by ID
-	.post('/:id/reviews', async (req, res) => {
+	.post('/:id/reviews', validateBody(reviewShema), async (req, res) => {
+		try {
 		const body = req.body;
-		// console.log(body);
+
 		const reviews = await reviewsService.postReview(body);
 
-		res.status(200).send(reviews);
+		res.status(201).send(reviews);
+
+		} catch (err) {
+			throw new Error(err);
+		}
 	});
 
 export default libraryController;

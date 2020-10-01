@@ -1,7 +1,13 @@
 import reviewsData from './../data/reviews-data.js';
 
 const getAllBookReviews = async (bookId) => {
-	return await reviewsData.getBookReviews(bookId);
+    const reviews = await reviewsData.getBookReviews(bookId);
+
+    if (!reviews[0]) {
+        return null;
+    }
+    console.log(reviews);
+    return reviews;
 };
 
 

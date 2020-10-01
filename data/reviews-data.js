@@ -12,9 +12,10 @@ const getBookReviews = async (bookId) => {
 
 const postBookReview = async (body) => {
     const { title, content, user_id, book_id } = body;
+
     // console.log(body);
     const sql = `INSERT INTO library.reviews (title, content, users_id, books_id)
-    VALUES (?, ? , ?, ?);`;
+    VALUES (?, ?, ?, ?);`;
 
     return await pool.query(sql, [title, content, user_id, book_id]);
 };
