@@ -172,7 +172,7 @@ CREATE TABLE `reviews` (
   KEY `fk_reviews_books1_idx` (`books_id`),
   CONSTRAINT `fk_reviews_books1` FOREIGN KEY (`books_id`) REFERENCES `books` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_reviews_users` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -181,6 +181,7 @@ CREATE TABLE `reviews` (
 
 LOCK TABLES `reviews` WRITE;
 /*!40000 ALTER TABLE `reviews` DISABLE KEYS */;
+INSERT INTO `reviews` VALUES (1,'Wow','the book was awesome',1,1),(2,'Never again','Honestly, not my thing',2,4),(3,'OK','It was ok',1,3),(4,'OK','It was ok',1,3),(5,'OK','It was ok',1,3),(6,'It was fantastic','My new fave book!',1,3),(7,'It was fantastic','My new fave book!',1,3);
 /*!40000 ALTER TABLE `reviews` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -232,14 +233,6 @@ LOCK TABLES `users` WRITE;
 INSERT INTO `users` VALUES (1,'user1','pass1',NULL),(2,'user2','pass2',NULL),(3,'user3','pass3','HP was amazing!');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Dumping events for database 'library'
---
-
---
--- Dumping routines for database 'library'
---
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -250,4 +243,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-09-30 19:08:42
+-- Dump completed on 2020-10-01  9:31:12
