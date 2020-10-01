@@ -19,7 +19,7 @@ libraryController
 		}
 	})
 
-	// view details for indivudal book by ID
+	// view details for individual book by ID
 	.get('/:id', async (req, res) => {
 		const { id } = req.params;
 		const book = await libraryService.getBookById(booksCommon.tableBooks, +id);
@@ -31,12 +31,22 @@ libraryController
 		res.status(200).send(book);
 	})
 
-	//borrow book by id - need to add parameter for userID
+	//borrow book by id
 	.post('/:id', async (req, res) => {
 		const { id } = req.params;
 		const userId = req.body.users_id;
 
 		const borrowedBook = await libraryService.borrowBook(id, userId);
+
+		res.status(200).send(borrowedBook);
+	})
+
+	//return book by id
+	.delete('/:id', async (req, res) => {
+		const { id } = req.params;
+		const userId = req.body.users_id;
+
+		const borrowedBook = await libraryService.returnBook(id, userId);
 
 		res.status(200).send(borrowedBook);
 	});

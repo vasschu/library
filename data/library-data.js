@@ -23,8 +23,8 @@ const getAll = async () => {
 const getBy = async (table, column, value) => {
 	const sql = `SELECT b.${booksCommon.columnid}, b.${booksCommon.columnName}, b.${booksCommon.columnAuthor}, bb.${borrowedCommon.columnBookId} as borrowed FROM ${table} b  
 	left join ${borrowedCommon.tableBorrowedBooks} bb
-	on b.id = bb.books_id
-	WHERE ${column} like "%${value}%"`;
+	on b.id = bb.books_id and bb.isDeleted = 0
+	WHERE b.${column} like "%${value}%"`;
 	let foundBooks = await pool.query(sql, [value]);
 
 	foundBooks = await foundBooks.map((el) => {
@@ -42,12 +42,31 @@ const getBy = async (table, column, value) => {
 
 const borrowBookById = async (bookId, userId, bookStatus) => {
 	if (!bookStatus) {
-		const sql2 = `INSERT INTO ${borrowedCommon.tableBorrowedBooks} (${borrowedCommon.columnBookId}, ${borrowedCommon.columnUserId}, ${borrowedCommon.columnIsDeleted})
-        VALUES (?, ?, ?);`;
-		await pool.query(sql2, [bookId, userId, 0]);
+		const sql = `INSERT INTO ${borrowedCommon.tableBorrowedBooks} (${borrowedCommon.columnBookId}, ${borrowedCommon.columnUserId}, ${borrowedCommon.columnIsDeleted})
+				VALUES (?, ?, ?);
+				`;
+		await pool.query(sql, [bookId, userId, 0]);
 		return getBy(booksCommon.tableBooks, booksCommon.columnid, bookId);
 	} else {
 		return 'This book is already borrowed. I will tell you when it will be available once i build up this functionality, which can be pretty much never, never, ever';
+	}
+};
+
+//return borrowed book
+const returnBookById = async (bookId, userId, bookStatus) => {
+	const sql = `SELECT * FROM borrowed_books
+		where users_id = ${userId} and books_id=${bookId} and isDeleted = 0`;
+	const borrowStatus = await pool.query(sql, [bookId, userId, 0]);
+
+	if (bookStatus && borrowStatus[0]) {
+		const sql = `UPDATE ${borrowedCommon.tableBorrowedBooks}
+	 SET ${borrowedCommon.columnIsDeleted} = !${borrowedCommon.columnIsDeleted},
+	 ${borrowedCommon.columnReturnDate} = 'now()'
+ WHERE ${borrowedCommon.columnBookId} = ${bookId}`;
+		await pool.query(sql, [1]);
+		return getBy(booksCommon.tableBooks, booksCommon.columnid, bookId);
+	} else {
+		return 'No such book is currently borrowed by this user, please check input data.';
 	}
 };
 
@@ -55,4 +74,5 @@ export default {
 	getAll,
 	getBy,
 	borrowBookById,
+	returnBookById,
 };

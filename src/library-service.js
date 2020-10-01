@@ -24,9 +24,21 @@ const borrowBook = async (bookId, userId) => {
 	return await libraryData.borrowBookById(bookId, userId, bookStatus);
 };
 
+const returnBook = async (bookId, userId) => {
+	const book = await libraryData.getBy(
+		booksCommon.tableBooks,
+		booksCommon.columnid,
+		bookId,
+	);
+	const bookStatus = book[0].borrowed;
+
+	return await libraryData.returnBookById(bookId, userId, bookStatus);
+};
+
 export default {
 	getAllRecords,
 	filterBooksByName,
 	getBookById,
 	borrowBook,
+	returnBook,
 };
