@@ -3,6 +3,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 
 import libraryController from './library-controller.js';
+import reviewsController from './reviews-controller.js';
 
 const app = express();
 const PORT = 5500;
@@ -10,6 +11,7 @@ const PORT = 5500;
 app.use(cors(), bodyParser.json());
 
 app.use('/books', libraryController);
+libraryController.use(reviewsController);
 
 //this is wildcard to capture all unsuported requests
 app.all('*', (req, res) =>
