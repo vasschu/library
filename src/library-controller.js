@@ -34,7 +34,7 @@ libraryController
 	//borrow book by id - need to add parameter for userID
 	.post('/:id', async (req, res) => {
 		const { id } = req.params;
-		const userId = req.body.userId;
+		const userId = req.body.users_id;
 
 		const borrowedBook = await libraryService.borrowBook(id, userId);
 

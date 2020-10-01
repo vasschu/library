@@ -14,7 +14,14 @@ const getBookById = async (table, id) => {
 };
 
 const borrowBook = async (bookId, userId) => {
-	return await libraryData.borrowBookById(bookId, userId);
+	const book = await libraryData.getBy(
+		booksCommon.tableBooks,
+		booksCommon.columnid,
+		bookId,
+	);
+	const bookStatus = book[0].borrowed;
+
+	return await libraryData.borrowBookById(bookId, userId, bookStatus);
 };
 
 export default {

@@ -1,13 +1,11 @@
 import pool from './pool.js';
 import * as booksCommon from './../common/books-table-common.js';
-import * as borrowedBooksCommon from './../common/borrowed-books-table-common.js';
+import * as borrowedCommon from './../common/borrowed-books-table-common.js';
 
 const getAll = async () => {
-	const sql = `
-	SELECT b.id, b.title, b.author, bb.books_id FROM books b
+	const sql = `SELECT b.id, b.title, b.author, bb.books_id FROM books b
 	left join borrowed_books bb
-	on b.id = bb.books_id
-    `;
+	on b.id = bb.books_id`;
 	let allBooks = await pool.query(sql);
 
 	allBooks = await allBooks.map((el) => {
@@ -23,13 +21,11 @@ const getAll = async () => {
 };
 
 const getBy = async (table, column, value) => {
-	const sql = `
-	SELECT b.id, b.title, b.author, bb.books_id as borrowed FROM books b  
-	left join borrowed_books bb
+	const sql = `SELECT b.${booksCommon.columnid}, b.${booksCommon.columnName}, b.${booksCommon.columnAuthor}, bb.${borrowedCommon.columnBookId} as borrowed FROM ${table} b  
+	left join ${borrowedCommon.tableBorrowedBooks} bb
 	on b.id = bb.books_id
 	WHERE ${column} like "%${value}%"`;
 	let foundBooks = await pool.query(sql, [value]);
-	console.log(foundBooks[0]);
 
 	foundBooks = await foundBooks.map((el) => {
 		if (el.borrowed) {
@@ -44,29 +40,16 @@ const getBy = async (table, column, value) => {
 	return foundBooks;
 };
 
-const borrowBookById = async (bookId, userId) => {
-	const isBookBorrowed = await getBy(
-		booksCommon.tableBooks,
-		booksCommon.columnid,
-		bookId,
-	);
-	const bookStatus = isBookBorrowed[0].is_borrowed;
+const borrowBookById = async (bookId, userId, bookStatus) => {
 	if (!bookStatus) {
-		const sql = `UPDATE  ${booksCommon.tableBooks} 
-        SET ${booksCommon.columnIsBorrowed} = 1
-        WHERE ${booksCommon.columnid} = ${bookId};`;
-		const sql2 = `INSERT INTO ${borrowedBooksCommon.tableBorrowedBooks} (${borrowedBooksCommon.columnBookId}, ${borrowedBooksCommon.columnUserId})
-        VALUES (?, ?);`;
-		await pool.query(sql, [bookId]);
-		await pool.query(sql2, [bookId, userId]);
+		const sql2 = `INSERT INTO ${borrowedCommon.tableBorrowedBooks} (${borrowedCommon.columnBookId}, ${borrowedCommon.columnUserId}, ${borrowedCommon.columnIsDeleted})
+        VALUES (?, ?, ?);`;
+		await pool.query(sql2, [bookId, userId, 0]);
 		return getBy(booksCommon.tableBooks, booksCommon.columnid, bookId);
 	} else {
 		return 'This book is already borrowed. I will tell you when it will be available once i build up this functionality, which can be pretty much never, never, ever';
 	}
 };
-
-booksCommon.tableBooks;
-booksCommon.columnName;
 
 export default {
 	getAll,
