@@ -31,12 +31,12 @@ const borrowBookById = async (bookId, userId) => {
 	if (!bookStatus) {
 		const sql = `UPDATE  ${booksCommon.tableBooks} 
         SET ${booksCommon.columnIsBorrowed} = 1
-        WHERE ${booksCommon.columnid} = ${bookId};
-             
-        INSERT INTO ${borrowedBooksCommon.tableBorrowedBooks} (${borrowedBooksCommon.columnBookId}, ${borrowedBooksCommon.columnUserId})
+        WHERE ${booksCommon.columnid} = ${bookId};`;
+		const sql2 = `INSERT INTO ${borrowedBooksCommon.tableBorrowedBooks} (${borrowedBooksCommon.columnBookId}, ${borrowedBooksCommon.columnUserId})
         VALUES (?, ?);`;
-
-		return await pool.query(sql, [bookId, userId]);
+		await pool.query(sql, [bookId]);
+		await pool.query(sql2, [bookId, userId]);
+		return getBy(booksCommon.tableBooks, booksCommon.columnid, bookId);
 	} else {
 		return 'This book is already borrowed. I will tell you when it will be available once i build up this functionality, which can be pretty much never, never, ever';
 	}
