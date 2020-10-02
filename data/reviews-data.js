@@ -39,6 +39,16 @@ const updateReview = async (id, title, content) => {
 
 };
 
+const getBookById = async (id) => {
+    const sql = `SELECT b.id AS book_id, b.title AS book_title, r.id AS review_id , u.id AS user_id
+    FROM books AS b
+    JOIN reviews AS r ON r.books_id = b.id
+    JOIN users AS u ON u.id = r.users_id
+    WHERE b.id = ?`;
+
+    return await pool.query(sql, [id]);
+};
+
 const deleteReview = async (id) => {
     const sql = `UPDATE reviews
     SET is_deleted = ?
@@ -53,4 +63,5 @@ export default {
     getReview,
     updateReview,
     deleteReview,
+    getBookById,
 };
