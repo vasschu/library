@@ -17,8 +17,8 @@ const reviewsController = express.Router();
 
 			const reviews = await reviewsService.getAllBookReviews(id);
 
-			if (!reviews) {
-				return res.status(404).send( {Message: 'No such reveiws'} );
+			if (reviews.message) {
+				return res.status(reviews.status).send({ message: reviews.message});
 			}
 			
 			res.status(200).send(reviews);
@@ -49,7 +49,7 @@ const reviewsController = express.Router();
 			const update = await reviewsService.updateReviewById(reviewid, body);
 
 			if(update.message){
-				return res.status(400).send({Message: update.message});
+				return res.status(update.status).send({мessage: update.message});
             }
             
             res.status(200).send(update);
@@ -66,7 +66,7 @@ const reviewsController = express.Router();
 			const update = await reviewsService.deleteReviewById(reviewid, body, id);
 
 			if(update.message){
-				return res.status(400).send({message: update.message});
+				return res.status(update.status).send({message: update.message});
             }
             
             res.status(200).send(update);
