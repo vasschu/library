@@ -61,8 +61,8 @@ const returnBookById = async (bookId, userId, bookStatus) => {
 	if (bookStatus && borrowStatus[0]) {
 		const sql = `UPDATE ${borrowedCommon.tableBorrowedBooks}
 	 SET ${borrowedCommon.columnIsDeleted} = !${borrowedCommon.columnIsDeleted},
-	 ${borrowedCommon.columnReturnDate} = 'now()'
- WHERE ${borrowedCommon.columnBookId} = ${bookId}`;
+	 ${borrowedCommon.columnReturnDate} = now()
+ WHERE ${borrowedCommon.columnBookId} = ${bookId} and ${borrowedCommon.columnIsDeleted} = 0`;
 		await pool.query(sql, [1]);
 		return getBy(booksCommon.tableBooks, booksCommon.columnid, bookId);
 	} else {
