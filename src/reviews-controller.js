@@ -48,8 +48,8 @@ const reviewsController = express.Router();
 
 			const update = await reviewsService.updateReviewById(reviewid, body);
 
-			if(!update){
-				return res.status(404).send({Message: `Review with id: ${reviewid} does not exist`});
+			if(update.message){
+				return res.status(400).send({Message: update.message});
             }
             
             res.status(200).send(update);
@@ -65,8 +65,8 @@ const reviewsController = express.Router();
 
 			const update = await reviewsService.deleteReviewById(reviewid, body, id);
 
-			if(!update){
-				return res.status(404).send({Message: `Review with id: ${reviewid} does not exist`});
+			if(update.message){
+				return res.status(400).send({message: update.message});
             }
             
             res.status(200).send(update);

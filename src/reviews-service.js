@@ -29,36 +29,35 @@ const updateReviewById = async (reviewid, body) => {
     const {title, content, users_id} = body;
 
     const review = await getReviewById(reviewid);
-    console.log(review[0]);
 
     if(!review[0]){
-        return {Message: 'Something went wrong'};
+        return {message: 'There is no such review'};
     }
     
 	const [{id, user_id}] = review;
 
     if(user_id !== users_id){
-        return {Message: 'You can not edit other users\' reviews'};
+        return {message: 'You can not edit other users\' reviews'};
     }
     
     const update = await reviewsData.updateReview(id, title, content);
 
     if(!update.affectedRows){
-        return null;
+        return {message: 'There were no changes in the database'};
     }
-    console.log(update);
+
     return update;
 
 };
 
 const getBookById = async (id) => {
-    const review = await reviewsData.getBookById(id);
+    const book = await reviewsData.getBookById(id);
 
-    if(!review){
+    if(!book){
         return null;
     }
 
-    return review;
+    return book;
 };
 
 const deleteReviewById = async (reviewid, body, bookId) => {
@@ -67,25 +66,25 @@ const deleteReviewById = async (reviewid, body, bookId) => {
     const book = await getBookById(bookId);
 
     if(!book[0]){
-        return { Message: 'No review with this id' };
+        return { message: 'No book with this id' };
     }
 
     const review = book.find(obj => +obj.review_id === +reviewid);
     
     if (!review) {
-        return {Message: 'There is no such review'};
+        return {message: 'There is no such review'};
     }
 
 	const {review_id, user_id} = review;
 
     if(+user_id !== +users_id){
-        return {Message: 'You can not edit other users\' reviews'};
+        return {message: 'You can not edit other users\' reviews'};
     }
     
     const update = await reviewsData.deleteReview(review_id);
 
     if(!update.affectedRows){
-        return null;
+        return {message: 'There were no changes in the database'};
     }
 
     return update;
