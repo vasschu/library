@@ -5,6 +5,7 @@ import reviewsService from './reviews-service.js';
 import {validateBody} from './middleware/body-validator.js';
 import {reviewShema} from './validators/create-review.js';
 import {updateReviewShema} from './validators/update-review.js';
+import {deleteReviewShema} from './validators/delete-review.js';
 
 const reviewsController = express.Router();
 
@@ -46,6 +47,23 @@ const reviewsController = express.Router();
 			const body = req.body;
 
 			const update = await reviewsService.updateReviewById(reviewid, body);
+
+			if(!update){
+				return res.status(404).send({Message: `Review with id: ${reviewid} does not exist`});
+            }
+            
+            res.status(200).send(update);
+		} catch (err) {
+			throw new Error(err);
+		}
+    })
+
+    .delete('/:id/reviews/:reviewid', validateBody(deleteReviewShema), async (req, res) => {
+		try {
+			const { id, reviewid }  = req.params;
+			const body = req.body;
+
+			const update = await reviewsService.deleteReviewById(reviewid, body, id);
 
 			if(!update){
 				return res.status(404).send({Message: `Review with id: ${reviewid} does not exist`});

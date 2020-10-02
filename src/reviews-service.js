@@ -51,9 +51,41 @@ const updateReviewById = async (reviewid, body) => {
 
 };
 
+const deleteReviewById = async (reviewid, body, bookId) => {
+    const { users_id } = body;
+
+    const review = await getReviewById(reviewid);
+    console.log(review[0]);
+
+    if(!review[0]){
+        return { Message: 'No review with this id' };
+    }
+
+	const [{id, user_id, book_id}] = review;
+
+    if(+user_id !== +users_id){
+        return {Message: 'You can not edit other users\' reviews'};
+    }
+
+    if(+book_id !== +bookId){
+        return {Message: 'This is not the correct book'};
+    }
+    
+    const update = await reviewsData.deleteReview(id);
+
+    if(!update.affectedRows){
+        return null;
+    }
+    
+    return update;
+
+};
+
+
 export default {
     getAllBookReviews,
     postReview,
     getReviewById,
     updateReviewById,
+    deleteReviewById,
 };
