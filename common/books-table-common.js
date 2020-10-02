@@ -1,4 +1,4 @@
-export const tableBooks = 'books';
-export const columnName = 'title';
-export const columnAuthor = 'author';
-export const columnid = 'id';
+export const table = 'books';
+export const title = 'title';
+export const author = 'author';
+export const id = 'id';

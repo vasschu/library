@@ -1,6 +1,6 @@
 import express from 'express';
 import libraryService from './library-service.js';
-import * as booksCommon from './../common/books-table-common.js';
+import * as books from './../common/books-table-common.js';
 
 const libraryController = express.Router();
 
@@ -8,21 +8,21 @@ libraryController
 	// get all books
 	.get('/', async (req, res) => {
 		if (typeof req.query.search === 'string' && req.query.search) {
-			const books = await libraryService.filterBooksByName(
-				booksCommon.tableBooks,
+			const book = await libraryService.filterBooksByName(
+				books.table,
 				req.query.search,
 			);
-			res.status(200).send(books);
+			res.status(200).send(book);
 		} else {
-			const books = await libraryService.getAllRecords(booksCommon.tableBooks);
-			res.status(200).send(books);
+			const book = await libraryService.getAllRecords(books.table);
+			res.status(200).send(book);
 		}
 	})
 
 	// view details for individual book by ID
 	.get('/:id', async (req, res) => {
 		const { id } = req.params;
-		const book = await libraryService.getBookById(booksCommon.tableBooks, +id);
+		const book = await libraryService.getBookById(books.table, +id);
 		if (!book[0]) {
 			return res.status(404).send({
 				message: 'Book is not found with this ID!',
