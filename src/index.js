@@ -12,6 +12,7 @@ app.use(cors(), bodyParser.json());
 
 app.use('/books', libraryController);
 libraryController.use(reviewsController);
+// app.use('/admin', adminController);
 
 //this is wildcard to capture all unsuported requests
 app.all('*', (req, res) =>

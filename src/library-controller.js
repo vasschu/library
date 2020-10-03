@@ -7,38 +7,48 @@ const libraryController = express.Router();
 libraryController
 	// get all books
 	.get('/', async (req, res) => {
-		if (typeof req.query.search === 'string' && req.query.search) {
-			const book = await libraryService.filterBooksByName(
-				books.table,
-				req.query.search,
-			);
-			res.status(200).send(book);
+		const { search } = req.query;
+		let booksToShow = '';
+		if (search) {
+			booksToShow = await libraryService.filterBooksByName(books.table, search);
 		} else {
-			const book = await libraryService.getAllRecords(books.table);
-			res.status(200).send(book);
+			booksToShow = await libraryService.getAllRecords(books.table);
+		}
+		const { error, result } = booksToShow;
+		if (!error) {
+			res.status(200).send(result);
+		} else {
+			res.status(200).send({ message: 'No books found.' });
 		}
 	})
 
 	// view details for individual book by ID
 	.get('/:id', async (req, res) => {
 		const { id } = req.params;
-		const book = await libraryService.getBookById(books.table, +id);
-		if (!book[0]) {
-			return res.status(404).send({
-				message: 'Book is not found with this ID!',
-			});
+		const booksToShow = await libraryService.getBookById(books.table, +id);
+
+		const { error, result } = booksToShow;
+		if (!error) {
+			res.status(200).send(result);
+		} else {
+			res.status(200).send({ message: 'No books found with this ID.' });
 		}
-		res.status(200).send(book);
 	})
 
 	//borrow book by id
 	.post('/:id', async (req, res) => {
 		const { id } = req.params;
 		const userId = req.body.users_id;
-
 		const borrowedBook = await libraryService.borrowBook(id, userId);
+		const { error, result } = borrowedBook;
 
-		res.status(200).send(borrowedBook);
+		if (!error) {
+			res.status(200).send(result);
+		} else {
+			res.status(200).send({
+				message: 'This book is currently borrowed. Will be available later.',
+			});
+		}
 	})
 
 	//return book by id
