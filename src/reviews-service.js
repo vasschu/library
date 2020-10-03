@@ -5,10 +5,8 @@ const getAllBookReviews = async (bookId) => {
     const reviews = await reviewsData.getBookReviews(bookId);
 
     if (!reviews[0]) {
-        return {message: reviewsError.NO_REVIEWS_FOR_BOOK,
-                status: 404};
+        return reviewsError.NOT_FOUND;
     }
-    console.log(reviews);
     return reviews;
 };
 
@@ -33,22 +31,19 @@ const updateReviewById = async (reviewid, body) => {
     const review = await getReviewById(reviewid);
 
     if(!review[0]){
-        return {message: reviewsError.NO_SUCH_REVIEW,
-                status: 404};
+        return reviewsError.NOT_FOUND;
     }
     
 	const [{id, user_id}] = review;
 
     if(user_id !== users_id){
-        return {message: reviewsError.OTHER_USER_REVIEW,
-                status: 400};
+        return reviewsError.NOT_PERMITTED;
     }
     
     const update = await reviewsData.updateReview(id, title, content);
 
     if(!update.affectedRows){
-        return {message: reviewsError.NO_DATABASE_CHANGES,
-                status: 400};
+        return reviewsError.NO_DATABASE_CHANGES;
     }
 
     return update;
@@ -71,29 +66,25 @@ const deleteReviewById = async (reviewid, body, bookId) => {
     const book = await getBookById(bookId);
 
     if(!book[0]){
-        return { message: reviewsError.NO_SUCH_BOOK,
-                 status: 404};
+        return reviewsError.NOT_FOUND;
     }
 
     const review = book.find(obj => +obj.review_id === +reviewid);
     
     if (!review) {
-        return {message: reviewsError.NO_SUCH_REVIEW,
-                status: 404};
+        return reviewsError.NOT_FOUND;
     }
 
 	const {review_id, user_id} = review;
 
     if(+user_id !== +users_id){
-        return {message: reviewsError.OTHER_USER_REVIEW,
-                status: 400};
+        return reviewsError.NOT_PERMITTED;
     }
     
     const update = await reviewsData.deleteReview(review_id);
 
     if(!update.affectedRows){
-        return {message: reviewsError.NO_DATABASE_CHANGES,
-                status: 400};
+        return reviewsError.NO_DATABASE_CHANGES;
     }
 
     return update;

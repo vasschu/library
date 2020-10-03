@@ -1,13 +1,13 @@
 import pool from './pool.js';
 
 const getBookReviews = async (bookId) => {
-    const sql = `SELECT r.id, r.title, r.content, u.username, b.title AS book_title, b.author 
+    const sql = `SELECT r.id, r.title, r.content, r.is_deleted, u.username, b.title AS book_title, b.author
     FROM library.reviews AS r
     JOIN users AS u ON users_id = u.id
     JOIN books AS b ON books_id = b.id
-    WHERE books_id = ?;`;
+    WHERE books_id = ? AND r.is_deleted = ?;`;
     // console.log(sql);
-    return await pool.query(sql, [bookId]);
+    return await pool.query(sql, [bookId, 0]);
 };
 
 const postBookReview = async (body) => {
@@ -21,13 +21,13 @@ const postBookReview = async (body) => {
 };
 
 const getReview = async (id) => {
-    const sql = `SELECT r.id, r.title, r.content, u.id AS user_id, u.username, b.id AS book_id
+    const sql = `SELECT r.id, r.title, r.content, r.is_deleted, u.id AS user_id, u.username, b.id AS book_id
     FROM reviews AS r
     JOIN users AS u ON users_id = u.id
     JOIN books AS b ON books_id = b.id
-    WHERE r.id = ?;`;
+    WHERE r.id = ? AND r.is_deleted = ?;`;
 
-    return await pool.query(sql, [id]);
+    return await pool.query(sql, [id, 0]);
 };
 
 const updateReview = async (id, title, content) => {
@@ -40,13 +40,13 @@ const updateReview = async (id, title, content) => {
 };
 
 const getBookById = async (id) => {
-    const sql = `SELECT b.id AS book_id, b.title AS book_title, r.id AS review_id , u.id AS user_id
+    const sql = `SELECT b.id AS book_id, b.title AS book_title, r.id AS review_id, r.is_deleted, u.id AS user_id
     FROM books AS b
     JOIN reviews AS r ON r.books_id = b.id
     JOIN users AS u ON u.id = r.users_id
-    WHERE b.id = ?`;
+    WHERE b.id = ? AND r.is_deleted = ?`;
 
-    return await pool.query(sql, [id]);
+    return await pool.query(sql, [id, 0]);
 };
 
 const deleteReview = async (id) => {

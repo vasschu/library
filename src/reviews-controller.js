@@ -1,6 +1,6 @@
 import express from 'express';
 import reviewsService from './reviews-service.js';
-
+import reviewsError from './../common/error-messages/review-errors.js';
 
 import {validateBody} from './middleware/body-validator.js';
 import {reviewShema} from './validators/create-review.js';
@@ -17,8 +17,8 @@ const reviewsController = express.Router();
 
 			const reviews = await reviewsService.getAllBookReviews(id);
 
-			if (reviews.message) {
-				return res.status(reviews.status).send({ message: reviews.message});
+			if (reviews === reviewsError.NOT_FOUND) {
+				return res.status(404).send({ message: 'No reviews found for this book'});
 			}
 			
 			res.status(200).send(reviews);
@@ -48,8 +48,12 @@ const reviewsController = express.Router();
 
 			const update = await reviewsService.updateReviewById(reviewid, body);
 
-			if(update.message){
-				return res.status(update.status).send({мessage: update.message});
+			if(update === reviewsError.NOT_FOUND){
+				return res.status(404).send({мessage: 'No review found'});
+            } else if(update === reviewsError.NOT_PERMITTED){
+                return res.status(403).send({мessage: 'You can not edit other people\'s reviews'});
+            } else if (update === reviewsError.NO_DATABASE_CHANGES){
+                return res.status(400).send({message: 'Changes were not made on the review'});
             }
             
             res.status(200).send(update);
@@ -65,11 +69,16 @@ const reviewsController = express.Router();
 
 			const update = await reviewsService.deleteReviewById(reviewid, body, id);
 
-			if(update.message){
-				return res.status(update.status).send({message: update.message});
+			if(update === reviewsError.NOT_FOUND){
+				return res.status(404).send({мessage: 'No such resourse found'});
+            } else if(update === reviewsError.NOT_PERMITTED){
+                return res.status(403).send({мessage: 'You can not delete other people\'s reviews'});
+            } else if (update === reviewsError.NO_DATABASE_CHANGES){
+                return res.status(400).send({message: 'Review was not deleted'});
             }
             
-            res.status(200).send(update);
+            
+            res.status(200).send({message: 'The review was deleted successfully'});
 		} catch (err) {
 			throw new Error(err);
 		}
