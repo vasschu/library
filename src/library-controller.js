@@ -1,6 +1,6 @@
 import express from 'express';
 import libraryService from './library-service.js';
-import * as books from './../common/books-table-common.js';
+// import * as books from './../common/books-table-common.js';
 
 const libraryController = express.Router();
 
@@ -10,9 +10,9 @@ libraryController
 		const { search } = req.query;
 		let booksToShow = '';
 		if (search) {
-			booksToShow = await libraryService.filterBooksByName(books.table, search);
+			booksToShow = await libraryService.filterBooksByName(search);
 		} else {
-			booksToShow = await libraryService.getAllRecords(books.table);
+			booksToShow = await libraryService.getAllRecords();
 		}
 		const { error, result } = booksToShow;
 		if (!error) {
@@ -25,7 +25,7 @@ libraryController
 	// view details for individual book by ID
 	.get('/:id', async (req, res) => {
 		const { id } = req.params;
-		const booksToShow = await libraryService.getBookById(books.table, +id);
+		const booksToShow = await libraryService.getBookById(+id);
 
 		const { error, result } = booksToShow;
 		if (!error) {
@@ -39,7 +39,10 @@ libraryController
 	.post('/:id', async (req, res) => {
 		const { id } = req.params;
 		const userId = req.body.users_id;
-		const borrowedBook = await libraryService.borrowBook(id, userId);
+
+		const isBookFree = await libraryService.getBookById(+id);
+		// if(isBookFree)
+		// const borrowedBook = await libraryService.borrowBook(id, userId);
 		const { error, result } = borrowedBook;
 
 		if (!error) {
@@ -56,9 +59,17 @@ libraryController
 		const { id } = req.params;
 		const userId = req.body.users_id;
 
-		const borrowedBook = await libraryService.returnBook(id, userId);
+		const bookToReturn = await libraryService.returnBook(id, userId);
 
-		res.status(200).send(borrowedBook);
+		const { error, result } = bookToReturn;
+
+		if (!error) {
+			res.status(200).send(result);
+		} else {
+			res.status(200).send({
+				message: 'This book is not borrowed by this user.',
+			});
+		}
 	});
 
 export default libraryController;

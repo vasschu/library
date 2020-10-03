@@ -3,19 +3,20 @@ import * as books from './../common/books-table-common.js';
 import * as borrow from './../common/borrowed-books-table-common.js';
 
 const getAll = async () => {
-	const sql = `SELECT b.id, b.title, b.author, bb.books_id as borrowed, b.${books.isUnlisted} FROM books b
+	const sql = `SELECT b.id, b.title, b.author, bb.isDeleted as borrowed, b.is_unlisted FROM books b
 	left join borrowed_books bb
-	on b.id = bb.books_id`;
-	const allBooks = books.formatBookData(await pool.query(sql));
+	on b.id = bb.books_id and bb.isDeleted = 0
+	order by b.id asc;`;
+	const allBooks = await books.formatBookData(await pool.query(sql));
 
 	return allBooks;
 };
 
-const getBy = async (table, column, value) => {
-	const sql = `SELECT b.${books.id}, b.${books.title}, b.${books.author}, bb.${borrow.bookId} as borrowed FROM ${table} b  
-	left join ${borrow.table} bb
+const getBy = async (column, value) => {
+	const sql = `SELECT b.id, b.title, b.author, bb.isDeleted as borrowed FROM books b  
+	left join borrowed_books bb
 	on b.id = bb.books_id and bb.isDeleted = 0
-	WHERE b.${column} like "%${value}%"`;
+	WHERE b.${column} like "%${value}%";`;
 
 	const foundBooks = books.formatBookData(await pool.query(sql, [value]));
 
@@ -35,7 +36,7 @@ const borrowBookById = async (bookId, userId) => {
 const returnBookById = async (bookId, userId, bookStatus) => {
 	const sql = `SELECT * FROM borrowed_books
 		where users_id = ? and books_id= ? and isDeleted = ?`;
-	const borrowStatus = await pool.query(sql, [userId, bookId, 0]);
+	await pool.query(sql, [userId, bookId, 0]);
 
 	if (bookStatus && borrowStatus[0]) {
 		const sql = `UPDATE ${borrow.table}

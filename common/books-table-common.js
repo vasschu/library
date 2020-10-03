@@ -6,10 +6,10 @@ export const isUnlisted = 'is_unlisted';
 
 export const formatBookData = async (res) => {
 	const allBooks = await res.map((el) => {
-		if (el.borrowed) {
-			el.borrowed = true;
-		} else {
+		if (el.borrowed === null || el.borrowed == 1) {
 			el.borrowed = false;
+		} else {
+			el.borrowed = true;
 		}
 		if (el.is_unlisted) {
 			el.is_unlisted = true;
