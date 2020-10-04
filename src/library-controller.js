@@ -1,5 +1,4 @@
 import express from 'express';
-import libraryData from '../data/library-data.js';
 import libraryService from './library-service.js';
 // import * as books from './../common/books-table-common.js';
 
@@ -71,11 +70,5 @@ libraryController
 			});
 		}
 	});
-
-//this is test controller with test function to apply more flexible search on the database.
-// .get('/test', async (req, res) => {
-// 	let result = await libraryData.getBorrowedBooksStatusByUser(2, null, null);
-// 	res.status(200).send(result);
-// });
 
 export default libraryController;
