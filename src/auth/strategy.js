@@ -7,7 +7,6 @@ const options = {
 };
 
 const jwtStrategy = new passportJwt.Strategy(options, async (payload, done) => {
-	//WE MUST TEST IF THIS PAYLOAD SETUP IS WORKING FOR OUR APP
 	const userData = {
 		id: payload.sub,
 		username: payload.username,

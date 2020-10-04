@@ -1,6 +1,6 @@
 import pool from './pool.js';
-import * as books from './../common/books-table-common.js';
-import * as borrow from './../common/borrowed-books-table-common.js';
+import * as books from '../common/books-table-common.js';
+import * as borrow from '../common/borrowed-books-table-common.js';
 
 const getAll = async () => {
 	const sql = `SELECT b.id, b.title, b.author, bb.is_deleted as borrowed, b.is_unlisted FROM books b

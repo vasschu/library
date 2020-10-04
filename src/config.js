@@ -2,8 +2,8 @@ export const DB_CONFIG = {
 	host: 'localhost',
 	port: '3306',
 	user: 'root',
-	password: '', // your pass here
-	database: 'library',
+	password: '1234', // pass
+	database: 'library1', // library name
 };
 
 export const PORT = 5500;

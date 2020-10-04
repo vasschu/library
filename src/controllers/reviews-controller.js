@@ -1,6 +1,6 @@
 import express from 'express';
 import reviewsService from '../service/reviews-service.js';
-import reviewsError from '../../common/error-messages/review-errors.js';
+import reviewsError from '../common/error-messages/review-errors.js';
 
 import { validateBody } from '../middleware/body-validator.js';
 import { reviewShema } from '../validators/create-review.js';
@@ -56,7 +56,7 @@ reviewsController
 				} else if (update === reviewsError.NOT_PERMITTED) {
 					return res
 						.status(403)
-						.send({ мessage: "You can not edit other people's reviews" });
+						.send({ мessage: 'You can not edit other people\'s reviews' });
 				} else if (update === reviewsError.NO_DATABASE_CHANGES) {
 					return res
 						.status(400)
@@ -89,7 +89,7 @@ reviewsController
 				} else if (update === reviewsError.NOT_PERMITTED) {
 					return res
 						.status(403)
-						.send({ мessage: "You can not delete other people's reviews" });
+						.send({ мessage: 'You can not delete other people\'s reviews' });
 				} else if (update === reviewsError.NO_DATABASE_CHANGES) {
 					return res.status(400).send({ message: 'Review was not deleted' });
 				}
