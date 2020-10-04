@@ -12,7 +12,7 @@ const filterBooksByName = async (searchTerm) => {
 	if (foundBooks.length >= 1) {
 		return { error: null, result: foundBooks };
 	} else {
-		return { error: 'shit', result: null };
+		return { error: 'make error file', result: null };
 	}
 };
 
@@ -22,25 +22,34 @@ const getBookById = async (id) => {
 	if (book[0]) {
 		return { error: null, result: book };
 	} else {
-		return { error: 'shit', result: null };
+		return { error: 'make error file', result: null };
 	}
 };
 
 const borrowBook = async (bookId, userId) => {
-	const bookToBorrow = await libraryData.getBy(books.table, books.id, bookId);
+	const bookToBorrow = await libraryData.getBy(books.id, bookId);
 
-	if (bookToBorrow[0].borrowed) {
+	if (!bookToBorrow[0].borrowed) {
 		const book = await libraryData.borrowBookById(bookId, userId);
 		return { error: null, result: book };
 	} else {
-		return { error: 'shit', result: null };
+		return { error: 'make error file', result: null };
 	}
 };
 
 const returnBook = async (bookId, userId) => {
-	const book = await libraryData.getBy(books.table, books.id, bookId);
+	const isBookBorrowedByThisUser = await libraryData.getBorrowedBookByUser(
+		userId,
+		bookId,
+		0,
+	);
 
-	return await libraryData.returnBookById(bookId, userId, book[0].borrowed);
+	if (isBookBorrowedByThisUser[0]) {
+		const book = await libraryData.returnBookById(bookId);
+		return { error: null, result: book };
+	} else {
+		return { error: 'make error file', result: null };
+	}
 };
 
 export default {
