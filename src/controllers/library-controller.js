@@ -1,5 +1,5 @@
 import express from 'express';
-import libraryService from './library-service.js';
+import libraryService from '../service/library-service.js';
 // import * as books from './../common/books-table-common.js';
 
 const libraryController = express.Router();
