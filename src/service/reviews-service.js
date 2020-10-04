@@ -1,5 +1,5 @@
-import reviewsData from '../../data/reviews-data.js';
-import reviewsError from '../../common/error-messages/review-errors.js';
+import reviewsData from '../data/reviews-data.js';
+import reviewsError from '../common/error-messages/review-errors.js';
 
 const getAllBookReviews = async (bookId) => {
 	const reviews = await reviewsData.getBookReviews(bookId);

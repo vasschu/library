@@ -1,5 +1,5 @@
-import libraryData from '../../data/library-data.js';
-import * as books from './../../common/books-table-common.js';
+import libraryData from '../data/library-data.js';
+import * as books from '../common/books-table-common.js';
 
 const getAllRecords = async () => {
 	const foundBooks = await libraryData.getAll();

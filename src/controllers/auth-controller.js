@@ -1,5 +1,5 @@
 import express from 'express';
-import serviceErrors from '../../common/error-messages/service-errors.js';
+import serviceErrors from '../common/error-messages/service-errors.js';
 import usersService from '../service/users-service.js';
 import {createToken} from '../auth/create-token.js';
 
