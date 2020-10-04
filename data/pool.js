@@ -1,11 +1,6 @@
 import mariadb from 'mariadb';
+import {DB_CONFIG} from './../src/config.js';
 
-const pool = mariadb.createPool({
-	host: 'localhost',
-	port: '3306',
-	user: 'root',
-	password: 'twffox',
-	database: 'library',
-});
+const pool = mariadb.createPool(DB_CONFIG);
 
 export default pool;
