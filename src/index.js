@@ -7,6 +7,7 @@ import bodyParser from 'body-parser';
 
 import libraryController from './controllers/library-controller.js';
 import reviewsController from './controllers/reviews-controller.js';
+import usersController from './controllers/users-controller.js';
 // import authController from './auth-controller.js';
 
 const app = express();
@@ -16,7 +17,7 @@ app.use(cors(), bodyParser.json());
 
 app.use('/books', libraryController);
 libraryController.use(reviewsController);
-// app.use('/admin', adminController);
+app.use('/users', usersController);
 // app.use('/welcome', authController);
 
 //this is wildcard to capture all unsuported requests
