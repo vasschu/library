@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import passport from 'passport';
-
+import helmet from 'helmet';
 import jwtStrategy from './auth/strategy.js';
 
 import libraryController from './controllers/library-controller.js';
@@ -15,6 +15,7 @@ const PORT = 5500;
 
 passport.use(jwtStrategy);
 app.use(cors(), bodyParser.json());
+app.use(helmet());
 
 app.use(passport.initialize());
 
