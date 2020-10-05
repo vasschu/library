@@ -1,26 +1,31 @@
 import express from 'express';
 import libraryService from '../service/library-service.js';
+import passport from 'passport';
 // import * as books from './../common/books-table-common.js';
 
 const libraryController = express.Router();
 
 libraryController
 	// get all books
-	.get('/', async (req, res) => {
-		const { search } = req.query;
-		let booksToShow = '';
-		if (search) {
-			booksToShow = await libraryService.filterBooksByName(search);
-		} else {
-			booksToShow = await libraryService.getAllRecords();
-		}
-		const { error, result } = booksToShow;
-		if (!error) {
-			res.status(200).send(result);
-		} else {
-			res.status(200).send({ message: 'No books found.' });
-		}
-	})
+	.get(
+		'/',
+		passport.authenticate('jwt', { session: false }),
+		async (req, res) => {
+			const { search } = req.query;
+			let booksToShow = '';
+			if (search) {
+				booksToShow = await libraryService.filterBooksByName(search);
+			} else {
+				booksToShow = await libraryService.getAllRecords();
+			}
+			const { error, result } = booksToShow;
+			if (!error) {
+				res.status(200).send(result);
+			} else {
+				res.status(200).send({ message: 'No books found.' });
+			}
+		},
+	)
 
 	// view details for individual book by ID
 	.get('/:id', async (req, res) => {

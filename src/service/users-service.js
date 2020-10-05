@@ -28,8 +28,8 @@ const logIn = async (userDetails) => {
 	const { username, password } = userDetails;
 
 	const user = await usersData.getWithRole(username);
-	
-	if (!user || !(await bcrypt.compare(password, user.password))) {
+
+	if (!user || (await bcrypt.compare(password, user.password))) {
 		return { message: serviceErrors.INVALID_LOGIN };
 	}
 
