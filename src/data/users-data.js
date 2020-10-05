@@ -27,7 +27,7 @@ const getWithRole = async (username) => {
 	WHERE u.username = ?;`;
 
 	const result = await pool.query(sql, [username]);
-	return result;
+	return result[0];
 };
 
 export default {

@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 import usersData from '../data/users-data.js';
 
 import serviceErrors from '../common/error-messages/service-errors.js';
+import passport from 'passport';
 
 const createUser = async (userCreate) => {
 	const { username, password } = userCreate;
@@ -27,8 +28,8 @@ const logIn = async (userDetails) => {
 	const { username, password } = userDetails;
 
 	const user = await usersData.getWithRole(username);
-
-	if (!user && !(await bcrypt.compare(user.password, password))) {
+	
+	if (!user || !(await bcrypt.compare(password, user.password))) {
 		return { message: serviceErrors.INVALID_LOGIN };
 	}
 

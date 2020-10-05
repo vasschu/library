@@ -13,14 +13,14 @@ authController.post('/login', validateBody(logInBody), async (req, res) => {
 
 	const user = await usersService.logIn(body);
 
-	if (user === serviceErrors.INVALID_LOGIN) {
+	if (user.message === serviceErrors.INVALID_LOGIN) {
 		return res.status(400).send({ message: 'Invalid username/password' });
 	}
 
 	const payload = {
-		sub: user[0].id,
-		username: user[0].username,
-		role: user[0].level,
+		sub: user.id,
+		username: user.username,
+		role: user.level,
 	};
 
 	const token = createToken(payload);
