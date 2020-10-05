@@ -1,3 +1,4 @@
 node_modules/
 
 data/pool.js
+src/config.js

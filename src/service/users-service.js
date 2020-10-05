@@ -6,26 +6,30 @@ import serviceErrors from '../common/error-messages/service-errors.js';
 const createUser = async (userCreate) => {
 	const { username, password } = userCreate;
 
-	// const existingUser = await usersData.getBy('username', username);
+	const existingUser = await usersData.getUserBy('username', username);
 
-	// if (existingUser) {
-	// 	return {
-	// 		error: serviceErrors.DUPLICATE_RECORD,
-	// 		user: null,
-	// 	};
-	// }
+	if (existingUser[0]) {
+		return {
+			error: serviceErrors.DUPLICATE_RECORD,
+			result: null,
+		};
+	}
 
 	const passwordHash = await bcrypt.hash(password, 10);
-	return await usersData.create(username, passwordHash);
+	const createdUser = await usersData.create(username, passwordHash);
+	return {
+		error: null,
+		result: createdUser,
+	};
 };
 
 const logIn = async (userDetails) => {
-	const { username/*, password*/ } = userDetails;
+	const { username /*, password*/ } = userDetails;
 
 	const user = usersData.getWithRole(username);
 
-	if (!user /*&& !(await bcrypt.compare(user.password, password))*/){
-		return {message: serviceErrors.INVALID_LOGIN};
+	if (!user /*&& !(await bcrypt.compare(user.password, password))*/) {
+		return { message: serviceErrors.INVALID_LOGIN };
 	}
 
 	return user;
