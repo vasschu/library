@@ -2,7 +2,12 @@ import express from 'express';
 import libraryService from '../service/library-service.js';
 // import * as books from './../common/books-table-common.js';
 
+import { authMiddleware } from '../auth/auth-middleware.js';
+import { roleMiddleware } from '../auth/auth-middleware.js';
+
 const libraryController = express.Router();
+libraryController.use(authMiddleware);
+libraryController.use(roleMiddleware('regular', 'admin'));
 
 libraryController
 	// get all books

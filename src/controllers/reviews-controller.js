@@ -7,11 +7,16 @@ import { reviewShema } from '../validators/create-review.js';
 import { updateReviewShema } from '../validators/update-review.js';
 import { deleteReviewShema } from '../validators/delete-review.js';
 
+import { authMiddleware } from '../auth/auth-middleware.js';
+import { roleMiddleware } from '../auth/auth-middleware.js';
+
 const reviewsController = express.Router();
+reviewsController.use(authMiddleware);
+reviewsController.use(roleMiddleware('regular', 'admin'));
 
 reviewsController
 	//get reviews for specific book by ID
-	.get('/:id/reviews', async (req, res) => {
+	.get('/:id/reviews',  async (req, res) => {
 		try {
 			const { id } = req.params;
 
@@ -77,11 +82,13 @@ reviewsController
 			try {
 				const { id, reviewid } = req.params;
 				const body = req.body;
+				const { role } = req.user;
 
 				const update = await reviewsService.deleteReviewById(
 					reviewid,
 					body,
 					id,
+					role,
 				);
 
 				if (update === reviewsError.NOT_FOUND) {
