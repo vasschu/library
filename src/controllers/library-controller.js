@@ -19,7 +19,7 @@ libraryController
 		if (!error) {
 			res.status(200).send(result);
 		} else {
-			res.status(200).send({ message: 'No books found.' });
+			res.status(404).send({ message: 'No books found.' });
 		}
 	})
 
@@ -32,7 +32,7 @@ libraryController
 		if (!error) {
 			res.status(200).send(result);
 		} else {
-			res.status(200).send({ message: 'No books found with this ID.' });
+			res.status(404).send({ message: 'No books found with this ID.' });
 		}
 	})
 
@@ -46,9 +46,9 @@ libraryController
 		const { error, result } = borrowedBook;
 
 		if (!error) {
-			res.status(200).send(result);
+			res.status(201).send(result);
 		} else {
-			res.status(200).send({
+			res.status(403).send({
 				message: 'This book is currently borrowed. Will be available later.',
 			});
 		}
@@ -64,9 +64,9 @@ libraryController
 		const { error, result } = bookToReturn;
 
 		if (!error) {
-			res.status(200).send(result);
+			res.status(201).send(result);
 		} else {
-			res.status(200).send({
+			res.status(403).send({
 				message: 'This book is not borrowed by this user.',
 			});
 		}
