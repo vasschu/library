@@ -16,7 +16,7 @@ reviewsController.use(roleMiddleware('regular', 'admin'));
 
 reviewsController
 	//get reviews for specific book by ID
-	.get('/:id/reviews',  async (req, res) => {
+	.get('/:id/reviews', async (req, res) => {
 		try {
 			const { id } = req.params;
 
@@ -53,15 +53,20 @@ reviewsController
 			try {
 				const { reviewid } = req.params;
 				const body = req.body;
+				const { role } = req.user;
 
-				const update = await reviewsService.updateReviewById(reviewid, body);
+				const update = await reviewsService.updateReviewById(
+					reviewid,
+					body,
+					role,
+				);
 
 				if (update === reviewsError.NOT_FOUND) {
 					return res.status(404).send({ мessage: 'No review found' });
 				} else if (update === reviewsError.NOT_PERMITTED) {
 					return res
 						.status(403)
-						.send({ мessage: 'You can not edit other people\'s reviews' });
+						.send({ мessage: "You can not edit other people's reviews" });
 				} else if (update === reviewsError.NO_DATABASE_CHANGES) {
 					return res
 						.status(400)
@@ -96,7 +101,7 @@ reviewsController
 				} else if (update === reviewsError.NOT_PERMITTED) {
 					return res
 						.status(403)
-						.send({ мessage: 'You can not delete other people\'s reviews' });
+						.send({ мessage: 'You can not delete reviews by other users' });
 				} else if (update === reviewsError.NO_DATABASE_CHANGES) {
 					return res.status(400).send({ message: 'Review was not deleted' });
 				}

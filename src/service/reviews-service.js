@@ -24,7 +24,7 @@ const getReviewById = async (id) => {
 	return review;
 };
 
-const updateReviewById = async (reviewid, body) => {
+const updateReviewById = async (reviewid, body, role) => {
 	const { title, content, users_id } = body;
 
 	const review = await getReviewById(reviewid);
@@ -35,17 +35,16 @@ const updateReviewById = async (reviewid, body) => {
 
 	const [{ id, user_id }] = review;
 
-	if (user_id !== users_id) {
-		return reviewsError.NOT_PERMITTED;
+	if (role === 'admin' || +user_id === +users_id) {
+		const update = await reviewsData.updateReview(id, title, content);
+
+		if (!update.affectedRows) {
+			return reviewsError.NO_DATABASE_CHANGES;
+		}
+		return update;
 	}
 
-	const update = await reviewsData.updateReview(id, title, content);
-
-	if (!update.affectedRows) {
-		return reviewsError.NO_DATABASE_CHANGES;
-	}
-
-	return update;
+	return reviewsError.NOT_PERMITTED;
 };
 
 const getBookById = async (id) => {
@@ -72,22 +71,19 @@ const deleteReviewById = async (reviewid, body, bookId, role) => {
 	if (!review) {
 		return reviewsError.NOT_FOUND;
 	}
-	// console.log(role);
 	const { review_id, user_id } = review;
 
 	if (role === 'admin' || +user_id === +users_id) {
-		
 		const update = await reviewsData.deleteReview(review_id);
-	
+
 		if (!update.affectedRows) {
 			return reviewsError.NO_DATABASE_CHANGES;
 		}
-	
+
 		return update;
-	} else if (+user_id !== +users_id){
+	} else if (+user_id !== +users_id) {
 		return reviewsError.NOT_PERMITTED;
 	}
-
 };
 
 export default {
