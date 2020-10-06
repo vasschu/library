@@ -115,6 +115,14 @@ const updateBook = async (id, body) => {
 	return updated;
 };
 
+const deleteBook = async (id) => {
+	const sql = `UPDATE books
+	SET is_unlisted = 1
+	WHERE id = ?`;
+
+	return await pool.query(sql, [id]);
+};
+
 export default {
 	getAll,
 	getBy,
@@ -123,4 +131,5 @@ export default {
 	getBorrowedBookByUser,
 	createBook,
 	updateBook,
+	deleteBook,
 };

@@ -98,10 +98,20 @@ libraryController
 		if (update === serviceErrors.NO_DATABASE_CHANGES){
 			return res.status(400).send({messages: 'Update was unsuccessful'});
 		}
-		
-		return res.status(200).send(update);
-	});
 
-	// .delete();
+		return res.status(200).send(update);
+	})
+
+	.delete('/:id/temp', roleMiddleware('admin'), async (req, res) => {
+		const { id } = req.params;
+
+		const del = await libraryService.deleteBook(id);
+
+		if (del === serviceErrors.NO_DATABASE_CHANGES){
+			return res.status(400).send({messages: 'Delete was unsuccessful'});
+		}
+
+		return res.status(200).send({ message: 'Deleted successfully'});
+	});
 
 export default libraryController;

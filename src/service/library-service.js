@@ -98,6 +98,16 @@ const updateBook = async (id, body) => {
 	
 };
 
+const deleteBook = async (id) => {
+	const deleted = await libraryData.deleteBook(id);
+
+	if (!deleted.affectedRows) {
+		return serviceErrors.NO_DATABASE_CHANGES;
+	}
+
+	return deleted;
+};
+
 export default {
 	getAllRecords,
 	filterBooksByName,
@@ -106,4 +116,5 @@ export default {
 	returnBook,
 	createBook,
 	updateBook,
+	deleteBook,
 };
