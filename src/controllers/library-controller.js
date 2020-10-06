@@ -1,6 +1,9 @@
 import express from 'express';
 import libraryService from '../service/library-service.js';
 import passport from 'passport';
+import { validateBody } from '../middleware/body-validator.js';
+import borrowBookSchema from './../validators/borrow-book.js';
+import borrowBookShema from './../validators/borrow-book.js';
 // import * as books from './../common/books-table-common.js';
 
 const libraryController = express.Router();
@@ -9,7 +12,8 @@ libraryController
 	// get all books
 	.get(
 		'/',
-		passport.authenticate('jwt', { session: false }),
+		// passport.authenticate('jwt', { session: false }),
+
 		async (req, res) => {
 			const { search } = req.query;
 			let booksToShow = '';
@@ -41,7 +45,7 @@ libraryController
 	})
 
 	//borrow book by id
-	.post('/:id', async (req, res) => {
+	.post('/:id', validateBody(borrowBookShema), async (req, res) => {
 		const { id } = req.params;
 		const userId = req.body.users_id;
 
@@ -59,7 +63,7 @@ libraryController
 	})
 
 	//return book by id
-	.delete('/:id', async (req, res) => {
+	.delete('/:id', validateBody(borrowBookShema), async (req, res) => {
 		const { id } = req.params;
 		const userId = req.body.users_id;
 
