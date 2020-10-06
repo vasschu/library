@@ -75,6 +75,13 @@ libraryController
 				message: 'This book is not borrowed by this user.',
 			});
 		}
+	})
+
+	.post('/', roleMiddleware('admin'), async (req, res) => {
+
+		const createBook = await libraryService.createBook(req.body);
+
+		return res.status(201).send(createBook);
 	});
 
 export default libraryController;

@@ -80,10 +80,18 @@ const getBorrowedBookByUser = async (userId, bookId, isDeleted) => {
 	return foundBooks;
 };
 
+const createBook = async (title, author, description) => {
+	const sql = `INSERT INTO library.books (title, author, description, image)
+	VALUES (?, ?, ?, ?);`;
+	
+	return await pool.query(sql, [title, author, description, 0]);
+};
+
 export default {
 	getAll,
 	getBy,
 	borrowBookById,
 	returnBookById,
 	getBorrowedBookByUser,
+	createBook,
 };

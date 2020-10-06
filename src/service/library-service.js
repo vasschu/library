@@ -79,10 +79,17 @@ const returnBook = async (bookId, userId) => {
 	}
 };
 
+const createBook = async (body) => {
+	const { title, author, description } = body;
+
+	return await libraryData.createBook(title, author, description); 
+}; 
+
 export default {
 	getAllRecords,
 	filterBooksByName,
 	getBookById,
 	borrowBook,
 	returnBook,
+	createBook,
 };

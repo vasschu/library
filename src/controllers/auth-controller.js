@@ -34,6 +34,7 @@ authController
 		res
 			.status(204)
 			.send(
+				// eslint-disable-next-line no-irregular-whitespace
 				`{message: User '${name}' has been fake logged out. See you soon in the blacklist. (▀̿ ̿̃ ͜ʖ▀̿ ̿ ̃)}`,
 			);
 	});
