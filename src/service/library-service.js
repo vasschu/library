@@ -1,5 +1,6 @@
 import libraryData from '../data/library-data.js';
 import * as books from '../common/books-table-common.js';
+import serviceErrors from '../common/error-messages/service-errors.js';
 
 /**
  * Get all books
@@ -85,6 +86,18 @@ const createBook = async (body) => {
 	return await libraryData.createBook(title, author, description); 
 }; 
 
+const updateBook = async (id, body) => {
+	const updated = await libraryData.updateBook(id, body);
+
+	if (!updated.affectedRows) {
+		return serviceErrors.NO_DATABASE_CHANGES;
+	}
+
+	return updated;
+
+	
+};
+
 export default {
 	getAllRecords,
 	filterBooksByName,
@@ -92,4 +105,5 @@ export default {
 	borrowBook,
 	returnBook,
 	createBook,
+	updateBook,
 };

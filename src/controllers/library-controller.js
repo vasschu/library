@@ -2,9 +2,14 @@ import express from 'express';
 import libraryService from '../service/library-service.js';
 import { validateBody } from '../middleware/body-validator.js';
 import borrowBookShema from './../validators/borrow-book-shema.js';
+import { createBook } from './../validators/create-book.js';
+import { updateBook } from './../validators/update-book.js';
 
 import { authMiddleware } from '../auth/auth-middleware.js';
 import { roleMiddleware } from '../auth/auth-middleware.js';
+
+import serviceErrors from '../common/error-messages/service-errors.js';
+
 
 const libraryController = express.Router();
 libraryController.use(authMiddleware);
@@ -77,11 +82,26 @@ libraryController
 		}
 	})
 
-	.post('/', roleMiddleware('admin'), async (req, res) => {
+	.post('/', roleMiddleware('admin'), validateBody(createBook), async (req, res) => {
 
 		const createBook = await libraryService.createBook(req.body);
 
 		return res.status(201).send(createBook);
+	})
+
+	.put('/:id', roleMiddleware('admin'), validateBody(updateBook), async (req, res) => {
+		const { id } = req.params;
+		const body = req.body;
+
+		const update = await libraryService.updateBook(id, body);
+
+		if (update === serviceErrors.NO_DATABASE_CHANGES){
+			return res.status(400).send({messages: 'Update was unsuccessful'});
+		}
+		
+		return res.status(200).send(update);
 	});
+
+	// .delete();
 
 export default libraryController;

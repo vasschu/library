@@ -1,4 +1,5 @@
 export default {
 	INVALID_LOGIN: 1,
 	DUPLICATE_RECORD: 2,
+    NO_DATABASE_CHANGES: 3,
 };

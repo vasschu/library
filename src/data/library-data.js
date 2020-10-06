@@ -87,6 +87,34 @@ const createBook = async (title, author, description) => {
 	return await pool.query(sql, [title, author, description, 0]);
 };
 
+const getById = async (id) => {
+	// const sql = `SELECT id, title, author, description, image FROM books
+	// WHERE id = ?`;
+	console.log(id);
+	const sql = `SELECT * FROM books
+	WHERE id = ?`;
+
+	const book = await pool.query(sql, id);
+	return book[0];
+};
+
+const updateBook = async (id, body) => {
+	const book = await getById(id);
+	// console.log(book);
+	const title = body.title || book.title;
+	const author = body.author || book.author;
+	const description = body.description || book.description;
+	const image = body.image || book.image;
+
+	const sql = `UPDATE books
+    SET title = ?, author = ?, description = ?, image = ?
+	WHERE id = ?;`;
+	
+	const updated = pool.query(sql, [title, author, description, image, id]);
+
+	return updated;
+};
+
 export default {
 	getAll,
 	getBy,
@@ -94,4 +122,5 @@ export default {
 	returnBookById,
 	getBorrowedBookByUser,
 	createBook,
+	updateBook,
 };
