@@ -15,12 +15,12 @@ usersController
 
 		const { error, result } = CreatedUser;
 		if (error === serviceErrors.DUPLICATE_RECORD) {
-			res.status(200).send({
+			res.status(409).send({
 				message: 'This username is already taken. Please choose new username.',
 			});
 		} else {
 			res
-				.status(200)
+				.status(201)
 				.send({ message: 'User was created sucssesfully.', user: result });
 		}
 	});

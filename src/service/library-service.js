@@ -1,10 +1,20 @@
 import libraryData from '../data/library-data.js';
 import * as books from '../common/books-table-common.js';
 
+/**
+ * Get all books
+ * @return {object} holds 'error' if operation fails or 'result' containing the found books
+ */
 const getAllRecords = async () => {
 	const foundBooks = await libraryData.getAll();
 	return { error: null, result: foundBooks };
 };
+
+/**
+ * Search book by name
+ * @param {string} search the books tible by book name
+ * @return {object} holds 'error' if operation fails or 'result' containing the found books
+ */
 
 const filterBooksByName = async (searchTerm) => {
 	const foundBooks = await libraryData.getBy(books.title, searchTerm);
@@ -16,6 +26,11 @@ const filterBooksByName = async (searchTerm) => {
 	}
 };
 
+/**
+ * Search book by name
+ * @param {number} id to search the books table with
+ * @return {object} holds 'error' if operation fails or 'result' containing the found books
+ */
 const getBookById = async (id) => {
 	const book = await libraryData.getBy(books.id, id);
 
@@ -26,6 +41,12 @@ const getBookById = async (id) => {
 	}
 };
 
+/**
+ * borrow book by id
+ * @param {number} bookId to search the books table with
+ * @param {number} userId to search the users table with
+ * @return {object} holds 'error' if operation fails or 'result' if borrow is succesful
+ */
 const borrowBook = async (bookId, userId) => {
 	const bookToBorrow = await libraryData.getBy(books.id, bookId);
 
@@ -37,6 +58,12 @@ const borrowBook = async (bookId, userId) => {
 	}
 };
 
+/**
+ * Return book by id
+ * @param {number} bookId to search the books table with
+ * @param {number} userId to search the users table with
+ * @return {object} holds 'error' if operation fails or 'result' if return is succesful
+ */
 const returnBook = async (bookId, userId) => {
 	const isBookBorrowedByThisUser = await libraryData.getBorrowedBookByUser(
 		userId,

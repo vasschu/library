@@ -1,6 +1,7 @@
 import express from 'express';
 import libraryService from '../service/library-service.js';
-// import * as books from './../common/books-table-common.js';
+import { validateBody } from '../middleware/body-validator.js';
+import borrowBookShema from './../validators/borrow-book-shema.js';
 
 import { authMiddleware } from '../auth/auth-middleware.js';
 import { roleMiddleware } from '../auth/auth-middleware.js';
@@ -23,7 +24,7 @@ libraryController
 		if (!error) {
 			res.status(200).send(result);
 		} else {
-			res.status(200).send({ message: 'No books found.' });
+			res.status(404).send({ message: 'No books found.' });
 		}
 	})
 
@@ -36,12 +37,12 @@ libraryController
 		if (!error) {
 			res.status(200).send(result);
 		} else {
-			res.status(200).send({ message: 'No books found with this ID.' });
+			res.status(404).send({ message: 'No books found with this ID.' });
 		}
 	})
 
 	//borrow book by id
-	.post('/:id', async (req, res) => {
+	.post('/:id', validateBody(borrowBookShema), async (req, res) => {
 		const { id } = req.params;
 		const userId = req.body.users_id;
 
@@ -50,16 +51,16 @@ libraryController
 		const { error, result } = borrowedBook;
 
 		if (!error) {
-			res.status(200).send(result);
+			res.status(201).send(result);
 		} else {
-			res.status(200).send({
+			res.status(403).send({
 				message: 'This book is currently borrowed. Will be available later.',
 			});
 		}
 	})
 
 	//return book by id
-	.delete('/:id', async (req, res) => {
+	.delete('/:id', validateBody(borrowBookShema), async (req, res) => {
 		const { id } = req.params;
 		const userId = req.body.users_id;
 
@@ -68,9 +69,9 @@ libraryController
 		const { error, result } = bookToReturn;
 
 		if (!error) {
-			res.status(200).send(result);
+			res.status(201).send(result);
 		} else {
-			res.status(200).send({
+			res.status(403).send({
 				message: 'This book is not borrowed by this user.',
 			});
 		}
