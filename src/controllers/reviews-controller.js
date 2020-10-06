@@ -66,7 +66,9 @@ reviewsController
 				} else if (update === reviewsError.NOT_PERMITTED) {
 					return res
 						.status(403)
-						.send({ мessage: "You can not edit other people's reviews" });
+						.send({
+							мessage: 'You can not edit other reviews by other people',
+						});
 				} else if (update === reviewsError.NO_DATABASE_CHANGES) {
 					return res
 						.status(400)

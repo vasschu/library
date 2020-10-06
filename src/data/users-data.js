@@ -47,8 +47,27 @@ const getWithRole = async (username) => {
 	return result[0];
 };
 
+const deleteUser = async (id) => {
+	const sql = `update users
+	set is_deleted = 1
+	where id = ?;`;
+
+	const result = await pool.query(sql, [id]);
+	return result;
+};
+
+const banUser = async (id, reason) => {
+	const sql = `insert into banned_users (users_id, reason)
+	VALUES (?,?)`;
+
+	const result = await pool.query(sql, [id, reason]);
+	return result;
+};
+
 export default {
 	create,
 	getUserBy,
 	getWithRole,
+	deleteUser,
+	banUser,
 };

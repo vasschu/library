@@ -4,6 +4,9 @@ import { logInBody } from './../validators/login-body.js';
 import { validateBody } from './../middleware/body-validator.js';
 import serviceErrors from '../common/error-messages/service-errors.js';
 
+import { authMiddleware } from '../auth/auth-middleware.js';
+import { roleMiddleware } from '../auth/auth-middleware.js';
+
 const usersController = express.Router();
 
 usersController
@@ -22,6 +25,38 @@ usersController
 			res
 				.status(201)
 				.send({ message: 'User was created sucssesfully.', user: result });
+		}
+	})
+	.delete('/', authMiddleware, roleMiddleware('admin'), async (req, res) => {
+		const userToDelete = req.body.user_id;
+		const role = req.user.role;
+
+		const deletedUser = await usersService.deleteUser(userToDelete, role);
+
+		const { error, result } = deletedUser;
+		if (error === serviceErrors.NO_DATABASE_CHANGES) {
+			res.status(404).send({
+				message: 'This user was not deleted.',
+			});
+		} else {
+			res.status(202).send({ message: 'User was deleted.', user: result });
+		}
+	})
+	.put('/', authMiddleware, roleMiddleware('admin'), async (req, res) => {
+		const { user_id, reason } = req.body;
+		const role = req.user.role;
+
+		const bannedUser = await usersService.banUser(user_id, reason, role);
+		console.log(bannedUser);
+		const { error, result } = bannedUser;
+		if (error === serviceErrors.NO_DATABASE_CHANGES) {
+			res.status(404).send({
+				message: 'This user was not banned.',
+			});
+		} else {
+			res
+				.status(202)
+				.send(`User ${result.username}, with id ${result.id} is banned.`);
 		}
 	});
 

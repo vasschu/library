@@ -37,10 +37,6 @@ const logIn = async (userDetails) => {
 	const { username, password } = userDetails;
 
 	const user = await usersData.getWithRole(username);
-	console.log(user);
-	console.log(password);
-	console.log(user.password);
-	console.log(await bcrypt.compare(password, user.password));
 
 	if (!user || !(await bcrypt.compare(password, user.password))) {
 		return { message: serviceErrors.INVALID_LOGIN };
@@ -49,7 +45,40 @@ const logIn = async (userDetails) => {
 	return user;
 };
 
+const deleteUser = async (id, role) => {
+	if (role === 'admin') {
+		const removedUser = await usersData.deleteUser(id);
+		if (removedUser.affectedRows === 0) {
+			return { error: serviceErrors.NO_DATABASE_CHANGES, result: null };
+		}
+
+		return { error: null, result: { id } };
+	}
+};
+
+const banUser = async (id, reason, role) => {
+	if (role === 'admin') {
+		const bannedUser = await usersData.banUser(id, reason);
+		const bannedUserInfo = await usersData.getUserBy('id', id);
+
+		console.log(bannedUserInfo);
+
+		if (bannedUser.affectedRows === 0) {
+			return { error: serviceErrors.NO_DATABASE_CHANGES, result: null };
+		}
+		return {
+			error: null,
+			result: {
+				id: bannedUserInfo[0].id,
+				username: bannedUserInfo[0].username,
+			},
+		};
+	}
+};
+
 export default {
 	createUser,
 	logIn,
+	deleteUser,
+	banUser,
 };
