@@ -1,13 +1,16 @@
 import reviewsData from '../data/reviews-data.js';
-import reviewsError from '../common/error-messages/review-errors.js';
+import serviceErrors from '../common/error-messages/service-errors.js';
+
 
 const getAllBookReviews = async (bookId) => {
 	const reviews = await reviewsData.getBookReviews(bookId);
 
 	if (!reviews[0]) {
-		return reviewsError.NOT_FOUND;
+		return { error: serviceErrors.NO_DATABASE_CHANGES,
+			result: null };
 	}
-	return reviews;
+	return { error: null,
+		result: reviews };
 };
 
 const postReview = async (body) => {
@@ -30,7 +33,8 @@ const updateReviewById = async (reviewid, body, role) => {
 	const review = await getReviewById(reviewid);
 
 	if (!review[0]) {
-		return reviewsError.NOT_FOUND;
+		return { error: serviceErrors.NOT_FOUND,
+			result: null };
 	}
 
 	const [{ id, user_id }] = review;
@@ -39,12 +43,15 @@ const updateReviewById = async (reviewid, body, role) => {
 		const update = await reviewsData.updateReview(id, title, content);
 
 		if (!update.affectedRows) {
-			return reviewsError.NO_DATABASE_CHANGES;
+			return { error: serviceErrors.NO_DATABASE_CHANGES,
+				result: null };
 		}
-		return update;
+		return { error: null,
+			result: update };
 	}
 
-	return reviewsError.NOT_PERMITTED;
+	return { error: serviceErrors.NOT_PERMITTED,
+		result: null };
 };
 
 const getBookById = async (id) => {
@@ -63,13 +70,15 @@ const deleteReviewById = async (reviewid, body, bookId, role) => {
 	const book = await getBookById(bookId);
 
 	if (!book[0]) {
-		return reviewsError.NOT_FOUND;
+		return { error: serviceErrors.NOT_FOUND,
+			result: null };
 	}
 
 	const review = book.find((obj) => +obj.review_id === +reviewid);
 
 	if (!review) {
-		return reviewsError.NOT_FOUND;
+		return { error: serviceErrors.NOT_FOUND,
+			result: null };
 	}
 	const { review_id, user_id } = review;
 
@@ -77,12 +86,16 @@ const deleteReviewById = async (reviewid, body, bookId, role) => {
 		const update = await reviewsData.deleteReview(review_id);
 
 		if (!update.affectedRows) {
-			return reviewsError.NO_DATABASE_CHANGES;
+			return { error: serviceErrors.NO_DATABASE_CHANGES,
+				result: null };
 		}
 
-		return update;
+		return { error: null,
+			result: update };
+
 	} else if (+user_id !== +users_id) {
-		return reviewsError.NOT_PERMITTED;
+		return { error: serviceErrors.NOT_PERMITTED,
+			result: null };
 	}
 };
 
@@ -94,7 +107,7 @@ const rateReviewById = async (review_id, user_id, rating) => {
 
 	if (hasThisUserRatedThis[0] && hasThisUserRatedThis[0].rating === +rating) {
 		console.log('duplicate entry');
-		return { error: reviewsError.DUPLICATE_RECORD, result: null };
+		return { error: serviceErrors.DUPLICATE_RECORD, result: null };
 	} else if (
 		hasThisUserRatedThis[0] &&
 		hasThisUserRatedThis[0].rating !== +rating

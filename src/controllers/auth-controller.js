@@ -16,19 +16,19 @@ authController
 
 		const user = await usersService.logIn(body);
 
-		if (user.message === serviceErrors.INVALID_LOGIN) {
+		if (user.error === serviceErrors.INVALID_LOGIN) {
 			return res.status(400).send({ message: 'Invalid username/password' });
 		}
-
+		console.log(user);
 		const payload = {
-			sub: user.id,
-			username: user.username,
-			role: user.level,
+			sub: user.result.id,
+			username: user.result.username,
+			role: user.result.level,
 		};
 
 		const token = createToken(payload);
 
-		res.status(200).send(token);
+		res.status(200).send({ token: token });
 	})
 	.delete('/session', authMiddleware, async (req, res) => {
 		const name = req.user.username;

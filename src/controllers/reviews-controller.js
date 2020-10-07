@@ -1,6 +1,6 @@
 import express from 'express';
 import reviewsService from '../service/reviews-service.js';
-import reviewsError from '../common/error-messages/review-errors.js';
+import serviceErrors from '../common/error-messages/service-errors.js';
 
 import { validateBody } from '../middleware/body-validator.js';
 import { reviewShema } from '../middleware/validators/create-review.js';
@@ -22,13 +22,13 @@ reviewsController
 
 			const reviews = await reviewsService.getAllBookReviews(id);
 
-			if (reviews === reviewsError.NOT_FOUND) {
+			if (reviews.error === serviceErrors.NOT_FOUND) {
 				return res
 					.status(404)
 					.send({ message: 'No reviews found for this book' });
 			}
 
-			res.status(200).send(reviews);
+			res.status(200).send(reviews.result);
 		} catch (err) {
 			throw new Error(err);
 		}
@@ -61,19 +61,19 @@ reviewsController
 					role,
 				);
 
-				if (update === reviewsError.NOT_FOUND) {
+				if (update.error === serviceErrors.NOT_FOUND) {
 					return res.status(404).send({ мessage: 'No review found' });
-				} else if (update === reviewsError.NOT_PERMITTED) {
+				} else if (update.error === serviceErrors.NOT_PERMITTED) {
 					return res.status(403).send({
 						мessage: 'You can not edit other reviews by other people',
 					});
-				} else if (update === reviewsError.NO_DATABASE_CHANGES) {
+				} else if (update.error === serviceErrors.NO_DATABASE_CHANGES) {
 					return res
 						.status(400)
 						.send({ message: 'Changes were not made on the review' });
 				}
 
-				res.status(200).send(update);
+				res.status(200).send(update.result);
 			} catch (err) {
 				throw new Error(err);
 			}
@@ -96,13 +96,13 @@ reviewsController
 					role,
 				);
 
-				if (update === reviewsError.NOT_FOUND) {
+				if (update.error === serviceErrors.NOT_FOUND) {
 					return res.status(404).send({ мessage: 'No such resourse found' });
-				} else if (update === reviewsError.NOT_PERMITTED) {
+				} else if (update.error === serviceErrors.NOT_PERMITTED) {
 					return res
 						.status(403)
 						.send({ мessage: 'You can not delete reviews by other users' });
-				} else if (update === reviewsError.NO_DATABASE_CHANGES) {
+				} else if (update.error === serviceErrors.NO_DATABASE_CHANGES) {
 					return res.status(400).send({ message: 'Review was not deleted' });
 				}
 

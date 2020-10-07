@@ -83,7 +83,8 @@ const returnBook = async (bookId, userId) => {
 const createBook = async (body) => {
 	const { title, author, description } = body;
 
-	return await libraryData.createBook(title, author, description); 
+	const response = await libraryData.createBook(title, author, description); 
+	return { error: null, result: response };
 }; 
 
 const updateBook = async (id, body) => {
@@ -97,10 +98,12 @@ const updateBook = async (id, body) => {
 	const updated = await libraryData.updateBook(id, title, author, description, image);
 
 	if (!updated.affectedRows) {
-		return serviceErrors.NO_DATABASE_CHANGES;
+		return { error: serviceErrors.NO_DATABASE_CHANGES,
+				result: null };
 	}
 
-	return updated;
+	return { error: null,
+			result: updated };
 
 	
 };
@@ -109,10 +112,12 @@ const deleteBook = async (id) => {
 	const deleted = await libraryData.deleteBook(id);
 
 	if (!deleted.affectedRows) {
-		return serviceErrors.NO_DATABASE_CHANGES;
+		return { error: serviceErrors.NO_DATABASE_CHANGES,
+				result: null };
 	}
 
-	return deleted;
+	return { error: null,
+		result: deleted };
 };
 
 export default {

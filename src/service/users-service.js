@@ -39,10 +39,10 @@ const logIn = async (userDetails) => {
 	const user = await usersData.getWithRole(username);
 
 	if (!user || !(await bcrypt.compare(password, user.password))) {
-		return { message: serviceErrors.INVALID_LOGIN };
+		return { error: serviceErrors.INVALID_LOGIN, result: null };
 	}
 
-	return user;
+	return { error: null, result: user};
 };
 
 const deleteUser = async (id, role) => {

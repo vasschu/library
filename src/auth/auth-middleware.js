@@ -7,6 +7,7 @@ export const authMiddleware = passport.authenticate('jwt', { session: false });
 
 export const roleMiddleware = (...permittedRoles) => {
 	return (req, res, next) => {
+		console.log(req.user.role);
 		if (req.user && permittedRoles.includes(req.user.role)) {
 			next();
 		} else {

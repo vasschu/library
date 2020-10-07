@@ -87,7 +87,11 @@ libraryController
 		async (req, res) => {
 			const createBook = await libraryService.createBook(req.body);
 
-			return res.status(201).send(createBook);
+			if (createBook.error === serviceErrors.NO_DATABASE_CHANGES) {
+				res.status(400).send({ message: 'Couldn\'t create book'});
+			}
+
+			return res.status(201).send(createBook.result);
 		},
 	)
 
@@ -101,11 +105,11 @@ libraryController
 
 			const update = await libraryService.updateBook(id, body);
 
-			if (update === serviceErrors.NO_DATABASE_CHANGES) {
+			if (update.error === serviceErrors.NO_DATABASE_CHANGES) {
 				return res.status(400).send({ messages: 'Update was unsuccessful' });
 			}
 
-			return res.status(200).send(update);
+			return res.status(200).send(update.result);
 		},
 	)
 
@@ -114,7 +118,7 @@ libraryController
 
 		const del = await libraryService.deleteBook(id);
 
-		if (del === serviceErrors.NO_DATABASE_CHANGES) {
+		if (del.error === serviceErrors.NO_DATABASE_CHANGES) {
 			return res.status(400).send({ messages: 'Delete was unsuccessful' });
 		}
 
