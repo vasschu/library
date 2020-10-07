@@ -86,10 +86,38 @@ const deleteReviewById = async (reviewid, body, bookId, role) => {
 	}
 };
 
+const rateReviewById = async (review_id, user_id, rating) => {
+	const hasThisUserRatedThis = await reviewsData.getReviewLikes(
+		review_id,
+		user_id,
+	);
+
+	if (hasThisUserRatedThis[0] && hasThisUserRatedThis[0].rating === +rating) {
+		console.log('duplicate entry');
+		return { error: reviewsError.DUPLICATE_RECORD, result: null };
+	} else if (
+		hasThisUserRatedThis[0] &&
+		hasThisUserRatedThis[0].rating !== +rating
+	) {
+		await reviewsData.updateReviewScore(hasThisUserRatedThis[0].id, rating);
+		return {
+			error: null,
+			result: { message: 'You updated your review score' },
+		};
+	} else {
+		await reviewsData.rateReview(review_id, user_id, rating);
+		return {
+			error: null,
+			result: { message: `You ${+rating ? 'liked' : 'disliked'} this review` },
+		};
+	}
+};
+
 export default {
 	getAllBookReviews,
 	postReview,
 	getReviewById,
 	updateReviewById,
 	deleteReviewById,
+	rateReviewById,
 };
