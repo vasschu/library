@@ -1,6 +1,6 @@
 import express from 'express';
 import usersService from './../service/users-service.js';
-import { logInBody } from './../validators/login-body.js';
+import { logInBody } from '../middleware/validators/login-body.js';
 import { validateBody } from './../middleware/body-validator.js';
 import serviceErrors from '../common/error-messages/service-errors.js';
 

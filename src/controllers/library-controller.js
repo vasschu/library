@@ -1,9 +1,9 @@
 import express from 'express';
 import libraryService from '../service/library-service.js';
 import { validateBody } from '../middleware/body-validator.js';
-import borrowBookShema from './../validators/borrow-book-shema.js';
-import { createBook } from './../validators/create-book.js';
-import { updateBook } from './../validators/update-book.js';
+import borrowBookShema from '../middleware/validators/borrow-book-shema.js';
+import { createBook } from '../middleware/validators/create-book.js';
+import { updateBook } from '../middleware/validators/update-book.js';
 import { authMiddleware } from '../auth/auth-middleware.js';
 import { roleMiddleware } from '../auth/auth-middleware.js';
 import serviceErrors from '../common/error-messages/service-errors.js';
