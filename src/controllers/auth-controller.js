@@ -3,7 +3,7 @@ import serviceErrors from '../common/error-messages/service-errors.js';
 import usersService from '../service/users-service.js';
 import { createToken } from '../auth/create-token.js';
 import { authMiddleware } from './../auth/auth-middleware.js';
-import { logInBody } from '../validators/login-body.js';
+import { logInBody } from '../middleware/validators/login-body.js.js';
 import { validateBody } from '../middleware/body-validator.js';
 import { client } from './../auth/redis.js';
 import redis from 'redis';
@@ -11,7 +11,7 @@ import redis from 'redis';
 const authController = express.Router();
 
 authController
-	.post('/login', validateBody(logInBody), async (req, res) => {
+	.post('/sessiom', validateBody(logInBody), async (req, res) => {
 		const body = req.body;
 
 		const user = await usersService.logIn(body);

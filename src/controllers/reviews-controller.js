@@ -3,9 +3,9 @@ import reviewsService from '../service/reviews-service.js';
 import reviewsError from '../common/error-messages/review-errors.js';
 
 import { validateBody } from '../middleware/body-validator.js';
-import { reviewShema } from '../validators/create-review.js';
-import { updateReviewShema } from '../validators/update-review.js';
-import { deleteReviewShema } from '../validators/delete-review.js';
+import { reviewShema } from '../middleware/validators/create-review.js.js';
+import { updateReviewShema } from '../middleware/validators/update-review.js';
+import { deleteReviewShema } from '../middleware/validators/delete-review.js.js';
 
 import { authMiddleware } from '../auth/auth-middleware.js';
 import { roleMiddleware } from '../auth/auth-middleware.js';
