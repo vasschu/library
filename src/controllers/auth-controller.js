@@ -5,8 +5,7 @@ import { createToken } from '../auth/create-token.js';
 import { authMiddleware } from './../auth/auth-middleware.js';
 import { logInBody } from '../validators/login-body.js';
 import { validateBody } from '../middleware/body-validator.js';
-import { client } from './../auth/redis.js';
-import redis from 'redis';
+// import redis from 'redis';
 
 const authController = express.Router();
 
@@ -32,9 +31,9 @@ authController
 	})
 	.delete('/session', authMiddleware, async (req, res) => {
 		const name = req.user.username;
-		const token = req.headers.authorization.split(' ');
-		const tokenToBlacklist = token[1];
-		client.set(tokenToBlacklist, 'blacklist', redis.print);
+		// const token = req.headers.authorization.split(' ');
+		// const tokenToBlacklist = token[1];
+		// client.set(tokenToBlacklist, 'blacklist', redis.print);
 
 		res.status(204).send(
 			// eslint-disable-next-line no-irregular-whitespace

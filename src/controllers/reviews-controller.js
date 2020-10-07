@@ -64,11 +64,9 @@ reviewsController
 				if (update === reviewsError.NOT_FOUND) {
 					return res.status(404).send({ мessage: 'No review found' });
 				} else if (update === reviewsError.NOT_PERMITTED) {
-					return res
-						.status(403)
-						.send({
-							мessage: 'You can not edit other reviews by other people',
-						});
+					return res.status(403).send({
+						мessage: 'You can not edit other reviews by other people',
+					});
 				} else if (update === reviewsError.NO_DATABASE_CHANGES) {
 					return res
 						.status(400)
@@ -115,6 +113,23 @@ reviewsController
 				throw new Error(err);
 			}
 		},
-	);
+	)
+	//like dislike review.
+	.post('/:id/reviews/:reviewid', async (req, res) => {
+		const { rating, user_id } = req.body;
+		const { reviewid } = req.params;
+		const reviewRating = await reviewsService.rateReviewById(
+			reviewid,
+			user_id,
+			rating,
+		);
+
+		const { error, result } = reviewRating;
+		if (!error) {
+			res.status(200).send(result);
+		} else {
+			res.status(404).send({ message: 'This is duplicate review.' });
+		}
+	});
 
 export default reviewsController;
