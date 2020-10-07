@@ -98,14 +98,7 @@ const getById = async (id) => {
 	return book[0];
 };
 
-const updateBook = async (id, body) => {
-	const book = await getById(id);
-	// console.log(book);
-	const title = body.title || book.title;
-	const author = body.author || book.author;
-	const description = body.description || book.description;
-	const image = body.image || book.image;
-
+const updateBook = async (id, title, author, description, image) => {
 	const sql = `UPDATE books
     SET title = ?, author = ?, description = ?, image = ?
 	WHERE id = ?;`;
@@ -130,6 +123,7 @@ export default {
 	returnBookById,
 	getBorrowedBookByUser,
 	createBook,
+	getById,
 	updateBook,
 	deleteBook,
 };
