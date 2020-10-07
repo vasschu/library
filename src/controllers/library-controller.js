@@ -4,12 +4,9 @@ import { validateBody } from '../middleware/body-validator.js';
 import borrowBookShema from './../validators/borrow-book-shema.js';
 import { createBook } from './../validators/create-book.js';
 import { updateBook } from './../validators/update-book.js';
-
 import { authMiddleware } from '../auth/auth-middleware.js';
 import { roleMiddleware } from '../auth/auth-middleware.js';
-
 import serviceErrors from '../common/error-messages/service-errors.js';
-
 
 const libraryController = express.Router();
 libraryController.use(authMiddleware);
@@ -19,6 +16,7 @@ libraryController
 	// get all books
 	.get('/', async (req, res) => {
 		const { search } = req.query;
+
 		let booksToShow = '';
 		if (search) {
 			booksToShow = await libraryService.filterBooksByName(search);
@@ -82,36 +80,45 @@ libraryController
 		}
 	})
 
-	.post('/', roleMiddleware('admin'), validateBody(createBook), async (req, res) => {
+	.post(
+		'/',
+		roleMiddleware('admin'),
+		validateBody(createBook),
+		async (req, res) => {
+			const createBook = await libraryService.createBook(req.body);
 
-		const createBook = await libraryService.createBook(req.body);
+			return res.status(201).send(createBook);
+		},
+	)
 
-		return res.status(201).send(createBook);
-	})
+	.put(
+		'/:id',
+		roleMiddleware('admin'),
+		validateBody(updateBook),
+		async (req, res) => {
+			const { id } = req.params;
+			const body = req.body;
 
-	.put('/:id', roleMiddleware('admin'), validateBody(updateBook), async (req, res) => {
-		const { id } = req.params;
-		const body = req.body;
+			const update = await libraryService.updateBook(id, body);
 
-		const update = await libraryService.updateBook(id, body);
+			if (update === serviceErrors.NO_DATABASE_CHANGES) {
+				return res.status(400).send({ messages: 'Update was unsuccessful' });
+			}
 
-		if (update === serviceErrors.NO_DATABASE_CHANGES){
-			return res.status(400).send({messages: 'Update was unsuccessful'});
-		}
-
-		return res.status(200).send(update);
-	})
+			return res.status(200).send(update);
+		},
+	)
 
 	.delete('/:id/temp', roleMiddleware('admin'), async (req, res) => {
 		const { id } = req.params;
 
 		const del = await libraryService.deleteBook(id);
 
-		if (del === serviceErrors.NO_DATABASE_CHANGES){
-			return res.status(400).send({messages: 'Delete was unsuccessful'});
+		if (del === serviceErrors.NO_DATABASE_CHANGES) {
+			return res.status(400).send({ messages: 'Delete was unsuccessful' });
 		}
 
-		return res.status(200).send({ message: 'Deleted successfully'});
+		return res.status(200).send({ message: 'Deleted successfully' });
 	});
 
 export default libraryController;

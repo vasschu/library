@@ -5,6 +5,8 @@ import { createToken } from '../auth/create-token.js';
 import { authMiddleware } from './../auth/auth-middleware.js';
 import { logInBody } from '../validators/login-body.js';
 import { validateBody } from '../middleware/body-validator.js';
+import { client } from './../auth/redis.js';
+import redis from 'redis';
 
 const authController = express.Router();
 
@@ -30,13 +32,14 @@ authController
 	})
 	.delete('/session', authMiddleware, async (req, res) => {
 		const name = req.user.username;
+		const token = req.headers.authorization.split(' ');
+		const tokenToBlacklist = token[1];
+		client.set(tokenToBlacklist, 'blacklist', redis.print);
 
-		res
-			.status(204)
-			.send(
-				// eslint-disable-next-line no-irregular-whitespace
-				`{message: User '${name}' has been fake logged out. See you soon in the blacklist. (▀̿ ̿̃ ͜ʖ▀̿ ̿ ̃)}`,
-			);
+		res.status(204).send(
+			// eslint-disable-next-line no-irregular-whitespace
+			`{message: User '${name}' has been fake logged out. See you soon in the blacklist. (▀̿ ̿̃ ͜ʖ▀̿ ̿ ̃)}`,
+		);
 	});
 
 export default authController;
