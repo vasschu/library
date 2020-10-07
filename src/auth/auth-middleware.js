@@ -1,9 +1,9 @@
 import passport from 'passport';
-import redis from 'redis';
+// import redis from 'redis';
 
 export const authMiddleware = passport.authenticate('jwt', { session: false });
 
-export const client = redis.createClient();
+// export const client = redis.createClient();
 
 export const roleMiddleware = (...permittedRoles) => {
 	return (req, res, next) => {

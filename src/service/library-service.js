@@ -87,7 +87,14 @@ const createBook = async (body) => {
 }; 
 
 const updateBook = async (id, body) => {
-	const updated = await libraryData.updateBook(id, body);
+	const book = await libraryData.getById(id);
+
+	const title = body.title || book.title;
+	const author = body.author || book.author;
+	const description = body.description || book.description;
+	const image = body.image || book.image;
+
+	const updated = await libraryData.updateBook(id, title, author, description, image);
 
 	if (!updated.affectedRows) {
 		return serviceErrors.NO_DATABASE_CHANGES;
