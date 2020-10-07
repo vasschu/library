@@ -3,9 +3,9 @@ import serviceErrors from '../common/error-messages/service-errors.js';
 import usersService from '../service/users-service.js';
 import { createToken } from '../auth/create-token.js';
 import { authMiddleware } from './../auth/auth-middleware.js';
-import { logInBody } from '../middleware/validators/login-body.js.js';
+import { logInBody } from '../middleware/validators/login-body.js';
 import { validateBody } from '../middleware/body-validator.js';
-import { client } from './../auth/redis.js';
+import { client } from './../auth/auth-middleware.js';
 import redis from 'redis';
 
 const authController = express.Router();
