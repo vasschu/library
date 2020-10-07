@@ -2,7 +2,12 @@ import express from 'express';
 import serviceErrors from '../common/error-messages/service-errors.js';
 import usersService from '../service/users-service.js';
 import { createToken } from '../auth/create-token.js';
-import { authMiddleware } from './../auth/auth-middleware.js';
+import {
+	authMiddleware,
+	tokenExtract,
+	addTokenToBlacklist,
+	tokenIsBlacklisted,
+} from './../auth/auth-middleware.js';
 import { logInBody } from '../middleware/validators/login-body.js';
 import { validateBody } from '../middleware/body-validator.js';
 // import { client } from './../auth/auth-middleware.js';
@@ -30,16 +35,19 @@ authController
 
 		res.status(200).send({ token: token });
 	})
-	.delete('/session', authMiddleware, async (req, res) => {
-		const name = req.user.username;
-		// const token = req.headers.authorization.split(' ');
-		// const tokenToBlacklist = token[1];
-		// client.set(tokenToBlacklist, 'blacklist', redis.print);
-
-		res.status(204).send(
+	.delete(
+		'/session',
+		tokenExtract(),
+		tokenIsBlacklisted(),
+		authMiddleware,
+		async (req, res) => {
+			const name = req.user.username;
+			addTokenToBlacklist(req.token);
 			// eslint-disable-next-line no-irregular-whitespace
-			`{message: User '${name}' has been fake logged out. See you soon in the blacklist. (▀̿ ̿̃ ͜ʖ▀̿ ̿ ̃)}`,
-		);
-	});
+			const msg = `{message: User '${name}' has been fake logged out. See you soon in the blacklist. (▀̿ ̿̃ ͜ʖ▀̿ ̿ ̃)}`;
+
+			res.status(204).send(msg);
+		},
+	);
 
 export default authController;
