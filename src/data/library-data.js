@@ -116,6 +116,41 @@ const deleteBook = async (id) => {
 	return await pool.query(sql, [id]);
 };
 
+const getBorowed = async (bookId, userId) => {
+	const sql = `SELECT * FROM library.borrowed_books
+	WHERE return_date IS NOT NULL 
+	AND books_id = ?
+	AND users_id = ?`;
+
+	const borrowed = await pool.query(sql, [bookId, userId]);
+	return borrowed[0];
+};
+
+const getBookRating = async (bookId, userId) => {
+	const sql = `SELECT * FROM library.book_ratings
+	WHERE users_id = ?
+	AND books_id = ?;`;
+
+	const rated = await pool.query(sql, [bookId, userId]);
+	return rated[0];
+};
+
+const createRate = async (bookId, userId, rating) => {
+	const sql = `INSERT INTO book_ratings (rating, users_id, books_id)
+	VALUES (?, ?, ?);`;
+
+	return await pool.query(sql, [+rating, +userId, +bookId]);
+};
+
+const updateRate = async (bookId, userId, rating) => {
+	const sql = `UPDATE book_ratings 
+	SET rating = ?
+	WHERE users_id = ?
+	AND books_id = ?`;
+
+	return await pool.query(sql, [+rating, +userId, +bookId]);
+};
+
 export default {
 	getAll,
 	getBy,
@@ -126,4 +161,8 @@ export default {
 	getById,
 	updateBook,
 	deleteBook,
+	getBorowed,
+	getBookRating,
+	createRate,
+	updateRate,
 };
