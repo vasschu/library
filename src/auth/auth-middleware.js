@@ -15,6 +15,27 @@ export const roleMiddleware = (...permittedRoles) => {
 	};
 };
 
-export const tokenValidator = (token) => {
-	client.get(token, redis.print);
+export const tokenIsBlacklisted = () => {
+	return (req, res, next) => {
+		if (!blackList.has(req.token)) {
+			next();
+		} else {
+			res.status(403).send({ message: 'You logged out. Please login again' });
+		}
+	};
+};
+
+export const tokenExtract = () => {
+	return (req, res, next) => {
+		const tokenHeader = req.headers.authorization.split(' ');
+		const token = tokenHeader[1];
+		req.token = token;
+		next();
+	};
+};
+
+const blackList = new Set();
+
+export const addTokenToBlacklist = (token) => {
+	blackList.add(token);
 };

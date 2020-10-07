@@ -4,13 +4,19 @@ import { validateBody } from '../middleware/body-validator.js';
 import borrowBookShema from '../middleware/validators/borrow-book-shema.js';
 import { createBook } from '../middleware/validators/create-book.js';
 import { updateBook } from '../middleware/validators/update-book.js';
-import { authMiddleware } from '../auth/auth-middleware.js';
-import { roleMiddleware } from '../auth/auth-middleware.js';
+import {
+	authMiddleware,
+	roleMiddleware,
+	tokenExtract,
+	tokenIsBlacklisted,
+} from '../auth/auth-middleware.js';
 import serviceErrors from '../common/error-messages/service-errors.js';
 
 const libraryController = express.Router();
 libraryController.use(authMiddleware);
 libraryController.use(roleMiddleware('regular', 'admin'));
+libraryController.use(tokenExtract());
+libraryController.use(tokenIsBlacklisted());
 
 libraryController
 	// get all books
