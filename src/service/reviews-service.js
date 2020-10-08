@@ -24,10 +24,20 @@ const getReviewById = async (id) => {
 	return review;
 };
 
-const postReview = async (body) => {
-	const res = await reviewsData.postBookReview(body);
-	const review = await getReviewById(res.insertId);
-	return review;
+const postReview = async (body, userId, bookId) => {
+
+	const isReviewed = await reviewsData.getReviewByUser(bookId, userId);
+
+	if (!isReviewed){
+		const res = await reviewsData.postBookReview(body, userId, bookId);
+		const review = await getReviewById(res.insertId);
+
+		return { error: null,
+				result: review };
+	} else {
+		return { error: serviceErrors.DUPLICATE_RECORD,
+				result: null };
+	}
 };
 
 const updateReviewById = async (reviewid, body, role, users_id) => {

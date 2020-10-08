@@ -10,14 +10,14 @@ const getBookReviews = async (bookId) => {
 	return await pool.query(sql, [bookId, 0]);
 };
 
-const postBookReview = async (body) => {
-	const { title, content, users_id, books_id } = body;
+const postBookReview = async (body, userId, bookId) => {
+	const { title, content} = body;
 
 	// console.log(body);
 	const sql = `INSERT INTO library.reviews (title, content, users_id, books_id)
     VALUES (?, ?, ?, ?);`;
 
-	return await pool.query(sql, [title, content, users_id, books_id]);
+	return await pool.query(sql, [title, content, userId, bookId]);
 };
 
 const getReview = async (id) => {
@@ -103,8 +103,9 @@ const getReviewByUser = async (bookId, userId) => {
 	const sql = `SELECT * FROM reviews
 	WHERE books_id = ?
 	AND users_id = ?`;
+	const reviews = await pool.query(sql, [bookId, userId]);
 
-	return await pool.query(sql, [bookId, userId]);
+	return reviews[0];
 };
 
 export default {
