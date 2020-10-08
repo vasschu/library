@@ -4,6 +4,7 @@ import { validateBody } from '../middleware/body-validator.js';
 import borrowBookShema from '../middleware/validators/borrow-book-shema.js';
 import { createBook } from '../middleware/validators/create-book.js';
 import { updateBook } from '../middleware/validators/update-book.js';
+import { rateBookSchema } from '../middleware/validators/rate-book-schema.js';
 import {
 	authMiddleware,
 	roleMiddleware,
@@ -129,6 +130,25 @@ libraryController
 		}
 
 		return res.status(200).send({ message: 'Deleted successfully' });
+	})
+	
+	.put('/:id/rate', validateBody(rateBookSchema), async (req, res) => {
+		const { id } = req.params;
+		const user = req.user;
+		const { rating } = req.body;
+
+		console.log(user);
+		const rate = await libraryService.rateBook(id, user, rating);
+
+		if (rate.error === serviceErrors.NOT_FOUND) {
+			res.status(404).send({ message: 'You need to borrow the book before you rate it' });
+		} else if (rate.error === serviceErrors.NOT_PERMITTED) {
+			res.status(400).send({ message: 'You need to review the book before you rate it'});
+		} else if (rate.error === serviceErrors.NO_DATABASE_CHANGES) {
+			res.status(400).send({ message: 'Rating was unsuccessfull'});
+		}
+
+		return res.status(200).send({ messages: 'Rated successfully'});
 	});
 
 export default libraryController;

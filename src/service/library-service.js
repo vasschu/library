@@ -1,6 +1,7 @@
 import libraryData from '../data/library-data.js';
 import * as books from '../common/books-table-common.js';
 import serviceErrors from '../common/error-messages/service-errors.js';
+import reviewsData from '../data/reviews-data.js';
 
 /**
  * Get all books
@@ -120,6 +121,42 @@ const deleteBook = async (id) => {
 		result: deleted };
 };
 
+const rateBook = async (bookId, user, rating) => {
+	const {id} = user;
+	const isBorrowed = await libraryData.getById(bookId, id);
+
+	if (!isBorrowed) {
+		return { error: serviceErrors.NOT_FOUND,
+				result: null};
+
+
+	}
+
+	const isReviewed = await reviewsData.getReviewByUser(bookId, id);
+
+	if (!isReviewed[0]) {
+		return { error: serviceErrors.NOT_PERMITTED,
+				result: null};
+	}
+
+	const ratedBook = await libraryData.getBookRating(bookId, id);
+
+	let rate;
+	if (!ratedBook){
+		rate = await libraryData.createRate(bookId, id, rating);
+	} else {
+		rate = await libraryData.updateRate(bookId, id, rating);
+	}
+
+	if (!rate.affectedRows) {
+		return { error: serviceErrors.NO_DATABASE_CHANGES,
+				result: null };
+	}
+
+	return {error: null,
+			result: rate};
+};
+
 export default {
 	getAllRecords,
 	filterBooksByName,
@@ -129,4 +166,5 @@ export default {
 	createBook,
 	updateBook,
 	deleteBook,
+	rateBook,
 };

@@ -91,6 +91,14 @@ const updateReviewScore = async (reviewScoreId, rating) => {
 	return await pool.query(sql, [rating, reviewScoreId]);
 };
 
+const getReviewByUser = async (bookId, userId) => {
+	const sql = `SELECT * FROM reviews
+	WHERE books_id = ?
+	AND users_id = ?`;
+
+	return await pool.query(sql, [bookId, userId]);
+};
+
 export default {
 	getBookReviews,
 	postBookReview,
@@ -101,4 +109,5 @@ export default {
 	rateReview,
 	getReviewLikes,
 	updateReviewScore,
+	getReviewByUser,
 };
