@@ -38,9 +38,14 @@ reviewsController
 	.post('/:id/reviews', validateBody(reviewShema), async (req, res) => {
 		try {
 			const body = req.body;
-			const reviews = await reviewsService.postReview(body);
+			const { id } = req.params;
+			const reviews = await reviewsService.postReview(body, req.user.id, id);
+			
+			if (reviews.error === serviceErrors.DUPLICATE_RECORD) {
+				return res.status(400).send({ message: 'You have already posted a review for this book' });
+			}
 
-			res.status(201).send(reviews);
+			res.status(201).send(reviews.result);
 		} catch (err) {
 			throw new Error(err);
 		}
@@ -116,6 +121,7 @@ reviewsController
 		},
 	)
 	//like dislike review.
+	//try patch
 	.post('/:id/reviews/:reviewid', async (req, res) => {
 		const { rating, user_id } = req.body;
 		const { reviewid } = req.params;
