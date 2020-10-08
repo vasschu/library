@@ -4,7 +4,6 @@ import serviceErrors from '../common/error-messages/service-errors.js';
 import { validateBody } from '../middleware/body-validator.js';
 import { reviewShema } from '../middleware/validators/create-review.js';
 import { updateReviewShema } from '../middleware/validators/update-review.js';
-import { deleteReviewShema } from '../middleware/validators/delete-review.js';
 import {
 	authMiddleware,
 	tokenExtract,
@@ -119,16 +118,14 @@ reviewsController
 	 */
 	.delete(
 		'/:id/reviews/:reviewid',
-		validateBody(deleteReviewShema),
 		async (req, res) => {
 			try {
 				const { id, reviewid } = req.params;
-				const body = req.body;
 				const { role } = req.user;
 
 				const update = await reviewsService.deleteReviewById(
 					reviewid,
-					body,
+					req.user.id,
 					id,
 					role,
 				);

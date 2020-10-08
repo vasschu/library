@@ -81,6 +81,11 @@ const returnBook = async (bookId, userId) => {
 	}
 };
 
+/**
+ * Create a book
+ * @param {object} body the book's details
+ * @return {object} holds 'error' if operation fails or 'result' if return is succesful
+ */
 const createBook = async (body) => {
 	const { title, author, description } = body;
 
@@ -88,6 +93,12 @@ const createBook = async (body) => {
 	return { error: null, result: response };
 }; 
 
+/**
+ * Update a book
+ * @param {number} id the book's id
+ * @param {object} body the book's details to update
+ * @return {object} holds 'error' if operation fails or 'result' if return is succesful
+ */
 const updateBook = async (id, body) => {
 	const book = await libraryData.getById(id);
 
@@ -109,6 +120,11 @@ const updateBook = async (id, body) => {
 	
 };
 
+/**
+ * Delete a book
+ * @param {number} id the book's id
+ * @return {object} holds 'error' if operation fails or 'result' if return is succesful
+ */
 const deleteBook = async (id) => {
 	const deleted = await libraryData.deleteBook(id);
 
@@ -121,6 +137,13 @@ const deleteBook = async (id) => {
 		result: deleted };
 };
 
+/**
+ * Rate a book
+ * @param {number} bookId the book's id
+ * @param {object} user the user trying to rate the book's deatils
+ * @param {number} rating the rating
+ * @return {object} holds 'error' if operation fails or 'result' if return is succesful
+ */
 const rateBook = async (bookId, user, rating) => {
 	const {id} = user;
 	const isBorrowed = await libraryData.getById(bookId, id);
