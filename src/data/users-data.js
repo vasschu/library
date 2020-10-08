@@ -39,7 +39,7 @@ const getUserBy = async (column, value) => {
  * @return {object} contians id, username, hash password and role
  */
 const getWithRole = async (username) => {
-	const sql = `select u.id, u.username, u.is_deleted, u.password, ul.level from users as u
+	const sql = `select u.id, u.username, u.is_deleted, u.is_banned, u.password, ul.level from users as u
 	JOIN user_levels as ul ON ul.id = u.user_level
 	WHERE u.username = ?;`;
 
@@ -64,10 +64,27 @@ const banUser = async (id, reason) => {
 	return result;
 };
 
+/**
+ * check if user is banned
+ * @param {number} userId
+ * @return {object} boolean - true if banned, false if active
+ */
+const isBanned = async (userId) => {
+	const sql = `select ban_expired from banned_users
+	WHERE users_id = ? and ban_expired = 0;`;
+
+	const result = await pool.query(sql, [userId]);
+	if (!result[0] || result.ban_expired === 0) {
+		return true;
+	}
+	return false;
+};
+
 export default {
 	create,
 	getUserBy,
 	getWithRole,
 	deleteUser,
 	banUser,
+	isBanned,
 };
