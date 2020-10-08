@@ -26,20 +26,20 @@ const getReviewById = async (id) => {
 
 const postReview = async (body) => {
 	const res = await reviewsData.postBookReview(body);
-	console.log(res.insertId);
 	const review = await getReviewById(res.insertId);
 	return review;
 };
 
-const updateReviewById = async (reviewid, body, role) => {
-	const { title, content, users_id } = body;
-
+const updateReviewById = async (reviewid, body, role, users_id) => {
 	const review = await getReviewById(reviewid);
 
 	if (!review) {
 		return { error: serviceErrors.NOT_FOUND,
 			result: null };
 	}
+
+	const title = body.title || review.title;
+	const content = body.content || review.content;
 
 	if (role === 'admin' || +review.user_id === +users_id) {
 		const update = await reviewsData.updateReview(review.id, title, content);
@@ -109,7 +109,7 @@ const rateReviewById = async (review_id, user_id, rating) => {
 	);
 
 	if (hasThisUserRatedThis[0] && hasThisUserRatedThis[0].rating === +rating) {
-		console.log('duplicate entry');
+		// console.log('duplicate entry');
 		return { error: serviceErrors.DUPLICATE_RECORD, result: null };
 	} else if (
 		hasThisUserRatedThis[0] &&

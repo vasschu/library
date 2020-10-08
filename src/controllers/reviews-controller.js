@@ -53,12 +53,13 @@ reviewsController
 			try {
 				const { reviewid } = req.params;
 				const body = req.body;
-				const { role } = req.user;
+				const { role, sub } = req.user;
 
 				const update = await reviewsService.updateReviewById(
 					reviewid,
 					body,
 					role,
+					sub,
 				);
 
 				if (update.error === serviceErrors.NOT_FOUND) {

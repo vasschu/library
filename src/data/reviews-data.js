@@ -28,7 +28,7 @@ const getReview = async (id) => {
     WHERE r.id = ? AND r.is_deleted = ?;`;
 
 	const review = await pool.query(sql, [id, 0]);
-	console.log(review[0]);
+	// console.log(review[0]);
 	return {
 		id: review[0].id,
 		title: review[0].title,
