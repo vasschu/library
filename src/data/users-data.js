@@ -49,7 +49,7 @@ const getWithRole = async (username) => {
 
 /**
  * Delete user
- * @param {number} id 
+ * @param {number} id
  * @returns {object} details about the deleted user
  */
 const deleteUser = async (id) => {
@@ -63,7 +63,7 @@ const deleteUser = async (id) => {
 
 /**
  * Ban user
- * @param {number} id 
+ * @param {number} id
  * @param {string} reason for banning
  * @returns {object} details about the banned user
  */
@@ -78,7 +78,7 @@ const banUser = async (id, reason) => {
 /**
  * check if user is banned
  * @param {number} userId
- * @return {object} boolean - true if banned, false if active
+ * @return {boolean} true if banned, false if active
  */
 const isBanned = async (userId) => {
 	const sql = `select ban_expired from banned_users

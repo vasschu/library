@@ -9,6 +9,7 @@ import {
 	tokenExtract,
 	tokenIsBlacklisted,
 	roleMiddleware,
+	isBannedMiddleware,
 } from '../auth/auth-middleware.js';
 
 const reviewsController = express.Router();
@@ -46,21 +47,28 @@ reviewsController
 	 * @param {number} books_id from req.body {books_id}
 	 * @return {object} return message with user details or error message
 	 */
-	.post('/:id/reviews', validateBody(reviewShema), async (req, res) => {
-		try {
-			const body = req.body;
-			const { id } = req.params;
-			const reviews = await reviewsService.postReview(body, req.user.id, id);
-			
-			if (reviews.error === serviceErrors.DUPLICATE_RECORD) {
-				return res.status(400).send({ message: 'You have already posted a review for this book' });
-			}
+	.post(
+		'/:id/reviews',
+		isBannedMiddleware(),
+		validateBody(reviewShema),
+		async (req, res) => {
+			try {
+				const body = req.body;
+				const { id } = req.params;
+				const reviews = await reviewsService.postReview(body, req.user.id, id);
 
-			res.status(201).send(reviews.result);
-		} catch (err) {
-			throw new Error(err);
-		}
-	})
+				if (reviews.error === serviceErrors.DUPLICATE_RECORD) {
+					return res.status(400).send({
+						message: 'You have already posted a review for this book',
+					});
+				}
+
+				res.status(201).send(reviews.result);
+			} catch (err) {
+				throw new Error(err);
+			}
+		},
+	)
 
 	/**
 	 * Update review to specific book
@@ -73,6 +81,7 @@ reviewsController
 	 */
 	.put(
 		'/:id/reviews/:reviewid',
+		isBannedMiddleware(),
 		validateBody(updateReviewShema),
 		async (req, res) => {
 			try {
@@ -116,36 +125,33 @@ reviewsController
 	 * @param {number} books_id from req.body {books_id}
 	 * @return {object} return message if the delete was done.
 	 */
-	.delete(
-		'/:id/reviews/:reviewid',
-		async (req, res) => {
-			try {
-				const { id, reviewid } = req.params;
-				const { role } = req.user;
+	.delete('/:id/reviews/:reviewid', async (req, res) => {
+		try {
+			const { id, reviewid } = req.params;
+			const { role } = req.user;
 
-				const update = await reviewsService.deleteReviewById(
-					reviewid,
-					req.user.id,
-					id,
-					role,
-				);
+			const update = await reviewsService.deleteReviewById(
+				reviewid,
+				req.user.id,
+				id,
+				role,
+			);
 
-				if (update.error === serviceErrors.NOT_FOUND) {
-					return res.status(404).send({ мessage: 'No such resourse found' });
-				} else if (update.error === serviceErrors.NOT_PERMITTED) {
-					return res
-						.status(403)
-						.send({ мessage: 'You can not delete reviews by other users' });
-				} else if (update.error === serviceErrors.NO_DATABASE_CHANGES) {
-					return res.status(400).send({ message: 'Review was not deleted' });
-				}
-
-				res.status(200).send(update.result);
-			} catch (err) {
-				throw new Error(err);
+			if (update.error === serviceErrors.NOT_FOUND) {
+				return res.status(404).send({ мessage: 'No such resourse found' });
+			} else if (update.error === serviceErrors.NOT_PERMITTED) {
+				return res
+					.status(403)
+					.send({ мessage: 'You can not delete reviews by other users' });
+			} else if (update.error === serviceErrors.NO_DATABASE_CHANGES) {
+				return res.status(400).send({ message: 'Review was not deleted' });
 			}
-		},
-	)
+
+			res.status(200).send(update.result);
+		} catch (err) {
+			throw new Error(err);
+		}
+	})
 	/**
 	 * like/dislike review for specific book
 	 * @param {number} review_id from req.params {:reviewid}
@@ -153,7 +159,7 @@ reviewsController
 	 * @param {number} user_id from req.body {user_id}
 	 * @return {object} return message if the delete was done.
 	 */
-	.post('/:id/reviews/:reviewid', async (req, res) => {
+	.post('/:id/reviews/:reviewid', isBannedMiddleware(), async (req, res) => {
 		const { rating, user_id } = req.body;
 		const { reviewid } = req.params;
 		const reviewRating = await reviewsService.rateReviewById(

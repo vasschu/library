@@ -183,27 +183,32 @@ libraryController
 	 * @param {number} rating from req.body {rating}
 	 * @return {object} return message with the outcome of the operation
 	 */
-	.put('/:id/rate', validateBody(rateBookSchema), async (req, res) => {
-		const { id } = req.params;
-		const user = req.user;
-		const { rating } = req.body;
+	.put(
+		'/:id/rate',
+		isBannedMiddleware(),
+		validateBody(rateBookSchema),
+		async (req, res) => {
+			const { id } = req.params;
+			const user = req.user;
+			const { rating } = req.body;
 
-		// console.log(user);
-		const rate = await libraryService.rateBook(id, user, rating);
+			// console.log(user);
+			const rate = await libraryService.rateBook(id, user, rating);
 
-		if (rate.error === serviceErrors.NOT_FOUND) {
-			res
-				.status(404)
-				.send({ message: 'You need to borrow the book before you rate it' });
-		} else if (rate.error === serviceErrors.NOT_PERMITTED) {
-			res
-				.status(400)
-				.send({ message: 'You need to review the book before you rate it' });
-		} else if (rate.error === serviceErrors.NO_DATABASE_CHANGES) {
-			res.status(400).send({ message: 'Rating was unsuccessfull' });
-		}
+			if (rate.error === serviceErrors.NOT_FOUND) {
+				res
+					.status(404)
+					.send({ message: 'You need to borrow the book before you rate it' });
+			} else if (rate.error === serviceErrors.NOT_PERMITTED) {
+				res
+					.status(400)
+					.send({ message: 'You need to review the book before you rate it' });
+			} else if (rate.error === serviceErrors.NO_DATABASE_CHANGES) {
+				res.status(400).send({ message: 'Rating was unsuccessfull' });
+			}
 
-		return res.status(200).send({ messages: 'Rated successfully' });
-	});
+			return res.status(200).send({ messages: 'Rated successfully' });
+		},
+	);
 
 export default libraryController;
