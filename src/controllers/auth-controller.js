@@ -16,6 +16,12 @@ import { validateBody } from '../middleware/body-validator.js';
 const authController = express.Router();
 
 authController
+	/**
+	 * Login
+	 * @param {string} username from req.body {username}
+	 * @param {string} password from req.body {password}
+	 * @return {object} return the new token or error message
+	 */
 	.post('/session', validateBody(logInBody), async (req, res) => {
 		const body = req.body;
 
@@ -35,6 +41,10 @@ authController
 
 		res.status(200).send({ token: token });
 	})
+	/**
+	 * Logout - blacklists the token of the user.
+	 * @return {object} return logout message
+	 */
 	.delete(
 		'/session',
 		tokenExtract(),

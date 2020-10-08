@@ -10,7 +10,12 @@ import { roleMiddleware } from '../auth/auth-middleware.js';
 const usersController = express.Router();
 
 usersController
-	// create user
+	/**
+	 * Register user
+	 * @param {string} username from req.body {username}
+	 * @param {string} password from req.body {password}
+	 * @return {object} return message with user details or error message
+	 */
 	.post('/', validateBody(logInBody), async (req, res) => {
 		const createData = req.body;
 
@@ -27,6 +32,11 @@ usersController
 				.send({ message: 'User was created sucssesfully.', user: result });
 		}
 	})
+	/**
+	 * Delete user
+	 * @param {number} usern_id from req.body {user_id}
+	 * @return {object} return message with deleted user details or error message
+	 */
 	.delete('/', authMiddleware, roleMiddleware('admin'), async (req, res) => {
 		const userToDelete = req.body.user_id;
 		const role = req.user.role;
@@ -42,6 +52,12 @@ usersController
 			res.status(202).send({ message: 'User was deleted.', user: result });
 		}
 	})
+	/**
+	 * Ban user
+	 * @param {number} usern_id from req.body {user_id}
+	 * @param {string} reason for ban from req.body {reason}
+	 * @return {object} return message with banned user details or error message
+	 */
 	.put('/', authMiddleware, roleMiddleware('admin'), async (req, res) => {
 		const { user_id, reason } = req.body;
 		const role = req.user.role;

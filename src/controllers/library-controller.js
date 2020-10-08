@@ -20,7 +20,11 @@ libraryController.use(tokenExtract());
 libraryController.use(tokenIsBlacklisted());
 
 libraryController
-	// get all books
+	/**
+	 * Get all books
+	 * @param {string} search(optional) from req.query finds books by book name
+	 * @return {object} return 'error' if no books found or array containing book objects {"id","title","author","borrowed","is_unlisted"}
+	 */
 	.get('/', async (req, res) => {
 		const { search } = req.query;
 
@@ -38,7 +42,11 @@ libraryController
 		}
 	})
 
-	// view details for individual book by ID
+	/**
+	 * View individual book by ID
+	 * @param {number} id from the http
+	 * @return {object} return 'error' if no books found or array containing book info {"id","title","author","borrowed","is_unlisted"}
+	 */
 	.get('/:id', async (req, res) => {
 		const { id } = req.params;
 		const booksToShow = await libraryService.getBookById(+id);
@@ -51,8 +59,12 @@ libraryController
 		}
 	})
 
-	//borrow book by id
-	// try patch
+	/**
+	 * Borrow book by ID
+	 * @param {number} book_id from the http
+	 * @param {number} user_id from the req.body in format  {"users_id":"id"}
+	 * @return {object} return message if book can't be borrowed or array containing the book info {"id","title","author","borrowed","is_unlisted"}
+	 */
 	.post('/:id', validateBody(borrowBookShema), async (req, res) => {
 		const { id } = req.params;
 		const userId = req.body.users_id;
@@ -70,8 +82,13 @@ libraryController
 		}
 	})
 
-	//return book by id
-	.delete('/:id', validateBody(borrowBookShema), async (req, res) => {
+	/**
+	 * Return book by ID
+	 * @param {number} book_id from the http
+	 * @param {number} user_id from the req.body in format  {"users_id":"id"}
+	 * @return {object} return message if book can't be returned or array containing the book info {"id","title","author","borrowed","is_unlisted"}
+	 */
+	.patch('/:id', validateBody(borrowBookShema), async (req, res) => {
 		const { id } = req.params;
 		const userId = req.body.users_id;
 
@@ -88,6 +105,14 @@ libraryController
 		}
 	})
 
+	/**
+	 * Add new book (admin only)
+	 * @param {string} title from req.body {title:}
+	 * @param {string} author from req.body {author:}
+	 * @param {string} image from req.body {image:}
+	 * @param {string} description from the req.body in format  {"description":"id"}
+	 * @return {object} return message if book can't be created or the new book {"id","title","author","borrowed","is_unlisted"}
+	 */
 	.post(
 		'/',
 		roleMiddleware('admin'),
@@ -96,13 +121,21 @@ libraryController
 			const createBook = await libraryService.createBook(req.body);
 
 			if (createBook.error === serviceErrors.NO_DATABASE_CHANGES) {
-				res.status(400).send({ message: 'Couldn\'t create book'});
+				res.status(400).send({ message: 'Could not create book' });
 			}
 
 			return res.status(201).send(createBook.result);
 		},
 	)
 
+	/**
+	 * Edit book (admin only)
+	 * @param {string} title from req.body {title:}
+	 * @param {string} author from req.body {author:}
+	 * @param {string} image from req.body {image:}
+	 * @param {string} description from the req.body in format  {"description":"id"}
+	 * @return {object} return message if book can't be created or the new book {"id","title","author","borrowed","is_unlisted"}
+	 */
 	.put(
 		'/:id',
 		roleMiddleware('admin'),
@@ -121,7 +154,11 @@ libraryController
 		},
 	)
 
-	.delete('/:id/temp', roleMiddleware('admin'), async (req, res) => {
+	/**
+	 * Delete book (admin only)
+	 * @param {number} id from http
+	 * @return {object} return message if book is deleted*/
+	.delete('/:id/', roleMiddleware('admin'), async (req, res) => {
 		const { id } = req.params;
 
 		const del = await libraryService.deleteBook(id);
@@ -132,24 +169,35 @@ libraryController
 
 		return res.status(200).send({ message: 'Deleted successfully' });
 	})
-	
+
+	/**
+	 * Rate book
+	 * @param {number} id from http
+	 * @param {number} user_id from req.user {user}
+	 * @param {number} rating from req.body {rating}
+	 * @return {object} return message with the outcome of the operation
+	 */
 	.put('/:id/rate', validateBody(rateBookSchema), async (req, res) => {
 		const { id } = req.params;
 		const user = req.user;
 		const { rating } = req.body;
 
-		console.log(user);
+		// console.log(user);
 		const rate = await libraryService.rateBook(id, user, rating);
 
 		if (rate.error === serviceErrors.NOT_FOUND) {
-			res.status(404).send({ message: 'You need to borrow the book before you rate it' });
+			res
+				.status(404)
+				.send({ message: 'You need to borrow the book before you rate it' });
 		} else if (rate.error === serviceErrors.NOT_PERMITTED) {
-			res.status(400).send({ message: 'You need to review the book before you rate it'});
+			res
+				.status(400)
+				.send({ message: 'You need to review the book before you rate it' });
 		} else if (rate.error === serviceErrors.NO_DATABASE_CHANGES) {
-			res.status(400).send({ message: 'Rating was unsuccessfull'});
+			res.status(400).send({ message: 'Rating was unsuccessfull' });
 		}
 
-		return res.status(200).send({ messages: 'Rated successfully'});
+		return res.status(200).send({ messages: 'Rated successfully' });
 	});
 
 export default libraryController;
