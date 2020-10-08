@@ -22,7 +22,7 @@ libraryController.use(tokenIsBlacklisted());
 libraryController
 	/**
 	 * Get all books
-	 * @param {query} search(optional) finds books by book name
+	 * @param {string} search(optional) from req.query finds books by book name
 	 * @return {object} return 'error' if no books found or array containing book objects {"id","title","author","borrowed","is_unlisted"}
 	 */
 	.get('/', async (req, res) => {
@@ -44,7 +44,7 @@ libraryController
 
 	/**
 	 * View individual book by ID
-	 * @param {parameter} id from the http
+	 * @param {number} id from the http
 	 * @return {object} return 'error' if no books found or array containing book info {"id","title","author","borrowed","is_unlisted"}
 	 */
 	.get('/:id', async (req, res) => {
@@ -61,8 +61,8 @@ libraryController
 
 	/**
 	 * Borrow book by ID
-	 * @param {parameter} book_id from the http
-	 * @param {parameter} user_id from the req.body in format  {"users_id":"id"}
+	 * @param {number} book_id from the http
+	 * @param {number} user_id from the req.body in format  {"users_id":"id"}
 	 * @return {object} return message if book can't be borrowed or array containing the book info {"id","title","author","borrowed","is_unlisted"}
 	 */
 	.post('/:id', validateBody(borrowBookShema), async (req, res) => {
@@ -84,8 +84,8 @@ libraryController
 
 	/**
 	 * Return book by ID
-	 * @param {parameter} book_id from the http
-	 * @param {parameter} user_id from the req.body in format  {"users_id":"id"}
+	 * @param {number} book_id from the http
+	 * @param {number} user_id from the req.body in format  {"users_id":"id"}
 	 * @return {object} return message if book can't be returned or array containing the book info {"id","title","author","borrowed","is_unlisted"}
 	 */
 	.patch('/:id', validateBody(borrowBookShema), async (req, res) => {
@@ -156,7 +156,7 @@ libraryController
 
 	/**
 	 * Delete book (admin only)
-	 * @param {parameter} id from http
+	 * @param {number} id from http
 	 * @return {object} return message if book is deleted*/
 	.delete('/:id/', roleMiddleware('admin'), async (req, res) => {
 		const { id } = req.params;
@@ -171,8 +171,8 @@ libraryController
 	})
 
 	/**
-	 * Рате book
-	 * @param {parameter} id from http
+	 * Rate book
+	 * @param {number} id from http
 	 * @param {number} user_id from req.user {user}
 	 * @param {number} rating from req.body {rating}
 	 * @return {object} return message with the outcome of the operation
