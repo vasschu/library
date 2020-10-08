@@ -13,34 +13,36 @@ const getAllBookReviews = async (bookId) => {
 		result: reviews };
 };
 
-const postReview = async (body) => {
-	return await reviewsData.postBookReview(body);
-};
 
 const getReviewById = async (id) => {
 	const review = await reviewsData.getReview(id);
-
+	
 	if (!review) {
 		return null;
 	}
-
+	
 	return review;
 };
 
-const updateReviewById = async (reviewid, body, role) => {
-	const { title, content, users_id } = body;
+const postReview = async (body) => {
+	const res = await reviewsData.postBookReview(body);
+	const review = await getReviewById(res.insertId);
+	return review;
+};
 
+const updateReviewById = async (reviewid, body, role, users_id) => {
 	const review = await getReviewById(reviewid);
 
-	if (!review[0]) {
+	if (!review) {
 		return { error: serviceErrors.NOT_FOUND,
 			result: null };
 	}
 
-	const [{ id, user_id }] = review;
+	const title = body.title || review.title;
+	const content = body.content || review.content;
 
-	if (role === 'admin' || +user_id === +users_id) {
-		const update = await reviewsData.updateReview(id, title, content);
+	if (role === 'admin' || +review.user_id === +users_id) {
+		const update = await reviewsData.updateReview(review.id, title, content);
 
 		if (!update.affectedRows) {
 			return { error: serviceErrors.NO_DATABASE_CHANGES,
@@ -68,6 +70,7 @@ const deleteReviewById = async (reviewid, body, bookId, role) => {
 	const { users_id } = body;
 
 	const book = await getBookById(bookId);
+	const reviewToDelete = await getReviewById(reviewid);
 
 	if (!book[0]) {
 		return { error: serviceErrors.NOT_FOUND,
@@ -91,7 +94,7 @@ const deleteReviewById = async (reviewid, body, bookId, role) => {
 		}
 
 		return { error: null,
-			result: update };
+			result: reviewToDelete };
 
 	} else if (+user_id !== +users_id) {
 		return { error: serviceErrors.NOT_PERMITTED,
@@ -106,7 +109,7 @@ const rateReviewById = async (review_id, user_id, rating) => {
 	);
 
 	if (hasThisUserRatedThis[0] && hasThisUserRatedThis[0].rating === +rating) {
-		console.log('duplicate entry');
+		// console.log('duplicate entry');
 		return { error: serviceErrors.DUPLICATE_RECORD, result: null };
 	} else if (
 		hasThisUserRatedThis[0] &&

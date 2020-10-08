@@ -27,7 +27,15 @@ const getReview = async (id) => {
     JOIN books AS b ON books_id = b.id
     WHERE r.id = ? AND r.is_deleted = ?;`;
 
-	return await pool.query(sql, [id, 0]);
+	const review = await pool.query(sql, [id, 0]);
+	// console.log(review[0]);
+	return {
+		id: review[0].id,
+		title: review[0].title,
+		content: review[0].content,
+		user_id: review[0].user_id,
+		username: review[0].username,
+	};
 };
 
 const updateReview = async (id, title, content) => {

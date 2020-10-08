@@ -57,12 +57,13 @@ reviewsController
 			try {
 				const { reviewid } = req.params;
 				const body = req.body;
-				const { role } = req.user;
+				const { role, sub } = req.user;
 
 				const update = await reviewsService.updateReviewById(
 					reviewid,
 					body,
 					role,
+					sub,
 				);
 
 				if (update.error === serviceErrors.NOT_FOUND) {
@@ -77,7 +78,7 @@ reviewsController
 						.send({ message: 'Changes were not made on the review' });
 				}
 
-				res.status(200).send(update.result);
+				res.status(200).send({message: 'The review was updated successfully'});
 			} catch (err) {
 				throw new Error(err);
 			}
@@ -112,7 +113,7 @@ reviewsController
 
 				res
 					.status(200)
-					.send({ message: 'The review was deleted successfully' });
+					.send(update.result);
 			} catch (err) {
 				throw new Error(err);
 			}
