@@ -140,8 +140,12 @@ libraryController
 		console.log(user);
 		const rate = await libraryService.rateBook(id, user, rating);
 
-		if (rate.error) {
-			res.status(400).send({ message: 'uups' });
+		if (rate.error === serviceErrors.NOT_FOUND) {
+			res.status(404).send({ message: 'You need to borrow the book before you rate it' });
+		} else if (rate.error === serviceErrors.NOT_PERMITTED) {
+			res.status(400).send({ message: 'You need to review the book before you rate it'});
+		} else if (rate.error === serviceErrors.NO_DATABASE_CHANGES) {
+			res.status(400).send({ message: 'Rating was unsuccessfull'});
 		}
 
 		return res.status(200).send({ messages: 'Rated successfully'});

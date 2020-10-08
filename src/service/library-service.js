@@ -2,7 +2,6 @@ import libraryData from '../data/library-data.js';
 import * as books from '../common/books-table-common.js';
 import serviceErrors from '../common/error-messages/service-errors.js';
 import reviewsData from '../data/reviews-data.js';
-import { userId } from '../common/borrowed-books-table-common.js';
 
 /**
  * Get all books
