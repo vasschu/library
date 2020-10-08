@@ -3,6 +3,8 @@ import passport from 'passport';
 
 export const authMiddleware = passport.authenticate('jwt', { session: false });
 
+const blackList = new Set();
+
 // export const client = redis.createClient();
 
 export const roleMiddleware = (...permittedRoles) => {
@@ -16,16 +18,6 @@ export const roleMiddleware = (...permittedRoles) => {
 	};
 };
 
-export const tokenIsBlacklisted = () => {
-	return (req, res, next) => {
-		if (!blackList.has(req.token)) {
-			next();
-		} else {
-			res.status(403).send({ message: 'You logged out. Please login again' });
-		}
-	};
-};
-
 export const tokenExtract = () => {
 	return (req, res, next) => {
 		const tokenHeader = req.headers.authorization.split(' ');
@@ -35,7 +27,15 @@ export const tokenExtract = () => {
 	};
 };
 
-const blackList = new Set();
+export const tokenIsBlacklisted = () => {
+	return (req, res, next) => {
+		if (!blackList.has(req.token)) {
+			next();
+		} else {
+			res.status(403).send({ message: 'You logged out. Please login again' });
+		}
+	};
+};
 
 export const addTokenToBlacklist = (token) => {
 	blackList.add(token);

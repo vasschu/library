@@ -1,18 +1,22 @@
 import express from 'express';
 import reviewsService from '../service/reviews-service.js';
 import serviceErrors from '../common/error-messages/service-errors.js';
-
 import { validateBody } from '../middleware/body-validator.js';
 import { reviewShema } from '../middleware/validators/create-review.js';
 import { updateReviewShema } from '../middleware/validators/update-review.js';
 import { deleteReviewShema } from '../middleware/validators/delete-review.js';
-
-import { authMiddleware } from '../auth/auth-middleware.js';
-import { roleMiddleware } from '../auth/auth-middleware.js';
+import {
+	authMiddleware,
+	tokenExtract,
+	tokenIsBlacklisted,
+	roleMiddleware,
+} from '../auth/auth-middleware.js';
 
 const reviewsController = express.Router();
 reviewsController.use(authMiddleware);
 reviewsController.use(roleMiddleware('regular', 'admin'));
+reviewsController.use(tokenExtract());
+reviewsController.use(tokenIsBlacklisted());
 
 reviewsController
 	//get reviews for specific book by ID
