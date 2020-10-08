@@ -47,6 +47,11 @@ const getWithRole = async (username) => {
 	return result[0];
 };
 
+/**
+ * Delete user
+ * @param {number} id 
+ * @returns {object} details about the deleted user
+ */
 const deleteUser = async (id) => {
 	const sql = `update users
 	set is_deleted = 1
@@ -56,6 +61,12 @@ const deleteUser = async (id) => {
 	return result;
 };
 
+/**
+ * Ban user
+ * @param {number} id 
+ * @param {string} reason for banning
+ * @returns {object} details about the banned user
+ */
 const banUser = async (id, reason) => {
 	const sql = `insert into banned_users (users_id, reason)
 	VALUES (?,?)`;

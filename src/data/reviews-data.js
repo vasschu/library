@@ -1,5 +1,10 @@
 import pool from './pool.js';
 
+/**
+ * Get book reviews
+ * @param {number} bookId 
+ * @returns {object} the book's reviews
+ */
 const getBookReviews = async (bookId) => {
 	const sql = `SELECT r.id, r.title, r.content, r.is_deleted, u.username, b.title AS book_title, b.author
     FROM library.reviews AS r
@@ -10,6 +15,14 @@ const getBookReviews = async (bookId) => {
 	return await pool.query(sql, [bookId, 0]);
 };
 
+
+/**
+ * Post a book review
+ * @param {object} body of the review
+ * @param {string} userId 
+ * @param {number} bookId 
+ * @returns {object} details about the review
+ */
 const postBookReview = async (body, userId, bookId) => {
 	const { title, content} = body;
 
@@ -20,6 +33,12 @@ const postBookReview = async (body, userId, bookId) => {
 	return await pool.query(sql, [title, content, userId, bookId]);
 };
 
+
+/**
+ * Get review by id
+ * @param {number} id the review's id
+ * @returns {object} the review's info
+ */
 const getReview = async (id) => {
 	const sql = `SELECT r.id, r.title, r.content, r.is_deleted, u.id AS user_id, u.username, b.id AS book_id
     FROM reviews AS r
@@ -38,6 +57,13 @@ const getReview = async (id) => {
 	};
 };
 
+/**
+ * Update a book reveiw
+ * @param {number} id 
+ * @param {string} title 
+ * @param {string} content
+ * @returns {object} details about the updated review 
+ */
 const updateReview = async (id, title, content) => {
 	const sql = `UPDATE reviews
     SET title = ?, content = ?
@@ -46,6 +72,12 @@ const updateReview = async (id, title, content) => {
 	return await pool.query(sql, [title, content, id]);
 };
 
+
+/**
+ * Get book by id
+ * @param {number} id
+ * @returns {object} the book's details 
+ */
 const getBookById = async (id) => {
 	const sql = `SELECT b.id AS book_id, b.title AS book_title, r.id AS review_id, r.is_deleted, u.id AS user_id, u.user_level
     FROM books AS b
@@ -56,6 +88,12 @@ const getBookById = async (id) => {
 	return await pool.query(sql, [id, 0]);
 };
 
+
+/**
+ * Delete a book reviews
+ * @param {number} id 
+ * @returns {object} deatils about the deleted book
+ */
 const deleteReview = async (id) => {
 	const sql = `UPDATE reviews
     SET is_deleted = ?
@@ -92,6 +130,12 @@ const getReviewLikes = async (review_id, user_id) => {
 	return await pool.query(sql, [user_id, review_id]);
 };
 
+/**
+ * Update the review score
+ * @param {number} reviewScoreId 
+ * @param {numeber} rating
+ * @returns {object} details about the update reveiw score
+ */
 const updateReviewScore = async (reviewScoreId, rating) => {
 	const sql = `UPDATE review_likes
 	SET rating = ?
@@ -99,6 +143,13 @@ const updateReviewScore = async (reviewScoreId, rating) => {
 	return await pool.query(sql, [rating, reviewScoreId]);
 };
 
+
+/**
+ * Get review by user
+ * @param {number} bookId 
+ * @param {number} userId
+ * @returns {object} review's info
+ */
 const getReviewByUser = async (bookId, userId) => {
 	const sql = `SELECT * FROM reviews
 	WHERE books_id = ?

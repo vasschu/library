@@ -80,6 +80,13 @@ const getBorrowedBookByUser = async (userId, bookId, isDeleted) => {
 	return foundBooks;
 };
 
+/**
+ * Create a book
+ * @param {string} title 
+ * @param {string} author 
+ * @param {string} description 
+ * @returns {object} details for the created book
+ */
 const createBook = async (title, author, description) => {
 	const sql = `INSERT INTO library.books (title, author, description, image)
 	VALUES (?, ?, ?, ?);`;
@@ -87,10 +94,15 @@ const createBook = async (title, author, description) => {
 	return await pool.query(sql, [title, author, description, 0]);
 };
 
+/**
+ * Get book by id
+ * @param {number} id the book's id
+ * @returns {object} book's info
+ */
 const getById = async (id) => {
 	// const sql = `SELECT id, title, author, description, image FROM books
 	// WHERE id = ?`;
-	console.log(id);
+	// console.log(id);
 	const sql = `SELECT * FROM books
 	WHERE id = ?`;
 
@@ -98,6 +110,15 @@ const getById = async (id) => {
 	return book[0];
 };
 
+/**
+ * Update a book
+ * @param {number} id the book's id
+ * @param {string} title 
+ * @param {string} author 
+ * @param {string} description 
+ * @param {string} image 
+ * @returns {object} details for the updated book
+ */
 const updateBook = async (id, title, author, description, image) => {
 	const sql = `UPDATE books
     SET title = ?, author = ?, description = ?, image = ?
@@ -108,6 +129,11 @@ const updateBook = async (id, title, author, description, image) => {
 	return updated;
 };
 
+/**
+ * Delete a book
+ * @param {number} id the book's id
+ * @returns {object} deatils for the deleted book
+ */
 const deleteBook = async (id) => {
 	const sql = `UPDATE books
 	SET is_unlisted = 1
@@ -116,6 +142,12 @@ const deleteBook = async (id) => {
 	return await pool.query(sql, [id]);
 };
 
+/**
+ * Gets borrowed book info
+ * @param {number} bookId 
+ * @param {string} userId 
+ * @returns {object} the borrow details || undefined
+ */
 const getBorowed = async (bookId, userId) => {
 	const sql = `SELECT * FROM library.borrowed_books
 	WHERE return_date IS NOT NULL 
@@ -126,6 +158,12 @@ const getBorowed = async (bookId, userId) => {
 	return borrowed[0];
 };
 
+/**
+ * Get info book rating info
+ * @param {number} bookId 
+ * @param {string} userId 
+ * @returns {object} book rating info
+ */
 const getBookRating = async (bookId, userId) => {
 	const sql = `SELECT * FROM library.book_ratings
 	WHERE users_id = ?
@@ -135,6 +173,13 @@ const getBookRating = async (bookId, userId) => {
 	return rated[0];
 };
 
+/**
+ * Create rating
+ * @param {number} bookId 
+ * @param {string} userId 
+ * @param {number} rating 
+ * @returns {object} rating details
+ */
 const createRate = async (bookId, userId, rating) => {
 	const sql = `INSERT INTO book_ratings (rating, users_id, books_id)
 	VALUES (?, ?, ?);`;
@@ -142,6 +187,13 @@ const createRate = async (bookId, userId, rating) => {
 	return await pool.query(sql, [+rating, +userId, +bookId]);
 };
 
+/**
+ * Update rating
+ * @param {number} bookId 
+ * @param {string} userId 
+ * @param {number} rating 
+ * @returns {object} rating details
+ */
 const updateRate = async (bookId, userId, rating) => {
 	const sql = `UPDATE book_ratings 
 	SET rating = ?
