@@ -203,6 +203,31 @@ const updateRate = async (bookId, userId, rating) => {
 	return await pool.query(sql, [+rating, +userId, +bookId]);
 };
 
+const changeLevel = async (userId, role) => {
+	let level;
+	if (role === 'regular'){
+		level = 1;
+	} else if (role === 'powerReader'){
+		level = 3;
+	} else if (role === 'masterReader'){
+		level = 4;
+	} else if (role === 'moderator'){
+		level = 5;
+	}
+
+	const sql = `UPDATE users
+	SET user_level = ?
+	WHERE id = ?`;
+
+	const res = await pool.query(sql, [level, userId]);
+	
+	if(res.affectedRows){
+		return role;
+	}
+
+	return null;
+};
+
 export default {
 	getAll,
 	getBy,
@@ -217,4 +242,5 @@ export default {
 	getBookRating,
 	createRate,
 	updateRate,
+	changeLevel,
 };

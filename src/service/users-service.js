@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 import usersData from '../data/users-data.js';
 
 import serviceErrors from '../common/error-messages/service-errors.js';
+import { changeLevel } from '../common/points-calculator.js';
 
 /**
  * create new user
@@ -77,17 +78,19 @@ const banUser = async (id, reason, role) => {
 		const bannedUser = await usersData.banUser(id, reason);
 		const bannedUserInfo = await usersData.getUserBy('id', id);
 
-		console.log(bannedUserInfo);
-
 		if (bannedUser.affectedRows === 0) {
 			return { error: serviceErrors.NO_DATABASE_CHANGES, result: null };
 		}
+		const userData = await usersData.getWithRoleById(id);
+		const chanagedLevel = await changeLevel(id, userData.user_level);
+
 		return {
 			error: null,
 			result: {
 				id: bannedUserInfo[0].id,
 				username: bannedUserInfo[0].username,
 			},
+			level: chanagedLevel,
 		};
 	}
 };

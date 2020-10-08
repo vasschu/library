@@ -160,17 +160,18 @@ reviewsController
 	 * @return {object} return message if the delete was done.
 	 */
 	.post('/:id/reviews/:reviewid', isBannedMiddleware(), async (req, res) => {
-		const { rating, user_id } = req.body;
+		const { rating } = req.body;
 		const { reviewid } = req.params;
 		const reviewRating = await reviewsService.rateReviewById(
 			reviewid,
-			user_id,
+			req.user.id,
 			rating,
+			req.user.role,
 		);
 
-		const { error, result } = reviewRating;
+		const { error, result, level } = reviewRating;
 		if (!error) {
-			res.status(200).send(result);
+			res.status(200).send({ res: result, level: level });
 		} else {
 			res.status(404).send({ message: 'This is duplicate review.' });
 		}

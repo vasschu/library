@@ -63,8 +63,8 @@ usersController
 		const role = req.user.role;
 
 		const bannedUser = await usersService.banUser(user_id, reason, role);
-		console.log(bannedUser);
-		const { error, result } = bannedUser;
+
+		const { error, result, level } = bannedUser;
 		if (error === serviceErrors.NO_DATABASE_CHANGES) {
 			res.status(404).send({
 				message: 'This user was not banned.',
@@ -72,7 +72,7 @@ usersController
 		} else {
 			res
 				.status(202)
-				.send(`User ${result.username}, with id ${result.id} is banned.`);
+				.send(`User ${result.username}, with id ${result.id} is banned. Their level is now ${level}`);
 		}
 	});
 

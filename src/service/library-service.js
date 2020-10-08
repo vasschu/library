@@ -2,6 +2,7 @@ import libraryData from '../data/library-data.js';
 import * as books from '../common/books-table-common.js';
 import serviceErrors from '../common/error-messages/service-errors.js';
 import reviewsData from '../data/reviews-data.js';
+import { changeLevel } from '../common/points-calculator.js';
 
 /**
  * Get all books
@@ -52,6 +53,8 @@ const getBookById = async (id) => {
 const borrowBook = async (bookId, userId) => {
 	const bookToBorrow = await libraryData.getBy(books.id, bookId);
 
+	
+	
 	if (!bookToBorrow[0].borrowed) {
 		const book = await libraryData.borrowBookById(bookId, userId);
 		return { error: null, result: book };
@@ -66,7 +69,7 @@ const borrowBook = async (bookId, userId) => {
  * @param {number} userId to search the users table with
  * @return {object} holds 'error' if operation fails or 'result' if return is succesful
  */
-const returnBook = async (bookId, userId) => {
+const returnBook = async (bookId, userId, role) => {
 	const isBookBorrowedByThisUser = await libraryData.getBorrowedBookByUser(
 		userId,
 		bookId,
@@ -75,7 +78,11 @@ const returnBook = async (bookId, userId) => {
 
 	if (isBookBorrowedByThisUser[0]) {
 		const book = await libraryData.returnBookById(bookId);
-		return { error: null, result: book };
+
+		const changedLevel = await changeLevel(userId, role);		
+		console.log(changedLevel);
+
+		return { error: null, result: book, level: changedLevel };
 	} else {
 		return { error: 'make error file', result: null };
 	}
@@ -145,7 +152,7 @@ const deleteBook = async (id) => {
  * @return {object} holds 'error' if operation fails or 'result' if return is succesful
  */
 const rateBook = async (bookId, user, rating) => {
-	const {id} = user;
+	const {id, role} = user;
 	const isBorrowed = await libraryData.getById(bookId, id);
 
 	if (!isBorrowed) {
@@ -157,7 +164,7 @@ const rateBook = async (bookId, user, rating) => {
 
 	const isReviewed = await reviewsData.getReviewByUser(bookId, id);
 
-	if (!isReviewed[0]) {
+	if (!isReviewed) {
 		return { error: serviceErrors.NOT_PERMITTED,
 				result: null};
 	}
@@ -176,8 +183,11 @@ const rateBook = async (bookId, user, rating) => {
 				result: null };
 	}
 
+	const changedLevel = await changeLevel(id, role);
+
 	return {error: null,
-			result: rate};
+			result: rate,
+			level: changedLevel};
 };
 
 export default {

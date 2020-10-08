@@ -27,7 +27,7 @@ const postBookReview = async (body, userId, bookId) => {
 	const { title, content} = body;
 
 	// console.log(body);
-	const sql = `INSERT INTO library.reviews (title, content, users_id, books_id)
+	const sql = `INSERT INTO reviews (title, content, users_id, books_id)
     VALUES (?, ?, ?, ?);`;
 
 	return await pool.query(sql, [title, content, userId, bookId]);
@@ -110,7 +110,7 @@ const deleteReview = async (id) => {
  * @returns {object} infomrs if row is updated.
  */
 const rateReview = async (review_id, user_id, rating) => {
-	const sql = `INSERT INTO library.review_likes (rating, reviews_id, user_id)
+	const sql = `INSERT INTO review_likes (rating, reviews_id, user_id)
     VALUES (?, ?, ?);`;
 
 	return await pool.query(sql, [rating, review_id, user_id]);
@@ -123,7 +123,7 @@ const rateReview = async (review_id, user_id, rating) => {
  * @return {object}
  */
 const getReviewLikes = async (review_id, user_id) => {
-	const sql = `select * from library.review_likes
+	const sql = `select * from review_likes
 	where (${user_id} is null or user_id = ${user_id})
 	and (${review_id} is null or reviews_id = ${review_id})`;
 

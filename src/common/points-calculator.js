@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-vars */
 import pool from '../data/pool.js';
+import libraryData from '../data/library-data.js';
 
-const userLevels = {
+export const userLevels = {
 	regular: 1000,
 	powerReader: 2000,
 	masterReader: 5000,
@@ -12,7 +13,7 @@ const readerPoints = {
 	returnedBook: 100,
 	// delayedReturn: -75,
 	ratedBook: 20,
-	ratedReview: 1,
+	ratedReview: 5,
 	isBanned: -500,
 };
 
@@ -53,4 +54,33 @@ export const calculatePoints = async (userId) => {
 		bannedPenalty[0].total * readerPoints.isBanned;
 
 	return await currentPoints;
+};
+
+/**
+ * Change ures level
+ * @param {number} userId 
+ * @param {string} role 
+ * @returns {string} the new role
+ */
+export const changeLevel = async (userId, role) => {
+	const points = await calculatePoints(userId);
+
+		let changeLevel;
+		if (points <= userLevels.powerReader && (role !== 'regular' && role !== 'admin')) {
+			changeLevel = await libraryData.changeLevel(userId, 'regular');
+
+		} else if (points > userLevels.powerReader && points <= userLevels.masterReader
+			&& (role !== 'powerReader' && role !== 'admin')){
+			changeLevel = await libraryData.changeLevel(userId, 'powerReader');
+				//
+		} else if (points > userLevels.masterReader && points <= userLevels.moderator
+			&& (role !== 'masterReader' && role !== 'admin')){
+			changeLevel = await libraryData.changeLevel(userId, 'masterReader');
+					//
+		} else if (points > userLevels.moderator
+			&& (role !== 'moderator' && role !== 'admin')){
+			changeLevel = await libraryData.changeLevel(userId, 'moderator');
+			//
+		}
+		return changeLevel;
 };

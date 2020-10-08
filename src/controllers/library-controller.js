@@ -16,7 +16,7 @@ import serviceErrors from '../common/error-messages/service-errors.js';
 
 const libraryController = express.Router();
 libraryController.use(authMiddleware);
-libraryController.use(roleMiddleware('regular', 'admin'));
+libraryController.use(roleMiddleware('regular', 'admin', 'powerReader', 'masterReader', 'moderator'));
 libraryController.use(tokenExtract());
 libraryController.use(tokenIsBlacklisted());
 
@@ -72,9 +72,9 @@ libraryController
 		validateBody(borrowBookShema),
 		async (req, res) => {
 			const { id } = req.params;
-			const userId = req.body.users_id;
+			// const userId = req.body.users_id;
 
-			const borrowedBook = await libraryService.borrowBook(id, userId);
+			const borrowedBook = await libraryService.borrowBook(id, req.user.id);
 
 			const { error, result } = borrowedBook;
 
@@ -96,14 +96,15 @@ libraryController
 	 */
 	.patch('/:id', validateBody(borrowBookShema), async (req, res) => {
 		const { id } = req.params;
-		const userId = req.body.users_id;
+		// const userId = req.body.users_id;
+		const { role } = req.user;
 
-		const bookToReturn = await libraryService.returnBook(id, userId);
+		const bookToReturn = await libraryService.returnBook(id, req.user.id, role);
 
-		const { error, result } = bookToReturn;
+		const { error, result, level } = bookToReturn;
 
 		if (!error) {
-			res.status(201).send(result);
+			res.status(201).send({res: result, level: level });
 		} else {
 			res.status(403).send({
 				message: 'This book is not borrowed by this user.',
@@ -207,7 +208,7 @@ libraryController
 				res.status(400).send({ message: 'Rating was unsuccessfull' });
 			}
 
-			return res.status(200).send({ messages: 'Rated successfully' });
+			return res.status(200).send({ message: 'Rated successfully', level: rate.level });
 		},
 	);
 
