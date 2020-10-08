@@ -10,6 +10,7 @@ import {
 	roleMiddleware,
 	tokenExtract,
 	tokenIsBlacklisted,
+	isBannedMiddleware,
 } from '../auth/auth-middleware.js';
 import serviceErrors from '../common/error-messages/service-errors.js';
 
@@ -65,22 +66,27 @@ libraryController
 	 * @param {number} user_id from the req.body in format  {"users_id":"id"}
 	 * @return {object} return message if book can't be borrowed or array containing the book info {"id","title","author","borrowed","is_unlisted"}
 	 */
-	.post('/:id', validateBody(borrowBookShema), async (req, res) => {
-		const { id } = req.params;
-		const userId = req.body.users_id;
+	.post(
+		'/:id',
+		isBannedMiddleware(),
+		validateBody(borrowBookShema),
+		async (req, res) => {
+			const { id } = req.params;
+			const userId = req.body.users_id;
 
-		const borrowedBook = await libraryService.borrowBook(id, userId);
+			const borrowedBook = await libraryService.borrowBook(id, userId);
 
-		const { error, result } = borrowedBook;
+			const { error, result } = borrowedBook;
 
-		if (!error) {
-			res.status(201).send(result);
-		} else {
-			res.status(403).send({
-				message: 'This book is currently borrowed. Will be available later.',
-			});
-		}
-	})
+			if (!error) {
+				res.status(201).send(result);
+			} else {
+				res.status(403).send({
+					message: 'This book is currently borrowed. Will be available later.',
+				});
+			}
+		},
+	)
 
 	/**
 	 * Return book by ID
