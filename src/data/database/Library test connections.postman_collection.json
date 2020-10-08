@@ -36,6 +36,37 @@
 			"response": []
 		},
 		{
+			"name": "get book by ID",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userId\": \"1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5500/books/1",
+					"host": [
+						"localhost"
+					],
+					"port": "5500",
+					"path": [
+						"books",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "get book with search query",
 			"request": {
 				"method": "GET",
@@ -110,6 +141,357 @@
 					"path": [
 						"books",
 						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "register user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"test123\",\r\n    \"password\": \"123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5500/users",
+					"host": [
+						"localhost"
+					],
+					"port": "5500",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"guest123\",\r\n    \"password\": \"123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5500/auth/session",
+					"host": [
+						"localhost"
+					],
+					"port": "5500",
+					"path": [
+						"auth",
+						"session"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "logout user",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEyLCJ1c2VybmFtZSI6InRlc3QxMjMiLCJyb2xlIjoicmVndWxhciIsImlhdCI6MTYwMTkxNjA0NiwiZXhwIjoxNjAxOTE5NjQ2fQ.X9oWxNKJZxGDP5rXweJyXNZpbVswBh_q-_9xDzNeiUs",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"dude5\",\r\n    \"password\": \"impossiblePass\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5500/auth/session",
+					"host": [
+						"localhost"
+					],
+					"port": "5500",
+					"path": [
+						"auth",
+						"session"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "see review by book ID",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE3LCJ1c2VybmFtZSI6InZhc2tvNiIsInJvbGUiOiJyZWd1bGFyIiwiaWF0IjoxNjAyMDEwNzc1LCJleHAiOjE2MDIwMTQzNzV9.nzXGBm9QnYCN_3EDbAO-yVITBhCL5K6QeglocP26SZc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\":\"SHort title\",\r\n    \"content\":\"Dude i am looking for the DVD.\",\r\n    \"users_id\":\"16\",\r\n    \"books_id\": \"1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5500/books/1/reviews",
+					"host": [
+						"localhost"
+					],
+					"port": "5500",
+					"path": [
+						"books",
+						"1",
+						"reviews"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post review for a book",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE3LCJ1c2VybmFtZSI6InZhc2tvNiIsInJvbGUiOiJyZWd1bGFyIiwiaWF0IjoxNjAyMDEwNzc1LCJleHAiOjE2MDIwMTQzNzV9.nzXGBm9QnYCN_3EDbAO-yVITBhCL5K6QeglocP26SZc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\":\"SHort title\",\r\n    \"content\":\"Dude i am looking for the DVD.\",\r\n    \"users_id\":\"16\",\r\n    \"books_id\": \"1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5500/books/1/reviews",
+					"host": [
+						"localhost"
+					],
+					"port": "5500",
+					"path": [
+						"books",
+						"1",
+						"reviews"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit review for a book",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE3LCJ1c2VybmFtZSI6InZhc2tvNiIsInJvbGUiOiJyZWd1bGFyIiwiaWF0IjoxNjAyMDEwNzc1LCJleHAiOjE2MDIwMTQzNzV9.nzXGBm9QnYCN_3EDbAO-yVITBhCL5K6QeglocP26SZc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\":\"SHort title\",\r\n    \"content\":\"Dude i am looking for the DVD.\",\r\n    \"users_id\":\"15\",\r\n    \"books_id\": \"1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5500/books/1/reviews/10",
+					"host": [
+						"localhost"
+					],
+					"port": "5500",
+					"path": [
+						"books",
+						"1",
+						"reviews",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete review by ID",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE4LCJ1c2VybmFtZSI6ImFkbW4iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2MDIwMTIyNjksImV4cCI6MTYwMjAxNTg2OX0.HB9vdIZZO-H7OBQ_CYDZ3GpKVshUXWtwl3-6OXM1pAs",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"content\":\"click my link2\",\r\n    \"users_id\":16,\r\n    \"books_id\": \"1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5500/books/1/reviews/8",
+					"host": [
+						"localhost"
+					],
+					"port": "5500",
+					"path": [
+						"books",
+						"1",
+						"reviews",
+						"8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete user by admin",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"admn\",\r\n    \"password\": \"admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5500/users",
+					"host": [
+						"localhost"
+					],
+					"port": "5500",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ban user by admin",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE4LCJ1c2VybmFtZSI6ImFkbW4iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2MDIwMTY3MDgsImV4cCI6MTYwMjAyMDMwOH0.RbHapjL4QS9vl4SN0Yqa4hlkI0dEGvFBYy9Du1cDHHs",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user_id\": 9,\r\n    \"reason\": \"he is acting like a dick\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5500/users",
+					"host": [
+						"localhost"
+					],
+					"port": "5500",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "like book reviews",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIxLCJ1c2VybmFtZSI6InRlc3QxMjM1NiIsInJvbGUiOiJyZWd1bGFyIiwiaWF0IjoxNjAyMDY2MzYwLCJleHAiOjE2MDIwNjk5NjB9.Yn1-1kHu2jh1SimSKzRU4xIU9VFMIAwV0fSe1IBWBJc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"rating\": \"1\",\r\n    \"user_id\": 10\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5500/books/1/reviews/8",
+					"host": [
+						"localhost"
+					],
+					"port": "5500",
+					"path": [
+						"books",
+						"1",
+						"reviews",
+						"8"
 					]
 				}
 			},
