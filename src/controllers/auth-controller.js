@@ -27,7 +27,10 @@ authController
 
 		const user = await usersService.logIn(body);
 
-		if (user.error === serviceErrors.INVALID_LOGIN) {
+		if (
+			user.error === serviceErrors.INVALID_LOGIN ||
+			user.result.is_deleted === 1
+		) {
 			return res.status(400).send({ message: 'Invalid username/password' });
 		}
 		console.log(user);
