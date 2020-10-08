@@ -39,7 +39,7 @@ const getUserBy = async (column, value) => {
  * @return {object} contians id, username, hash password and role
  */
 const getWithRole = async (username) => {
-	const sql = `select u.id, u.username, u.is_deleted, u.is_banned, u.password, ul.level from users as u
+	const sql = `select u.id, u.username, u.is_deleted, u.password, ul.level from users as u
 	JOIN user_levels as ul ON ul.id = u.user_level
 	WHERE u.username = ?;`;
 
