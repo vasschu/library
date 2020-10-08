@@ -43,10 +43,10 @@ authController
 		async (req, res) => {
 			const name = req.user.username;
 			addTokenToBlacklist(req.token);
-			// eslint-disable-next-line no-irregular-whitespace
-			const msg = `{message: User '${name}' has been fake logged out. See you soon in the blacklist. (▀̿ ̿̃ ͜ʖ▀̿ ̿ ̃)}`;
 
-			res.status(204).send(msg);
+			res
+				.status(202)
+				.send(`{ "message" : User '${name}' has been logged out.}`);
 		},
 	);
 

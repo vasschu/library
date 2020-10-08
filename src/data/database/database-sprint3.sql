@@ -29,9 +29,9 @@ CREATE TABLE `banned_users` (
   `users_id` int(11) NOT NULL,
   `ban_expired` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
-  KEY `fk_banned_users_users1_idx` (`users_id`),
-  CONSTRAINT `fk_banned_users_users1` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+  KEY `fk_user_banned_idx` (`users_id`),
+  CONSTRAINT `fk_user_banned` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `banned_users` (
 
 LOCK TABLES `banned_users` WRITE;
 /*!40000 ALTER TABLE `banned_users` DISABLE KEYS */;
-INSERT INTO `banned_users` VALUES (1,'Systematic loud talking and yelling.','0000-00-00',0,0);
+INSERT INTO `banned_users` VALUES (1,'now','2020-10-06',1,0),(2,'he is acting like a dick','2020-10-06',9,0),(3,'he is acting like a dick','2020-10-06',9,0),(4,'he is acting like a dick','2020-10-06',9,0),(5,'he is acting like a dick','2020-10-06',9,0),(6,'he is acting like a dick','2020-10-06',9,0),(7,'he is acting like a dick','2020-10-06',9,0),(8,'he is acting like a dick','2020-10-06',9,0),(9,'he is acting like a dick','2020-10-06',9,0),(10,'he is acting like a dick','2020-10-06',9,0),(11,'he is acting like a dick','2020-10-06',9,0),(12,'he is acting like a dick','2020-10-06',9,0);
 /*!40000 ALTER TABLE `banned_users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -56,12 +56,12 @@ CREATE TABLE `book_ratings` (
   `rating` int(11) DEFAULT NULL,
   `users_id` int(11) NOT NULL,
   `books_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`,`users_id`,`books_id`),
-  KEY `fk_book_ratings_users1_idx` (`users_id`),
-  KEY `fk_book_ratings_books1_idx` (`books_id`),
-  CONSTRAINT `fk_book_ratings_books1` FOREIGN KEY (`books_id`) REFERENCES `books` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_book_ratings_users1` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id`),
+  KEY `fk_users_gaved_rating_idx` (`users_id`),
+  KEY `fk_book_recieved_rating_idx` (`books_id`),
+  CONSTRAINT `fk_book_recieved_rating` FOREIGN KEY (`books_id`) REFERENCES `books` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_users_gaved_rating` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,7 +70,7 @@ CREATE TABLE `book_ratings` (
 
 LOCK TABLES `book_ratings` WRITE;
 /*!40000 ALTER TABLE `book_ratings` DISABLE KEYS */;
-INSERT INTO `book_ratings` VALUES (1,1,1,1),(2,999,1,3),(3,5,2,1),(4,5,3,1);
+INSERT INTO `book_ratings` VALUES (1,2,1,1),(2,5,1,2),(3,4,2,1);
 /*!40000 ALTER TABLE `book_ratings` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -82,14 +82,14 @@ DROP TABLE IF EXISTS `books`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `books` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(45) NOT NULL,
   `author` varchar(45) NOT NULL,
   `description` varchar(45) DEFAULT NULL,
   `image` varchar(45) NOT NULL,
   `is_unlisted` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -98,7 +98,7 @@ CREATE TABLE `books` (
 
 LOCK TABLES `books` WRITE;
 /*!40000 ALTER TABLE `books` DISABLE KEYS */;
-INSERT INTO `books` VALUES (0,'Kamasutra','unknown dude','Book is unlisted due complains from Christian','',1),(1,'Harry Potter','JKR','Harry is a wizard','',0),(2,'Harry Potter 2','JKR','Harry meets young Voldemort','',0),(3,'The Hunger Games','Suzzane Collins','Katniss goes to reality show war','',0),(4,'YDKJS','Kyle',NULL,'',0);
+INSERT INTO `books` VALUES (1,'Harry Potter 1','JKR','Harry is dope','',0),(2,'Harry Potter 2','JKR','flying car','',1),(3,'Roadside Picnic','Strugatski','stalkers and stuff','',0);
 /*!40000 ALTER TABLE `books` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -117,11 +117,11 @@ CREATE TABLE `borrowed_books` (
   `return_date` timestamp NULL DEFAULT NULL,
   `is_deleted` tinyint(1) unsigned zerofill NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
-  KEY `fk_borrowed_books_users1_idx` (`users_id`),
-  KEY `fk_borrowed_books_books1_idx` (`books_id`),
-  CONSTRAINT `fk_borrowed_books_books1` FOREIGN KEY (`books_id`) REFERENCES `books` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_borrowed_books_users1` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+  KEY `fk_book_id_idx` (`books_id`),
+  KEY `fk_user_borrowed_book_idx` (`users_id`),
+  CONSTRAINT `fk_book_borrowed` FOREIGN KEY (`books_id`) REFERENCES `books` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_user_borrowed` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -130,7 +130,7 @@ CREATE TABLE `borrowed_books` (
 
 LOCK TABLES `borrowed_books` WRITE;
 /*!40000 ALTER TABLE `borrowed_books` DISABLE KEYS */;
-INSERT INTO `borrowed_books` VALUES (1,1,2,'2020-10-03 13:19:00','2020-10-03 17:49:26',1),(2,2,1,'2020-10-03 13:19:00',NULL,0),(3,3,4,'2020-10-03 13:19:00',NULL,0),(4,2,2,'2020-10-03 22:23:33',NULL,1);
+INSERT INTO `borrowed_books` VALUES (1,1,2,'2020-10-04 14:24:21',NULL,1),(2,2,1,'2020-10-04 14:24:21',NULL,0),(3,2,2,'2020-10-04 21:20:39','2020-10-04 21:20:45',1),(4,2,2,'2020-10-05 17:07:41','2020-10-05 17:07:47',1),(5,2,2,'2020-10-06 10:58:19','2020-10-06 10:59:43',1),(6,2,2,'2020-10-06 11:07:08','2020-10-06 11:07:24',1);
 /*!40000 ALTER TABLE `borrowed_books` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -143,15 +143,15 @@ DROP TABLE IF EXISTS `review_likes`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `review_likes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `rating` int(11) DEFAULT NULL,
+  `rating` tinyint(1) NOT NULL,
   `reviews_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`,`reviews_id`),
+  PRIMARY KEY (`id`),
   KEY `fk_review_likes_reviews1_idx` (`reviews_id`),
   KEY `fk_user_id_idx` (`user_id`),
   CONSTRAINT `fk_review_likes_reviews1` FOREIGN KEY (`reviews_id`) REFERENCES `reviews` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_user_who_gave_like` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+  CONSTRAINT `fk_review_likes_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -160,7 +160,7 @@ CREATE TABLE `review_likes` (
 
 LOCK TABLES `review_likes` WRITE;
 /*!40000 ALTER TABLE `review_likes` DISABLE KEYS */;
-INSERT INTO `review_likes` VALUES (1,1,1,1),(2,2,2,2),(3,999,1,3);
+INSERT INTO `review_likes` VALUES (7,-1,8,3),(8,1,9,1),(9,1,9,2),(10,1,8,10),(11,1,8,10),(12,1,8,10),(13,1,8,10),(14,0,8,11),(15,1,8,14),(16,1,8,15),(17,1,8,16),(18,0,8,17),(19,0,8,18);
 /*!40000 ALTER TABLE `review_likes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -178,12 +178,12 @@ CREATE TABLE `reviews` (
   `users_id` int(11) NOT NULL,
   `books_id` int(11) NOT NULL,
   `is_deleted` tinyint(11) DEFAULT 0,
-  PRIMARY KEY (`id`,`users_id`,`books_id`),
-  KEY `fk_reviews_users_idx` (`users_id`),
-  KEY `fk_reviews_books1_idx` (`books_id`),
-  CONSTRAINT `fk_reviews_books1` FOREIGN KEY (`books_id`) REFERENCES `books` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_reviews_users` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id`),
+  KEY `fk_user_id_idx` (`users_id`),
+  KEY `fk_book_id_idx` (`books_id`),
+  CONSTRAINT `fk_book_id` FOREIGN KEY (`books_id`) REFERENCES `books` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_user_id` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -192,7 +192,7 @@ CREATE TABLE `reviews` (
 
 LOCK TABLES `reviews` WRITE;
 /*!40000 ALTER TABLE `reviews` DISABLE KEYS */;
-INSERT INTO `reviews` VALUES (1,'Wow','the book was awesome',1,1,0),(2,'Never again','Honestly, not my thing',2,4,0),(3,'OK','It was ok',1,3,0),(4,'OK','It was ok',1,3,0),(5,'OK','It was ok',1,3,0),(6,'It was fantastic','My new fave book!',1,3,0),(7,'It was fantastic','My new fave book!',1,3,0);
+INSERT INTO `reviews` VALUES (8,'Total new','click my link',1,1,0),(9,'Meh','Magic is for loosers',2,1,0),(10,'SHort title','Dude i am looking for the DVD. need it',16,1,0),(11,'cool shit','Best. Book. Ever.',20,1,0);
 /*!40000 ALTER TABLE `reviews` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -228,15 +228,15 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(45) DEFAULT NULL,
-  `password` varchar(45) DEFAULT NULL,
-  `reviews` varchar(45) DEFAULT NULL,
+  `password` varchar(300) DEFAULT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
   `user_level` int(11) DEFAULT 1,
   PRIMARY KEY (`id`),
   KEY `user_level_idx` (`user_level`),
   CONSTRAINT `user_level` FOREIGN KEY (`user_level`) REFERENCES `user_levels` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -245,7 +245,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (0,'Naughty','pass1',NULL,1),(1,'Red','pass1',NULL,1),(2,'Vulture','pass2',NULL,1),(3,'King','pass3','HP was amazing!',2);
+INSERT INTO `users` VALUES (1,'Ivan','123',0,1),(2,'Dani','123',0,1),(3,'Admin','123',0,2),(4,'vasko','$2b$10$iA4YtB52Zei9m/yzF5b2GO82KPZyjXmgW6i92I',0,1),(5,'vasko','$2b$10$vXI09TQKJBPimrH4W/AMQ.hIdhOX5S7sSTB0N2',0,1),(6,'vasko','$2b$10$XsJ67BJJjK.65307TWW0ZOXQgEZnWmmM38SWga',0,1),(7,'dude','$2b$10$zx0o.jnHZQDnbIjge8Ueh.gsQndltA5ZNr8C3a',1,1),(8,'dude2','$2b$10$2evAlAcZHCv/LbkhAXDvx.mmmPFYdeyk0PfMAR',1,1),(9,'dude3','$2b$10$IS.C6I3G0BmD2nmlqstCJuqqpf307C1dSIvG2g',1,1),(10,'dude4','$2b$10$VkHdmWZ36bO8IhXeGDYel.BXnvoO2O5lq.TA5M',0,1),(11,'dude5','$2b$10$5cIo8YevX8q0kZFqhhQAAeZTKb7u1o2rGssjIE',0,1),(12,'test123','$2b$10$.LA2tLCzRSCgop70sUGwyePHomdW/a7Bn3j90b',0,1),(13,'test1233','$2b$10$963GDy7Hv.4wESZJZbP77uK69Bpwgih5iF5usK',0,1),(14,'shar','$2b$10$0bYJHgv9sV0K1GHrvgwOJOvnfnvxSsavvSVzez',0,1),(15,'sharo','$2b$10$l/LUE.MikVk4fqG95nPSdOJdcN1mtDhNTomEKP',0,1),(16,'vasko5','$2b$10$uMHjp8xwW2Cwg6JiWT4od.Lx1SGeKKLkJjixS9',0,1),(17,'vasko6','$2b$10$S2q06CgyHn7le7wloQwUyOdkKXrmk1eDOfM176spR4irvVH6zHAiu',0,1),(18,'admn','$2b$10$8zgkLpD51wCI2/3ukwRW5uMIKwEZ9Y7BulCA1SMN.Ob7L5hMG5.TS',0,2),(19,'sad','$2b$10$nUoSP.XBdfZzgQqgKKXEe.XV9Wt6vJKu9xGy3yTPEYzAuU6dnFkpq',0,1),(20,'tsest123','$2b$10$EUOvIgD425bNKuVJ14Kq..jp5M.Sf0dMT8MOX40ijQ/OElDuuAztq',0,1),(21,'test12356','$2b$10$v6UAK1Zm8islh3o7r8fxbOazxBQ2sxW6TL7u4RCjU8XAhuptM5Wrm',0,1),(22,'guest123','$2b$10$0xRizfz5hTyPI4ukm4pIxuLliJ4S17yWcrtrWKwvpOoKgMk1fQp4a',0,1),(23,'sadasdadaa','$2b$10$Lc3vpUjMkXQYIJHHYZ5DdOVmYxUYvE052aHaAUgqHnWqPsbbOFsm2',0,1);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -258,4 +258,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-10-04  9:16:18
+-- Dump completed on 2020-10-08  9:56:38
