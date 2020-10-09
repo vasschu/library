@@ -58,29 +58,43 @@ export const calculatePoints = async (userId) => {
 
 /**
  * Change ures level
- * @param {number} userId 
- * @param {string} role 
+ * @param {number} userId
+ * @param {string} role
  * @returns {string} the new role
  */
 export const changeLevel = async (userId, role) => {
 	const points = await calculatePoints(userId);
 
-		let changeLevel = role;
-		if (points <= userLevels.powerReader && (role !== 'regular' && role !== 'admin')) {
-			changeLevel = await libraryData.changeLevel(userId, 'regular');
-
-		} else if (points > userLevels.powerReader && points <= userLevels.masterReader
-			&& (role !== 'powerReader' && role !== 'admin')){
-			changeLevel = await libraryData.changeLevel(userId, 'powerReader');
-				//
-		} else if (points > userLevels.masterReader && points <= userLevels.moderator
-			&& (role !== 'masterReader' && role !== 'admin')){
-			changeLevel = await libraryData.changeLevel(userId, 'masterReader');
-					//
-		} else if (points > userLevels.moderator
-			&& (role !== 'moderator' && role !== 'admin')){
-			changeLevel = await libraryData.changeLevel(userId, 'moderator');
-			//
-		}
-		return changeLevel;
+	let changeLevel;
+	if (
+		points <= userLevels.powerReader &&
+		role !== 'regular' &&
+		role !== 'admin'
+	) {
+		changeLevel = await libraryData.changeLevel(userId, 'regular');
+	} else if (
+		points > userLevels.powerReader &&
+		points <= userLevels.masterReader &&
+		role !== 'powerReader' &&
+		role !== 'admin'
+	) {
+		changeLevel = await libraryData.changeLevel(userId, 'powerReader');
+		//
+	} else if (
+		points > userLevels.masterReader &&
+		points <= userLevels.moderator &&
+		role !== 'masterReader' &&
+		role !== 'admin'
+	) {
+		changeLevel = await libraryData.changeLevel(userId, 'masterReader');
+		//
+	} else if (
+		points > userLevels.moderator &&
+		role !== 'moderator' &&
+		role !== 'admin'
+	) {
+		changeLevel = await libraryData.changeLevel(userId, 'moderator');
+		//
+	}
+	return changeLevel;
 };
