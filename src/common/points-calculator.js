@@ -65,7 +65,7 @@ export const calculatePoints = async (userId) => {
 export const changeLevel = async (userId, role) => {
 	const points = await calculatePoints(userId);
 
-		let changeLevel = role;
+		let changeLevel;
 		if (points <= userLevels.powerReader && (role !== 'regular' && role !== 'admin')) {
 			changeLevel = await libraryData.changeLevel(userId, 'regular');
 
