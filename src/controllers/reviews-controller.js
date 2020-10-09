@@ -3,6 +3,7 @@ import reviewsService from '../service/reviews-service.js';
 import serviceErrors from '../common/error-messages/service-errors.js';
 import { validateBody } from '../middleware/body-validator.js';
 import { reviewShema } from '../middleware/validators/create-review.js';
+import { rateReviewSchema } from './../middleware/validators/rate-review-schema.js';
 import { updateReviewShema } from '../middleware/validators/update-review.js';
 import {
 	authMiddleware,
@@ -159,22 +160,27 @@ reviewsController
 	 * @param {number} user_id from req.body {user_id}
 	 * @return {object} return message if the delete was done.
 	 */
-	.post('/:id/reviews/:reviewid', isBannedMiddleware(), async (req, res) => {
-		const { rating } = req.body;
-		const { reviewid } = req.params;
-		const reviewRating = await reviewsService.rateReviewById(
-			reviewid,
-			req.user.id,
-			rating,
-			req.user.role,
-		);
+	.post(
+		'/:id/reviews/:reviewid',
+		validateBody(rateReviewSchema),
+		isBannedMiddleware(),
+		async (req, res) => {
+			const { rating } = req.body;
+			const { reviewid } = req.params;
+			const reviewRating = await reviewsService.rateReviewById(
+				reviewid,
+				req.user.id,
+				rating,
+				req.user.role,
+			);
 
-		const { error, result, level } = reviewRating;
-		if (!error) {
-			res.status(200).send({ res: result, level: level });
-		} else {
-			res.status(404).send({ message: 'This is duplicate review.' });
-		}
-	});
+			const { error, result, level } = reviewRating;
+			if (!error) {
+				res.status(200).send({ res: result, level: level });
+			} else {
+				res.status(404).send({ message: 'This is duplicate review.' });
+			}
+		},
+	);
 
 export default reviewsController;
