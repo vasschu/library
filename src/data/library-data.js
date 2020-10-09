@@ -165,11 +165,11 @@ const getBorowed = async (bookId, userId) => {
  * @returns {object} book rating info
  */
 const getBookRating = async (bookId, userId) => {
-	const sql = `SELECT * FROM library.book_ratings
+	const sql = `SELECT * FROM book_ratings
 	WHERE users_id = ?
 	AND books_id = ?;`;
 
-	const rated = await pool.query(sql, [bookId, userId]);
+	const rated = await pool.query(sql, [userId, bookId]);
 	return rated[0];
 };
 
@@ -220,7 +220,7 @@ const changeLevel = async (userId, role) => {
 	WHERE id = ?`;
 
 	const res = await pool.query(sql, [level, userId]);
-	
+
 	if(res.affectedRows){
 		return role;
 	}
