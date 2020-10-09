@@ -174,8 +174,10 @@ const rateBook = async (bookId, user, rating) => {
 	let rate;
 	if (!ratedBook){
 		rate = await libraryData.createRate(bookId, id, rating);
+
 	} else {
 		rate = await libraryData.updateRate(bookId, id, rating);
+
 	}
 
 	if (!rate.affectedRows) {
