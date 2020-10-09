@@ -16,7 +16,15 @@ import serviceErrors from '../common/error-messages/service-errors.js';
 
 const libraryController = express.Router();
 libraryController.use(authMiddleware);
-libraryController.use(roleMiddleware('regular', 'admin', 'powerReader', 'masterReader', 'moderator'));
+libraryController.use(
+	roleMiddleware(
+		'regular',
+		'admin',
+		'powerReader',
+		'masterReader',
+		'moderator',
+	),
+);
 libraryController.use(tokenExtract());
 libraryController.use(tokenIsBlacklisted());
 
@@ -104,7 +112,7 @@ libraryController
 		const { error, result, level } = bookToReturn;
 
 		if (!error) {
-			res.status(201).send({res: result, level: level });
+			res.status(201).send({ res: result, level: level });
 		} else {
 			res.status(403).send({
 				message: 'This book is not borrowed by this user.',
@@ -193,7 +201,6 @@ libraryController
 			const user = req.user;
 			const { rating } = req.body;
 
-			// console.log(user);
 			const rate = await libraryService.rateBook(id, user, rating);
 
 			if (rate.error === serviceErrors.NOT_FOUND) {
@@ -208,7 +215,9 @@ libraryController
 				res.status(400).send({ message: 'Rating was unsuccessfull' });
 			}
 
-			return res.status(200).send({ message: 'Rated successfully', level: rate.level });
+			return res
+				.status(200)
+				.send({ message: 'Rated successfully', level: rate.level });
 		},
 	);
 

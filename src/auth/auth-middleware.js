@@ -23,9 +23,10 @@ export const isBannedMiddleware = () => {
 		const userId = req.user.id;
 
 		const banStatus = await usersData.isBanned(userId);
-		console.log(banStatus);
 		if (banStatus) {
-			return res.status(403).send({ message: 'You are banned form this activity.' });
+			return res
+				.status(403)
+				.send({ message: 'You are banned form this activity.' });
 		}
 		return next();
 	};

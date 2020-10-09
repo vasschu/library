@@ -5,19 +5,17 @@ import { changeLevel } from '../common/points-calculator.js';
 
 /**
  * Get all reviews for a book
- * @param {number} bookId the id of the book 
- * @returns {object} error and result key:value pairs. If there is no error, 
+ * @param {number} bookId the id of the book
+ * @returns {object} error and result key:value pairs. If there is no error,
  * result holds all reviews for the book.
  */
 const getAllBookReviews = async (bookId) => {
 	const reviews = await reviewsData.getBookReviews(bookId);
 
 	if (!reviews[0]) {
-		return { error: serviceErrors.NO_DATABASE_CHANGES,
-			result: null };
+		return { error: serviceErrors.NO_DATABASE_CHANGES, result: null };
 	}
-	return { error: null,
-		result: reviews };
+	return { error: null, result: reviews };
 };
 
 /**
@@ -27,11 +25,11 @@ const getAllBookReviews = async (bookId) => {
  */
 const getReviewById = async (id) => {
 	const review = await reviewsData.getReview(id);
-	
+
 	if (!review) {
 		return null;
 	}
-	
+
 	return review;
 };
 
@@ -40,22 +38,19 @@ const getReviewById = async (id) => {
  * @param {object} body the review info to post
  * @param {string} userId the user posting the review's id
  * @param {number} bookId the book that is reviewed's id
- * @returns {object} error and result key:value pairs. If there is no error, 
+ * @returns {object} error and result key:value pairs. If there is no error,
  * result holds the info for the posted review.
  */
 const postReview = async (body, userId, bookId) => {
-
 	const isReviewed = await reviewsData.getReviewByUser(bookId, userId);
 
-	if (!isReviewed){
+	if (!isReviewed) {
 		const res = await reviewsData.postBookReview(body, userId, bookId);
 		const review = await getReviewById(res.insertId);
 
-		return { error: null,
-				result: review };
+		return { error: null, result: review };
 	} else {
-		return { error: serviceErrors.DUPLICATE_RECORD,
-				result: null };
+		return { error: serviceErrors.DUPLICATE_RECORD, result: null };
 	}
 };
 
@@ -65,15 +60,14 @@ const postReview = async (body, userId, bookId) => {
  * @param {object} body the review info to update
  * @param {string} role the role of the user trying to update
  * @param {number} users_id the id of the user trying to update
- * @returns {object} error and result key:value pairs. If there is no error, 
+ * @returns {object} error and result key:value pairs. If there is no error,
  * result holds the info for the update.
  */
 const updateReviewById = async (reviewid, body, role, users_id) => {
 	const review = await getReviewById(reviewid);
 
 	if (!review) {
-		return { error: serviceErrors.NOT_FOUND,
-			result: null };
+		return { error: serviceErrors.NOT_FOUND, result: null };
 	}
 
 	const title = body.title || review.title;
@@ -83,15 +77,12 @@ const updateReviewById = async (reviewid, body, role, users_id) => {
 		const update = await reviewsData.updateReview(review.id, title, content);
 
 		if (!update.affectedRows) {
-			return { error: serviceErrors.NO_DATABASE_CHANGES,
-				result: null };
+			return { error: serviceErrors.NO_DATABASE_CHANGES, result: null };
 		}
-		return { error: null,
-			result: update };
+		return { error: null, result: update };
 	}
 
-	return { error: serviceErrors.NOT_PERMITTED,
-		result: null };
+	return { error: serviceErrors.NOT_PERMITTED, result: null };
 };
 
 /**
@@ -115,24 +106,21 @@ const getBookById = async (id) => {
  * @param {string} userId the id of the user trying to delete
  * @param {number} bookId the id of the book the review belongs to
  * @param {string} role the role of the user trying to delete
- * @returns {object} error and result key:value pairs. If there is no error, 
+ * @returns {object} error and result key:value pairs. If there is no error,
  * result holds the info for the deleted review.
  */
 const deleteReviewById = async (reviewid, userId, bookId, role) => {
-
 	const book = await getBookById(bookId);
 	const reviewToDelete = await getReviewById(reviewid);
 
 	if (!book[0]) {
-		return { error: serviceErrors.NOT_FOUND,
-			result: null };
+		return { error: serviceErrors.NOT_FOUND, result: null };
 	}
 
 	const review = book.find((obj) => +obj.review_id === +reviewid);
 
 	if (!review) {
-		return { error: serviceErrors.NOT_FOUND,
-			result: null };
+		return { error: serviceErrors.NOT_FOUND, result: null };
 	}
 	const { review_id, user_id } = review;
 
@@ -140,16 +128,12 @@ const deleteReviewById = async (reviewid, userId, bookId, role) => {
 		const update = await reviewsData.deleteReview(review_id);
 
 		if (!update.affectedRows) {
-			return { error: serviceErrors.NO_DATABASE_CHANGES,
-				result: null };
+			return { error: serviceErrors.NO_DATABASE_CHANGES, result: null };
 		}
 
-		return { error: null,
-			result: reviewToDelete };
-
+		return { error: null, result: reviewToDelete };
 	} else if (+user_id !== +userId) {
-		return { error: serviceErrors.NOT_PERMITTED,
-			result: null };
+		return { error: serviceErrors.NOT_PERMITTED, result: null };
 	}
 };
 
@@ -158,7 +142,7 @@ const deleteReviewById = async (reviewid, userId, bookId, role) => {
  * @param {string} review_id the id of the review
  * @param {string} user_id the id of the user trying to rate the review
  * @param {number} rating the given rating
- * @returns {object} error and result key:value pairs. If there is no error, 
+ * @returns {object} error and result key:value pairs. If there is no error,
  * result holds a success message.
  */
 const rateReviewById = async (review_id, user_id, rating, role) => {
@@ -168,7 +152,6 @@ const rateReviewById = async (review_id, user_id, rating, role) => {
 	);
 
 	if (hasThisUserRatedThis[0] && hasThisUserRatedThis[0].rating === +rating) {
-		// console.log('duplicate entry');
 		return { error: serviceErrors.DUPLICATE_RECORD, result: null };
 	} else if (
 		hasThisUserRatedThis[0] &&
@@ -183,7 +166,6 @@ const rateReviewById = async (review_id, user_id, rating, role) => {
 		await reviewsData.rateReview(review_id, user_id, rating);
 
 		const changedLevel = await changeLevel(user_id, role);
-		// console.log(changeLevel);
 		return {
 			error: null,
 			result: { message: `You ${+rating ? 'liked' : 'disliked'} this review` },

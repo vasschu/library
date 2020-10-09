@@ -82,15 +82,15 @@ const getBorrowedBookByUser = async (userId, bookId, isDeleted) => {
 
 /**
  * Create a book
- * @param {string} title 
- * @param {string} author 
- * @param {string} description 
+ * @param {string} title
+ * @param {string} author
+ * @param {string} description
  * @returns {object} details for the created book
  */
 const createBook = async (title, author, description) => {
 	const sql = `INSERT INTO library.books (title, author, description, image)
 	VALUES (?, ?, ?, ?);`;
-	
+
 	return await pool.query(sql, [title, author, description, 0]);
 };
 
@@ -102,7 +102,7 @@ const createBook = async (title, author, description) => {
 const getById = async (id) => {
 	// const sql = `SELECT id, title, author, description, image FROM books
 	// WHERE id = ?`;
-	// console.log(id);
+
 	const sql = `SELECT * FROM books
 	WHERE id = ?`;
 
@@ -113,17 +113,17 @@ const getById = async (id) => {
 /**
  * Update a book
  * @param {number} id the book's id
- * @param {string} title 
- * @param {string} author 
- * @param {string} description 
- * @param {string} image 
+ * @param {string} title
+ * @param {string} author
+ * @param {string} description
+ * @param {string} image
  * @returns {object} details for the updated book
  */
 const updateBook = async (id, title, author, description, image) => {
 	const sql = `UPDATE books
     SET title = ?, author = ?, description = ?, image = ?
 	WHERE id = ?;`;
-	
+
 	const updated = pool.query(sql, [title, author, description, image, id]);
 
 	return updated;
@@ -144,8 +144,8 @@ const deleteBook = async (id) => {
 
 /**
  * Gets borrowed book info
- * @param {number} bookId 
- * @param {string} userId 
+ * @param {number} bookId
+ * @param {string} userId
  * @returns {object} the borrow details || undefined
  */
 const getBorowed = async (bookId, userId) => {
@@ -160,8 +160,8 @@ const getBorowed = async (bookId, userId) => {
 
 /**
  * Get info book rating info
- * @param {number} bookId 
- * @param {string} userId 
+ * @param {number} bookId
+ * @param {string} userId
  * @returns {object} book rating info
  */
 const getBookRating = async (bookId, userId) => {
@@ -175,9 +175,9 @@ const getBookRating = async (bookId, userId) => {
 
 /**
  * Create rating
- * @param {number} bookId 
- * @param {string} userId 
- * @param {number} rating 
+ * @param {number} bookId
+ * @param {string} userId
+ * @param {number} rating
  * @returns {object} rating details
  */
 const createRate = async (bookId, userId, rating) => {
@@ -189,9 +189,9 @@ const createRate = async (bookId, userId, rating) => {
 
 /**
  * Update rating
- * @param {number} bookId 
- * @param {string} userId 
- * @param {number} rating 
+ * @param {number} bookId
+ * @param {string} userId
+ * @param {number} rating
  * @returns {object} rating details
  */
 const updateRate = async (bookId, userId, rating) => {
@@ -205,13 +205,13 @@ const updateRate = async (bookId, userId, rating) => {
 
 const changeLevel = async (userId, role) => {
 	let level;
-	if (role === 'regular'){
+	if (role === 'regular') {
 		level = 1;
-	} else if (role === 'powerReader'){
+	} else if (role === 'powerReader') {
 		level = 3;
-	} else if (role === 'masterReader'){
+	} else if (role === 'masterReader') {
 		level = 4;
-	} else if (role === 'moderator'){
+	} else if (role === 'moderator') {
 		level = 5;
 	}
 
@@ -221,7 +221,7 @@ const changeLevel = async (userId, role) => {
 
 	const res = await pool.query(sql, [level, userId]);
 
-	if(res.affectedRows){
+	if (res.affectedRows) {
 		return role;
 	}
 

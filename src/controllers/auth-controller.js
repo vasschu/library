@@ -33,7 +33,7 @@ authController
 		) {
 			return res.status(400).send({ message: 'Invalid username/password' });
 		}
-		console.log(user);
+
 		const payload = {
 			sub: user.result.id,
 			username: user.result.username,

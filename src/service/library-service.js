@@ -53,8 +53,6 @@ const getBookById = async (id) => {
 const borrowBook = async (bookId, userId) => {
 	const bookToBorrow = await libraryData.getBy(books.id, bookId);
 
-	
-	
 	if (!bookToBorrow[0].borrowed) {
 		const book = await libraryData.borrowBookById(bookId, userId);
 		return { error: null, result: book };
@@ -79,8 +77,7 @@ const returnBook = async (bookId, userId, role) => {
 	if (isBookBorrowedByThisUser[0]) {
 		const book = await libraryData.returnBookById(bookId);
 
-		const changedLevel = await changeLevel(userId, role);		
-		console.log(changedLevel);
+		const changedLevel = await changeLevel(userId, role);
 
 		return { error: null, result: book, level: changedLevel };
 	} else {
@@ -96,9 +93,9 @@ const returnBook = async (bookId, userId, role) => {
 const createBook = async (body) => {
 	const { title, author, description } = body;
 
-	const response = await libraryData.createBook(title, author, description); 
+	const response = await libraryData.createBook(title, author, description);
 	return { error: null, result: response };
-}; 
+};
 
 /**
  * Update a book
@@ -114,17 +111,19 @@ const updateBook = async (id, body) => {
 	const description = body.description || book.description;
 	const image = body.image || book.image;
 
-	const updated = await libraryData.updateBook(id, title, author, description, image);
+	const updated = await libraryData.updateBook(
+		id,
+		title,
+		author,
+		description,
+		image,
+	);
 
 	if (!updated.affectedRows) {
-		return { error: serviceErrors.NO_DATABASE_CHANGES,
-				result: null };
+		return { error: serviceErrors.NO_DATABASE_CHANGES, result: null };
 	}
 
-	return { error: null,
-			result: updated };
-
-	
+	return { error: null, result: updated };
 };
 
 /**
@@ -136,12 +135,10 @@ const deleteBook = async (id) => {
 	const deleted = await libraryData.deleteBook(id);
 
 	if (!deleted.affectedRows) {
-		return { error: serviceErrors.NO_DATABASE_CHANGES,
-				result: null };
+		return { error: serviceErrors.NO_DATABASE_CHANGES, result: null };
 	}
 
-	return { error: null,
-		result: deleted };
+	return { error: null, result: deleted };
 };
 
 /**
@@ -152,44 +149,35 @@ const deleteBook = async (id) => {
  * @return {object} holds 'error' if operation fails or 'result' if return is succesful
  */
 const rateBook = async (bookId, user, rating) => {
-	const {id, role} = user;
+	const { id, role } = user;
 	const isBorrowed = await libraryData.getById(bookId, id);
 
 	if (!isBorrowed) {
-		return { error: serviceErrors.NOT_FOUND,
-				result: null};
-
-
+		return { error: serviceErrors.NOT_FOUND, result: null };
 	}
 
 	const isReviewed = await reviewsData.getReviewByUser(bookId, id);
 
 	if (!isReviewed) {
-		return { error: serviceErrors.NOT_PERMITTED,
-				result: null};
+		return { error: serviceErrors.NOT_PERMITTED, result: null };
 	}
 
 	const ratedBook = await libraryData.getBookRating(bookId, id);
 
 	let rate;
-	if (!ratedBook){
+	if (!ratedBook) {
 		rate = await libraryData.createRate(bookId, id, rating);
-
 	} else {
 		rate = await libraryData.updateRate(bookId, id, rating);
-
 	}
 
 	if (!rate.affectedRows) {
-		return { error: serviceErrors.NO_DATABASE_CHANGES,
-				result: null };
+		return { error: serviceErrors.NO_DATABASE_CHANGES, result: null };
 	}
 
 	const changedLevel = await changeLevel(id, role);
 
-	return {error: null,
-			result: rate,
-			level: changedLevel};
+	return { error: null, result: rate, level: changedLevel };
 };
 
 export default {

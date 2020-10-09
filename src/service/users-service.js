@@ -43,9 +43,8 @@ const logIn = async (userDetails) => {
 		return { error: serviceErrors.INVALID_LOGIN, result: null };
 	}
 
-	return { error: null, result: user};
+	return { error: null, result: user };
 };
-
 
 /**
  * Delete user
@@ -54,8 +53,6 @@ const logIn = async (userDetails) => {
  * @returns {object} error and result key:value pairs
  */
 const deleteUser = async (id, role) => {
-	console.log(typeof id);
-	console.log(typeof role);
 	if (role === 'admin') {
 		const removedUser = await usersData.deleteUser(id);
 		if (removedUser.affectedRows === 0) {
