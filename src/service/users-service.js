@@ -48,7 +48,7 @@ const logIn = async (userDetails) => {
 
 /**
  * Delete user
- * @param {string} id the user to be deleted's id
+ * @param {number} id the user to be deleted's id
  * @param {string} role the role of the user initiating the deletion
  * @returns {object} error and result key:value pairs
  */
@@ -65,7 +65,7 @@ const deleteUser = async (id, role) => {
 
 /**
  * Ban user
- * @param {string} id the user to be banned's id
+ * @param {number} id the user to be banned's id
  * @param {string} reason the reason for banning the user
  * @param {string} role the role of the user initiating the banning
  * @returns {object} error and result key:value pairs

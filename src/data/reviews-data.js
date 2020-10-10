@@ -17,7 +17,7 @@ const getBookReviews = async (bookId) => {
 /**
  * Post a book review
  * @param {object} body of the review
- * @param {string} userId
+ * @param {number} userId
  * @param {number} bookId
  * @returns {object} details about the review
  */

@@ -161,7 +161,7 @@ const getBorowed = async (bookId, userId) => {
 /**
  * Get info book rating info
  * @param {number} bookId
- * @param {string} userId
+ * @param {number} userId
  * @returns {object} book rating info
  */
 const getBookRating = async (bookId, userId) => {
@@ -176,7 +176,7 @@ const getBookRating = async (bookId, userId) => {
 /**
  * Create rating
  * @param {number} bookId
- * @param {string} userId
+ * @param {number} userId
  * @param {number} rating
  * @returns {object} rating details
  */
@@ -190,7 +190,7 @@ const createRate = async (bookId, userId, rating) => {
 /**
  * Update rating
  * @param {number} bookId
- * @param {string} userId
+ * @param {number} userId
  * @param {number} rating
  * @returns {object} rating details
  */

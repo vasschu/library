@@ -20,7 +20,7 @@ const getAllBookReviews = async (bookId) => {
 
 /**
  * Get a review by id
- * @param {string} id the id of the review
+ * @param {number} id the id of the review
  * @returns {object} null || the review data
  */
 const getReviewById = async (id) => {
@@ -36,7 +36,7 @@ const getReviewById = async (id) => {
 /**
  * Post a review
  * @param {object} body the review info to post
- * @param {string} userId the user posting the review's id
+ * @param {number} userId the user posting the review's id
  * @param {number} bookId the book that is reviewed's id
  * @returns {object} error and result key:value pairs. If there is no error,
  * result holds the info for the posted review.
@@ -56,7 +56,7 @@ const postReview = async (body, userId, bookId) => {
 
 /**
  * Update a review
- * @param {string} reviewid the id of the review
+ * @param {number} reviewid the id of the review
  * @param {object} body the review info to update
  * @param {string} role the role of the user trying to update
  * @param {number} users_id the id of the user trying to update
@@ -87,7 +87,7 @@ const updateReviewById = async (reviewid, body, role, users_id) => {
 
 /**
  * Get a book by id
- * @param {string} id the id of the book
+ * @param {number} id the id of the book
  * @returns {object} null || the book data
  */
 const getBookById = async (id) => {
@@ -102,8 +102,8 @@ const getBookById = async (id) => {
 
 /**
  * Delete a review
- * @param {string} reviewid the id of the review
- * @param {string} userId the id of the user trying to delete
+ * @param {number} reviewid the id of the review
+ * @param {number} userId the id of the user trying to delete
  * @param {number} bookId the id of the book the review belongs to
  * @param {string} role the role of the user trying to delete
  * @returns {object} error and result key:value pairs. If there is no error,
@@ -139,8 +139,8 @@ const deleteReviewById = async (reviewid, userId, bookId, role) => {
 
 /**
  * Rate a review
- * @param {string} review_id the id of the review
- * @param {string} user_id the id of the user trying to rate the review
+ * @param {number} review_id the id of the review
+ * @param {number} user_id the id of the user trying to rate the review
  * @param {number} rating the given rating
  * @returns {object} error and result key:value pairs. If there is no error,
  * result holds a success message.
