@@ -1,0 +1,47 @@
+.header {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: space-between;
+    
+    padding-left: 50px;
+    padding-right: 50px;
+
+    -webkit-box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.09);
+    -moz-box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.09);
+    box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.09);
+
+    background-color: white;
+
+    
+    align-content: center;
+    align-items: center;
+}
+
+.auth-buttons, h1 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.register, .login {
+    background-color: orange;
+    color: white;
+    border: none;
+    width: 150px;
+    height: 30px;
+    font-size: 17px;
+}
+
+.register {
+    border-radius: 10px 0 0 10px;
+    border-right: 1px solid white;
+}
+
+.login {
+    border-radius: 0 10px 10px 0;
+    border-left: 1px solid white;
+
+}
+
+.register:hover, .login:hover {
+    background-color: rgb(255, 185, 55);
+}
