@@ -38,7 +38,7 @@ const getBookById = async (id) => {
 	const book = await libraryData.getBy(books.id, id);
 
 	if (book[0]) {
-		return { error: null, result: book };
+		return { error: null, result: book[0] };
 	} else {
 		return { error: 'make error file', result: null };
 	}

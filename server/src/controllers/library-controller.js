@@ -15,18 +15,18 @@ import {
 import serviceErrors from '../common/error-messages/service-errors.js';
 
 const libraryController = express.Router();
-libraryController.use(authMiddleware);
-libraryController.use(
-	roleMiddleware(
-		'regular',
-		'admin',
-		'powerReader',
-		'masterReader',
-		'moderator',
-	),
-);
-libraryController.use(tokenExtract());
-libraryController.use(tokenIsBlacklisted());
+// libraryController.use(authMiddleware);
+// libraryController.use(
+// 	roleMiddleware(
+// 		'regular',
+// 		'admin',
+// 		'powerReader',
+// 		'masterReader',
+// 		'moderator',
+// 	),
+// );
+// libraryController.use(tokenExtract());
+// libraryController.use(tokenIsBlacklisted());
 
 libraryController
 	/**
@@ -61,6 +61,7 @@ libraryController
 		const booksToShow = await libraryService.getBookById(+id);
 
 		const { error, result } = booksToShow;
+		console.log(result)
 		if (!error) {
 			res.status(200).send(result);
 		} else {
