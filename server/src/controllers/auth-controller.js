@@ -7,7 +7,7 @@ import {
 	tokenExtract,
 	addTokenToBlacklist,
 	tokenIsBlacklisted,
-} from './../auth/auth-middleware.js';
+} from '../auth/auth-middleware.js';
 import { logInBody } from '../middleware/validators/login-body.js';
 import { validateBody } from '../middleware/body-validator.js';
 // import { client } from './../auth/auth-middleware.js';

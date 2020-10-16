@@ -3,7 +3,7 @@ import reviewsService from '../service/reviews-service.js';
 import serviceErrors from '../common/error-messages/service-errors.js';
 import { validateBody } from '../middleware/body-validator.js';
 import { reviewShema } from '../middleware/validators/create-review.js';
-import { rateReviewSchema } from './../middleware/validators/rate-review-schema.js';
+import { rateReviewSchema } from '../middleware/validators/rate-review-schema.js';
 import { updateReviewShema } from '../middleware/validators/update-review.js';
 import {
 	authMiddleware,

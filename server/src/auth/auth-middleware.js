@@ -1,5 +1,5 @@
 import passport from 'passport';
-import usersData from './../data/users-data.js';
+import usersData from '../data/users-data.js';
 // import redis from 'redis';
 
 export const authMiddleware = passport.authenticate('jwt', { session: false });
