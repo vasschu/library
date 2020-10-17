@@ -1,5 +1,5 @@
 import React from 'react'
-import { NavLink, Switch } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import './Header.css'
 
 const Header = () => {
@@ -19,7 +19,7 @@ const Header = () => {
       <div className="auth">
         <NavLink to="/books" style={style}><h1>Library</h1></NavLink>
         <div className="search">
-          <input type='text' />
+          <input type='text' placeholder="Search a book..." />
           <button>Search</button>
         </div>
         <div className="auth-header-links">

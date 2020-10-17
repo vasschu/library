@@ -41,12 +41,18 @@
     border-right: 1px solid white;
 }
 
+.auth, .search, .auth-header-links {
+    align-content: center;
+    align-self: center;
+}
+
 .auth input {
     width:  300px;
     border-radius: 10px;
-    border: 1px solid grey;
+    border: 1px solid rgb(172, 172, 172);
     font-size: 17px;
-    margin-right: 10px;
+    margin-right: 5px;
+    padding: 5px;
 }
 
 .auth-buttons, h1 {

@@ -6,7 +6,7 @@ import Footer from './components/Footer/Footer'
 import Books from './components/Books/Books'
 import NotFound from './components/NotFound'
 import LandingPage from './components/LandingPage/LandingPage'
-import Book from './components/Books/Book/Book';
+import IndividualBook from './components/Books/IndividualBook/IndividualBook'
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
           <Redirect path="/" exact to="/landing" />
           <Route path="/landing" component={LandingPage} />
           <Route path="/books" exact component={Books} />
-          {/* <Route path='/books/:id' component={Book} /> */}
+          <Route path='/books/:id' component={IndividualBook} />
           <Route path="*" component={NotFound} />
         </Switch>
         <Footer />
