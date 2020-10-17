@@ -7,7 +7,7 @@ import * as borrow from '../common/borrowed-books-table-common.js';
  * @return {array} holding all books indexed by id
  */
 const getAll = async () => {
-	const sql = `SELECT b.id, b.title, b.author, bb.is_deleted as borrowed, b.is_unlisted FROM books b
+	const sql = `SELECT b.id, b.title, b.author, bb.is_deleted as borrowed, b.is_unlisted, b.image FROM books b
 	left join borrowed_books bb
 	on b.id = bb.books_id and bb.is_deleted = 0
 	order by b.id asc;`;
