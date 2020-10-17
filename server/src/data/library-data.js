@@ -23,7 +23,7 @@ const getAll = async () => {
  * @return {array} holding the results of the search. Empty array of no matches.
  */
 const getBy = async (column, value) => {
-	const sql = `SELECT b.id, b.title, b.author, bb.is_deleted as borrowed, b.image FROM books b  
+	const sql = `SELECT b.id, b.title, b.author, bb.is_deleted as borrowed, b.image, b.description FROM books b  
 	left join borrowed_books bb
 	on b.id = bb.books_id and bb.is_deleted = 0
 	WHERE b.${column} like "%${value}%";`;
@@ -228,6 +228,16 @@ const changeLevel = async (userId, role) => {
 	return null;
 };
 
+const getAverageBookRate = async (bookId) => {
+	const sql = `SELECT AVG(rating) AS average
+	FROM book_ratings
+	WHERE books_id = ?;`
+
+	const res = await pool.query(sql, [bookId]);
+	console.log(res)
+	return res[0].average;
+}
+
 export default {
 	getAll,
 	getBy,
@@ -243,4 +253,5 @@ export default {
 	createRate,
 	updateRate,
 	changeLevel,
+	getAverageBookRate
 };

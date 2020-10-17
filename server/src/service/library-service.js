@@ -180,6 +180,12 @@ const rateBook = async (bookId, user, rating) => {
 	return { error: null, result: rate, level: changedLevel };
 };
 
+const getAverageBookRating = async (bookId) => {
+	const rate = await libraryData.getAverageBookRate(bookId);
+
+	return rate
+}
+
 export default {
 	getAllRecords,
 	filterBooksByName,
@@ -190,4 +196,5 @@ export default {
 	updateBook,
 	deleteBook,
 	rateBook,
+	getAverageBookRating,
 };

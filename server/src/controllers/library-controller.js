@@ -220,6 +220,16 @@ libraryController
 				.status(200)
 				.send({ message: 'Rated successfully', level: rate.level });
 		},
-	);
+	)
+
+	.get('/:id/rate', async (req, res) => {
+		const { id } = req.params;
+
+		const rating = await libraryService.getAverageBookRating(id)
+
+		return res
+		.status(200)
+		.send({rating})
+	})
 
 export default libraryController;
