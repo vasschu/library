@@ -1,0 +1,38 @@
+.book {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: space-evenly;
+
+    border: none;
+    border-radius: 10px;
+
+    -webkit-box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.09);
+    -moz-box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.09);
+    box-shadow: 2px 5px 5px 0px rgba(0,0,0,0.09);
+
+    padding: 10px;
+    margin: 10px;
+
+    align-items: center;
+    align-content: center;
+}
+
+.book img {
+    width: 300px;
+    margin-right: 10px;
+}
+
+.book p {
+    margin-bottom: 100px;
+}
+
+.book button {
+    border-radius: 10px;
+    background-color: orange;
+    color: white;
+    border: none;
+    width: 150px;
+    height: 30px;
+    font-size: 17px;
+    margin-bottom: 10px;
+}

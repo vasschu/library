@@ -1,9 +1,23 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { NavLink } from 'react-router-dom'
-import './HomePage.css';
+import './LandingPage.css';
 
-const HomePage = ({book}) => {
+const LandingPage = () => {
+  const [book, setBook] = useState('')
+  const [error, setError] = useState(null);
+  
+  useEffect(() => {
+      // const res = await fetch('localhost:5500/books/4');
+      // const book = await res.json()
+      // setBook(book);
+
+      fetch('http://localhost:5500/books/4')
+      .then(res => res.json())
+      .then(data => setBook(data))
+      .catch(error => setError(error.message))
+  }, [])
+
     const {image} = book;
     return (
         // visualize book
@@ -19,4 +33,4 @@ const HomePage = ({book}) => {
     )
 }
 
-export default HomePage;
+export default LandingPage;

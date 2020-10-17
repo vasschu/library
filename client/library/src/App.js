@@ -3,8 +3,10 @@ import { BrowserRouter, Redirect, Route, Switch} from 'react-router-dom';
 import './App.css';
 import Header from './components/Header/Header'
 import Footer from './components/Footer/Footer'
-import Main from './components/Main/Main'
+import Books from './components/Books/Books'
 import NotFound from './components/NotFound'
+import LandingPage from './components/LandingPage/LandingPage'
+import Book from './components/Books/Book/Book';
 
 function App() {
   return (
@@ -12,8 +14,11 @@ function App() {
       <BrowserRouter>
         <Header />
         <Switch>
+          {/* We can add conditional for redirect auth user -> homepage / unauth user -> landingpage */}
           <Redirect path="/" exact to="/landing" />
-          <Route path="/landing" component={Main} />
+          <Route path="/landing" component={LandingPage} />
+          <Route path="/books" exact component={Books} />
+          {/* <Route path='/books/:id' component={Book} /> */}
           <Route path="*" component={NotFound} />
         </Switch>
         <Footer />

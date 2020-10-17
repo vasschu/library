@@ -1,9 +1,6 @@
 .footer {
     background-color: orange;
     color: white;
-    position: absolute;
-    left: 0;
-    bottom: 0;
     width: 100%;
     overflow: hidden;   
     padding-top: 20px;
