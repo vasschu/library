@@ -19,6 +19,7 @@ function App() {
           <Route path="/landing" component={LandingPage} />
           <Route path="/books" exact component={Books} />
           <Route path='/books/:id' component={IndividualBook} />
+          {/* <Route path='/books/:id/reviews/:id' component={Review} /> */}
           <Route path="*" component={NotFound} />
         </Switch>
         <Footer />
