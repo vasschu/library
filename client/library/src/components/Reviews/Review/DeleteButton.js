@@ -1,7 +1,19 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 const DeleteButton = (id) => {
-	const deleteButton = <button className='delete-review-button'>Delete</button>;
+
+	const deleteReview = () => {
+		console.log('DeleteData');
+	};
+
+	const deleteButton = (
+  <button className='delete-review-button' onClick={deleteReview}>
+    Delete
+  </button>
+	);
+
+	
+	
 
 	return <>{deleteButton}</>;
 };
