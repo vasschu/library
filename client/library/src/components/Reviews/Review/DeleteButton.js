@@ -1,19 +1,15 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 
-const DeleteButton = (id) => {
+const DeleteButton = (props) => {
+	const { id, deleteFunction } = props;
 
-	const deleteReview = () => {
-		console.log('DeleteData');
-	};
+	const actualDelete = () => deleteFunction(id);
 
 	const deleteButton = (
-  <button className='delete-review-button' onClick={deleteReview}>
-    Delete
-  </button>
+		<button className='delete-review-button' onClick={actualDelete}>
+			Delete
+		</button>
 	);
-
-	
-	
 
 	return <>{deleteButton}</>;
 };
