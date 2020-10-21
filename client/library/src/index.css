@@ -15,3 +15,15 @@ code {
 button:hover {
   cursor: pointer;
 }
+
+button {
+  border-radius: 10px;
+  background-color: orange;
+  color: white;
+  border: none;
+  width: 150px;
+  height: 30px;
+  font-size: 17px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+}

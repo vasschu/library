@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, {useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import BorrowButton from '../Book/BorrowButton';
@@ -14,7 +15,15 @@ const IndividualBook = (props) => {
         .then(res => res.json())
         .then(book => setBook(book))
         .catch(err => setError(err))
+
+
+        // (async (id) => {
+        //   const res = await fetch(`http://localhost:5500/books/${id}`);
+        //   const book = await res.json();
+        //   setBook(book)
+        // })(id)
     }, [id])
+
 
     const {image, title, author, borrowed, description} = book;
     

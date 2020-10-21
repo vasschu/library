@@ -131,7 +131,7 @@ libraryController
 	 */
 	.post(
 		'/',
-		roleMiddleware('admin'),
+		// roleMiddleware('admin'),
 		validateBody(createBook),
 		async (req, res) => {
 			const createBook = await libraryService.createBook(req.body);
@@ -154,7 +154,7 @@ libraryController
 	 */
 	.put(
 		'/:id',
-		roleMiddleware('admin'),
+		// roleMiddleware('admin'),
 		validateBody(updateBook),
 		async (req, res) => {
 			const { id } = req.params;
@@ -174,7 +174,9 @@ libraryController
 	 * Delete book (admin only)
 	 * @param {number} id from http
 	 * @return {object} return message if book is deleted*/
-	.delete('/:id/', roleMiddleware('admin'), async (req, res) => {
+	.delete('/:id/',
+		// roleMiddleware('admin'),
+		async (req, res) => {
 		const { id } = req.params;
 
 		const del = await libraryService.deleteBook(id);
