@@ -24,6 +24,11 @@ const AddBook = ({book}) => {
       description,
       image
     });
+
+    setTitle('');
+    setAuthor('');
+    setDescr('');
+    setImage('');
   }
 
   const createFormVisibility = isHidden ? (
