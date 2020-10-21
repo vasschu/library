@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
+import AddReview from '../../Reviews/Review/AddReview';
 import BorrowButton from '../Book/BorrowButton';
 import Reviews from './../../Reviews/Reviews';
 
@@ -43,6 +44,7 @@ const IndividualBook = (props) => {
 				<NavLink to={'/books/' + id + '/reviews'}>
 					<button>Add a review</button>
 				</NavLink>
+				<AddReview bookId={id} />
 			</div>
 			<Reviews id={id} />
 		</div>

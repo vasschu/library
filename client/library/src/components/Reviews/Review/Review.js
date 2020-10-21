@@ -7,6 +7,7 @@ const Review = (props) => {
 		console.log(`Delete Data ${id}`);
 	};
 
+	
 	return (
 		<div className='review'>
 			<hr />
