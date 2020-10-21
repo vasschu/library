@@ -81,7 +81,7 @@ const IndividualBook = (props) => {
       <NavLink to={'/books/' + id + '/reviews'}>
         <button>Add a review</button>
       </NavLink>
-      {/* <AddReview bookId={id} /> */}
+      <AddReview bookId={id} />
     </div>
     <Reviews id={id} />
   </div>
