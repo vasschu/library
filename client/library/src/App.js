@@ -7,7 +7,7 @@ import Books from './components/Books/Books';
 import User from './components/User/User';
 import NotFound from './components/NotFound';
 import LandingPage from './components/LandingPage/LandingPage';
-import IndividualBook from './components/Books/IndividualBook/IndividualBook';
+import IndividualBook from './components/IndividualBook/IndividualBook';
 
 function App() {
 	return (

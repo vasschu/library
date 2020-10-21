@@ -5,7 +5,6 @@ import './Books.css'
 
 const Books = () => {
     const [books, setBooks] = useState([]);
-    const [res, setRes] = useState();
     const [error, setError] = useState(null);
     const [newBook, setNewBook] = useState()
 
