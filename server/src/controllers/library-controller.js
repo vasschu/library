@@ -15,18 +15,18 @@ import {
 import serviceErrors from '../common/error-messages/service-errors.js';
 
 const libraryController = express.Router();
-// libraryController.use(authMiddleware);
-// libraryController.use(
-// 	roleMiddleware(
-// 		'regular',
-// 		'admin',
-// 		'powerReader',
-// 		'masterReader',
-// 		'moderator',
-// 	),
-// );
-// libraryController.use(tokenExtract());
-// libraryController.use(tokenIsBlacklisted());
+libraryController.use(authMiddleware);
+libraryController.use(
+	roleMiddleware(
+		'regular',
+		'admin',
+		'powerReader',
+		'masterReader',
+		'moderator',
+	),
+);
+libraryController.use(tokenExtract());
+libraryController.use(tokenIsBlacklisted());
 
 libraryController
 	/**
@@ -78,8 +78,10 @@ libraryController
 	.post(
 		'/:id',
 		isBannedMiddleware(),
-		validateBody(borrowBookShema),
+		// validateBody(borrowBookShema),
 		async (req, res) => {
+			console.log(req.user);
+			console.log(req.params);
 			const { id } = req.params;
 			// const userId = req.body.users_id;
 
@@ -105,6 +107,7 @@ libraryController
 	 */
 	.patch('/:id', validateBody(borrowBookShema), async (req, res) => {
 		const { id } = req.params;
+		console.log(id)
 		// const userId = req.body.users_id;
 		const { role } = req.user;
 

@@ -24,7 +24,7 @@ const getAll = async () => {
  * @return {array} holding the results of the search. Empty array of no matches.
  */
 const getBy = async (column, value) => {
-	const sql = `SELECT b.id, b.title, b.author, bb.is_deleted as borrowed, b.image, b.description FROM books b  
+	const sql = `SELECT b.id, b.title, b.author, bb.is_deleted as borrowed, b.image, b.description, bb.users_id as borrow_user FROM books b  
 	left join borrowed_books bb
 	on b.id = bb.books_id and bb.is_deleted = 0
 	WHERE b.${column} like "%${value}%";`;

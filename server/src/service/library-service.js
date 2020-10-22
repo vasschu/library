@@ -55,7 +55,7 @@ const borrowBook = async (bookId, userId) => {
 
 	if (!bookToBorrow[0].borrowed) {
 		const book = await libraryData.borrowBookById(bookId, userId);
-		return { error: null, result: book };
+		return { error: null, result: book[0] };
 	} else {
 		return { error: 'make error file', result: null };
 	}
@@ -79,7 +79,7 @@ const returnBook = async (bookId, userId, role) => {
 
 		const changedLevel = await changeLevel(userId, role);
 
-		return { error: null, result: book, level: changedLevel };
+		return { error: null, result: book[0], level: changedLevel };
 	} else {
 		return { error: 'make error file', result: null };
 	}
@@ -105,25 +105,26 @@ const createBook = async (body) => {
  */
 const updateBook = async (id, body) => {
 	const book = await libraryData.getById(id);
-
+	console.log(book, '***', body, id)
 	const title = body.title || book.title;
 	const author = body.author || book.author;
 	const description = body.description || book.description;
 	const image = body.image || book.image;
-
+	
 	const updated = await libraryData.updateBook(
 		id,
 		title,
 		author,
 		description,
 		image,
-	);
-
-	if (!updated.affectedRows) {
-		return { error: serviceErrors.NO_DATABASE_CHANGES, result: null };
-	}
-
-	return { error: null, result: updated };
+		);
+		
+		if (!updated.affectedRows) {
+			return { error: serviceErrors.NO_DATABASE_CHANGES, result: null };
+		}
+		
+	const updatedBook = await libraryData.getById(id);
+	return { error: null, result: updatedBook };
 };
 
 /**
