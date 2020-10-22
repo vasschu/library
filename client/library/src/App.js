@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import './App.css';
 import Header from './components/Header/Header';
@@ -12,14 +12,22 @@ import IndividualBook from './components/IndividualBook/IndividualBook';
 import { AuthContext } from './components/Context/AuthContext';
 
 function App() {
-	const [authValue, setAuthValue] = useState(false);
+	const isAuth = !!localStorage.getItem('token');
+	const [auth, setAuth] = useState(isAuth);
+	const setLoginState = (isLogged, token = null) => {
+		if (isLogged) {
+			localStorage.setItem('token', token);
+			setAuth(true);
+		} else {
+			localStorage.removeItem('token');
+			setAuth(false);
+		}
+	};
 
 	return (
   <div className='App'>
     <BrowserRouter>
-      <AuthContext.Provider
-        value={{ isLoggedIn: authValue, setLoginState: setAuthValue }}
-      >
+      <AuthContext.Provider value={{ isLoggedIn: auth, setLoginState }}>
         <Header />
         <Switch>
           {/* We can add conditional for redirect auth user -> homepage / unauth user -> landingpage */}
