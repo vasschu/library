@@ -8,6 +8,7 @@ import User from './components/User/User';
 import NotFound from './components/NotFound';
 import LandingPage from './components/LandingPage/LandingPage';
 import LoginPage from './components/LoginPage/LoginPage';
+import RegisterPage from './components/RegisterPage/RegisterPage';
 import IndividualBook from './components/IndividualBook/IndividualBook';
 import { AuthContext } from './components/Context/AuthContext';
 
@@ -34,6 +35,7 @@ function App() {
           <Redirect path='/' exact to='/landing' />
           <Route path='/landing' component={LandingPage} />
           <Route path='/login' component={LoginPage} />
+          <Route path='/register' component={RegisterPage} />
           <Route path='/books' exact component={Books} />
           <Route path='/books/:id' component={IndividualBook} />
           <Route path='/user' exact component={User} />
