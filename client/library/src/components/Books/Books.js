@@ -10,7 +10,14 @@ const Books = () => {
 
     
     useEffect(() => {
-        fetch(`http://localhost:5500/books`)
+        fetch(`http://localhost:5500/books`, {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjI0LCJ1c2VybmFtZSI6InZlcmppIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjAzMzg3NTk4LCJleHAiOjE2MTYzNDc1OTh9.vWq90kIkz2r89Y5UqF-rcUutWXdft_aZqO25Y27YYMQ',
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+          }
+        })
         .then(res => res.json())
         .then(book => setBooks(book))
         .catch(err => setError(err))
@@ -25,10 +32,12 @@ const Books = () => {
     useEffect(() => {
       if (newBook) {
         fetch(`http://localhost:5500/books/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjI0LCJ1c2VybmFtZSI6InZlcmppIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjAzMzg3NTk4LCJleHAiOjE2MTYzNDc1OTh9.vWq90kIkz2r89Y5UqF-rcUutWXdft_aZqO25Y27YYMQ',
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+          },
         body: JSON.stringify(newBook),
       })
       .then(res => res.json())
@@ -36,6 +45,8 @@ const Books = () => {
       .catch(err => setError(err))
     }
   }, [newBook])
+
+
 
   // console.log(res);
 
