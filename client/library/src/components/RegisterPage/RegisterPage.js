@@ -1,39 +1,36 @@
 /* eslint-disable react/prop-types */
 import React, { useContext, useState } from 'react';
-import { AuthContext } from './../Context/AuthContext';
+import { AuthContext } from '../Context/AuthContext';
 
-const LoginPage = () => {
-	const [user, onChangeUser] = useState('');
-	const [pass, onChangePass] = useState('');
+const RegisterPage = () => {
+	const [user, setUser] = useState('');
+	const [pass, setPass] = useState('');
 
 	const { setLoginState } = useContext(AuthContext);
 
 	const data = { username: user, password: pass };
 
-	const login = () => {
-		fetch(`http://localhost:5500/auth/session`, {
+	const register = () => {
+		fetch(`http://localhost:5500/users`, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify(data),
 		})
 			.then((res) => res.json())
 			.then((res) => {
-				if (typeof res.token === 'string' && res.token.length > 20) {
-					console.log('token recieved');
-					setLoginState(true, res.token);
-				}
+				console.log('Registration done');
 			})
 			.catch((err) => console.log(err));
 	};
 
-	const updateUser = (value) => onChangeUser(value);
-	const updatePass = (value) => onChangePass(value);
+	const updateUser = (value) => setUser(value);
+	const updatePass = (value) => setPass(value);
 
 	return (
   <div className='login-page-layout'>
     <div className='call-to-action'>
       <h1 className='call-to-action-text'>
-        Login to get access to the world's greatest stories
+        Register to get access to the world's greatest stories
       </h1>
       <br />
       <span>User</span>
@@ -53,12 +50,12 @@ const LoginPage = () => {
         value={pass}
       />
       <br />
-      <button className='login-button' onClick={login}>
-        Login
+      <button className='register-button' onClick={register}>
+        Register
       </button>
     </div>
   </div>
 	);
 };
 
-export default LoginPage;
+export default RegisterPage;
