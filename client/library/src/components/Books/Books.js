@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import Book from './Book/Book'
 import AddBook from './AddBook/AddBook'
+import { token, tokenData } from '../../common/common.js'
 import './Books.css'
 
 const Books = () => {
+  console.log(token)
     const [books, setBooks] = useState([]);
     const [error, setError] = useState(null);
     const [newBook, setNewBook] = useState()
@@ -13,7 +15,7 @@ const Books = () => {
         fetch(`http://localhost:5500/books`, {
           method: 'GET',
           headers: {
-            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjI0LCJ1c2VybmFtZSI6InZlcmppIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjAzMzg3NTk4LCJleHAiOjE2MTYzNDc1OTh9.vWq90kIkz2r89Y5UqF-rcUutWXdft_aZqO25Y27YYMQ',
+            'Authorization': 'Bearer ' + token,
             'Accept': 'application/json, text/plain, */*',
             'Content-Type': 'application/json'
           }
@@ -34,7 +36,7 @@ const Books = () => {
         fetch(`http://localhost:5500/books/`, {
           method: 'POST',
           headers: {
-            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjI0LCJ1c2VybmFtZSI6InZlcmppIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjAzMzg3NTk4LCJleHAiOjE2MTYzNDc1OTh9.vWq90kIkz2r89Y5UqF-rcUutWXdft_aZqO25Y27YYMQ',
+            'Authorization': 'Bearer ' + token,
             'Accept': 'application/json, text/plain, */*',
             'Content-Type': 'application/json'
           },

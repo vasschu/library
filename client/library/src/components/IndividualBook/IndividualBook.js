@@ -5,11 +5,14 @@ import AddReview from '../Reviews/Review/AddReview';
 import BorrowButton from '../Books/Book/BorrowButton';
 import Reviews from '../Reviews/Reviews';
 import EditBook from './EditBook/EditBook';
+import { token, tokenData } from '../../common/common.js'
 
 const IndividualBook = (props) => {
-	const { id } = props.match.params;
-	const token = ' eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjI0LCJ1c2VybmFtZSI6InZlcmppIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjAzMzg3NTk4LCJleHAiOjE2MTYzNDc1OTh9.vWq90kIkz2r89Y5UqF-rcUutWXdft_aZqO25Y27YYMQ'
+	console.log(tokenData)
+	console.log(token)
 
+	const { id } = props.match.params;
+	
 	const [book, setBook] = useState('');
 	const [rated, setRating] = useState('');
 	const [error, setError] = useState(null);
@@ -19,7 +22,7 @@ const IndividualBook = (props) => {
 		fetch(`http://localhost:5500/books/${id}`, {
 			method: 'GET',
 			headers: {
-				'Authorization': 'Bearer' + token,
+				Authorization: 'Bearer ' + token,
 				'Accept': 'application/json, text/plain, */*',
 				'Content-Type': 'application/json'
 			}
@@ -35,7 +38,7 @@ const IndividualBook = (props) => {
 		fetch(`http://localhost:5500/books/${id}/rate`, {
 			method: 'GET',
 			headers: {
-				'Authorization': 'Bearer' + token,
+				'Authorization': 'Bearer ' + token,
 				'Accept': 'application/json, text/plain, */*',
 				'Content-Type': 'application/json'
 			}
@@ -46,11 +49,11 @@ const IndividualBook = (props) => {
 	}, [id]);
 
 	
-	const del = (id) => {
+	const deleteBook = (id) => {
 		  fetch(`http://localhost:5500/books/${id}`, {
 			method: 'DELETE',
 			headers: {
-				'Authorization': 'Bearer' + token,
+				'Authorization': 'Bearer ' + token,
 				'Accept': 'application/json, text/plain, */*',
 				'Content-Type': 'application/json'
 			}
@@ -65,7 +68,7 @@ const IndividualBook = (props) => {
 			method: 'POST',
 			body: JSON.stringify({}),
 			headers: {
-				'Authorization': 'Bearer' + token,
+				'Authorization': 'Bearer ' + token,
 				'Accept': 'application/json, text/plain, */*',
 				'Content-Type': 'application/json'
 			}
@@ -78,7 +81,7 @@ const IndividualBook = (props) => {
 		fetch(`http://localhost:5500/books/${id}`, {
 			method: 'PATCH',
 			headers: {
-				'Authorization': 'Bearer' + token,
+				'Authorization': 'Bearer ' + token,
 				'Accept': 'application/json, text/plain, */*',
 				'Content-Type': 'application/json'
 			}
@@ -97,12 +100,12 @@ const IndividualBook = (props) => {
 		if (updatedBook) {
 		  fetch(`http://localhost:5500/books/${id}`, {
 			method: 'PUT',
+			body: JSON.stringify(updatedBook),
 			headers: {
-			  'Authorization': 'Bearer' + token,
+			  'Authorization': 'Bearer ' + token,
 			  'Accept': 'application/json, text/plain, */*',
 			  'Content-Type': 'application/json'
 			},
-		  body: JSON.stringify(updatedBook),
 		})
 		.then(res => res.json())
 		.then(data => setBook(data))
@@ -110,14 +113,7 @@ const IndividualBook = (props) => {
 	  }
 	}, [updatedBook])
 
-	const parseJwt = (token) => {
-		if (!token) { return; }
-		const base64Url = token.split('.')[1];
-		const base64 = base64Url.replace('-', '+').replace('_', '/');
-		return JSON.parse(window.atob(base64));
-	}
-	
-	const { sub: logedUser } = parseJwt(token);
+	const { sub: logedUser } = tokenData;
 
 	const { rating } = rated;
 	const fixedRating = !rating ? rating : rating.toFixed();
@@ -127,7 +123,7 @@ const IndividualBook = (props) => {
 	// check if admin
 	const adminDelete = true && 
 	(<NavLink to='/books'>
-  		<button onClick={() => del(id)}>Delete Book</button>
+  		<button onClick={() => deleteBook(id)}>Delete Book</button>
 		</NavLink>);
 
 	return (

@@ -1,5 +1,5 @@
 //get token from local storage
-const token = localStorage.getItem('token');
+export const token = localStorage.getItem('token');
 
 const parseJwt = (token) => {
 	if (!token) {
