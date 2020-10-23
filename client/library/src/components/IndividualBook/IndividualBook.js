@@ -8,9 +8,7 @@ import EditBook from './EditBook/EditBook';
 import { token, tokenData } from '../../common/common.js'
 
 const IndividualBook = (props) => {
-	console.log(tokenData)
-	console.log(token)
-
+	console.log(token);
 	const { id } = props.match.params;
 	
 	const [book, setBook] = useState('');
@@ -97,15 +95,16 @@ const IndividualBook = (props) => {
 	  };
   
 	  useEffect(() => {
+		  console.log(JSON.stringify(updatedBook));
 		if (updatedBook) {
 		  fetch(`http://localhost:5500/books/${id}`, {
 			method: 'PUT',
-			body: JSON.stringify(updatedBook),
 			headers: {
-			  'Authorization': 'Bearer ' + token,
-			  'Accept': 'application/json, text/plain, */*',
-			  'Content-Type': 'application/json'
+				'Authorization': 'Bearer ' + token,
+				'Accept': 'application/json, text/plain, */*',
+				'Content-Type': 'application/json'
 			},
+			body: JSON.stringify(updatedBook),
 		})
 		.then(res => res.json())
 		.then(data => setBook(data))
@@ -132,7 +131,7 @@ const IndividualBook = (props) => {
   <div className='book'>
     <img src={image} alt='book-cover' />
     <div className='book-info'>
-      <EditBook title={title} description={description} author={author} fixedRating={fixedRating} editBook={editBook} />
+      <EditBook title={title} description={description} author={author} image={image} fixedRating={fixedRating} editBook={editBook} />
       {adminDelete}
       <br />
       <BorrowButton

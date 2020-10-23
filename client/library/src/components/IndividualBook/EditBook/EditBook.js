@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 
 const EditBook = (props) => {
-    const {editBook, title, description, author, fixedRating} = props; 
+    const {editBook, title, description, author, image, fixedRating} = props; 
 
     const [isEditMode, setEditMode] = useState(false);
 
@@ -14,8 +14,9 @@ const EditBook = (props) => {
 
     const [newDescription, setNewDescription] = useState(description);
     useEffect(() => setNewDescription(description), [description])
-
-    const [image, setImage] = useState('');
+    
+    const [newImage, setNewImage] = useState(image);
+    useEffect(() => setNewImage(image), [image])
 
     const edit = (e) => {
         e.preventDefault();
@@ -25,7 +26,7 @@ const EditBook = (props) => {
             title: newTitle,
             author: newAuthor,
             description: newDescription,
-            image: image || null,
+            image: newImage || undefined,
         })
     }
 
@@ -35,7 +36,7 @@ const EditBook = (props) => {
         <input type='text' value={newAuthor} onChange={e => setNewAuthor(e.target.value)} />
         <p>Rating: {fixedRating} / 5</p>
         <input type='text' value={newDescription} onChange={e => setNewDescription(e.target.value)} />
-        <input type='text' placeholder='Add new image link...' value={image} onChange={e => setImage(e.target.value)} />
+        <input type='text' placeholder='Add new image link...' value={newImage} onChange={e => setNewImage(e.target.value)} />
         <button onClick={edit}>Save Book Info</button>
       </> ) : (
         <> 
