@@ -1,14 +1,14 @@
 /* eslint-disable react/prop-types */
-import React, { useContext, useState } from 'react';
-import { AuthContext } from '../Context/AuthContext';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 const RegisterPage = () => {
 	const [user, setUser] = useState('');
 	const [pass, setPass] = useState('');
 
-	const { setLoginState } = useContext(AuthContext);
-
 	const data = { username: user, password: pass };
+
+	let history = useHistory();
 
 	const register = () => {
 		fetch(`http://localhost:5500/users`, {
@@ -18,9 +18,14 @@ const RegisterPage = () => {
 		})
 			.then((res) => res.json())
 			.then((res) => {
-				console.log('Registration done');
+        if(res.user) {
+          alert(`${res.message}. Click OK to be redirected`)
+          history.push('/login')
+        } else {
+          throw new Error (res.message)
+        }
 			})
-			.catch((err) => console.log(err));
+      .catch((err) => alert(err))
 	};
 
 	const updateUser = (value) => setUser(value);
