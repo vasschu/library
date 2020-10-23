@@ -10,7 +10,7 @@ const RegisterPage = () => {
 
 	let history = useHistory();
 
-	const register = () => {
+	const registerUser = () => {
 		fetch(`http://localhost:5500/users`, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
@@ -19,7 +19,7 @@ const RegisterPage = () => {
 			.then((res) => res.json())
 			.then((res) => {
         if(res.user) {
-          alert(`${res.message}. Click OK to be redirected`)
+          alert(`${res.message} Click OK to be redirected to login`)
           history.push('/login')
         } else {
           throw new Error (res.message)
@@ -55,7 +55,7 @@ const RegisterPage = () => {
         value={pass}
       />
       <br />
-      <button className='register-button' onClick={register}>
+      <button className='register-button' onClick={registerUser}>
         Register
       </button>
     </div>

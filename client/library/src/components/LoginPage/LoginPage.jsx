@@ -1,29 +1,35 @@
 /* eslint-disable react/prop-types */
 import React, { useContext, useState } from 'react';
-import { AuthContext } from './../Context/AuthContext';
+import { AuthContext } from '../Context/AuthContext';
+import { useHistory } from 'react-router-dom';
 
 const LoginPage = () => {
 	const [user, onChangeUser] = useState('');
-	const [pass, onChangePass] = useState('');
+  const [pass, onChangePass] = useState('');
+  let history = useHistory();
+  
 
 	const { setLoginState } = useContext(AuthContext);
 
 	const data = { username: user, password: pass };
 
-	const login = () => {
+	const loginUser = () => {
 		fetch(`http://localhost:5500/auth/session`, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify(data),
 		})
 			.then((res) => res.json())
-			.then((res) => {
-				if (typeof res.token === 'string' && res.token.length > 20) {
-					console.log('token recieved');
-					setLoginState(true, res.token);
-				}
+			.then((res) => { 
+				if (res.token) {
+          alert('Successful login, please click OK to enter the temple of knowledge')
+          setLoginState(true, res.token);
+          history.push('/books')
+				} else {
+          throw new Error (res.message)
+        }
 			})
-			.catch((err) => console.log(err));
+			.catch((err) => alert(err));
 	};
 
 	const updateUser = (value) => onChangeUser(value);
@@ -53,7 +59,7 @@ const LoginPage = () => {
         value={pass}
       />
       <br />
-      <button className='login-button' onClick={login}>
+      <button className='login-button' onClick={loginUser}>
         Login
       </button>
     </div>
