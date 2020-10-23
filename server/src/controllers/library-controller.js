@@ -157,12 +157,11 @@ libraryController
 	 */
 	.put(
 		'/:id',
-		// roleMiddleware('admin'),
+		roleMiddleware('admin'),
 		validateBody(updateBook),
 		async (req, res) => {
 			const { id } = req.params;
 			const body = req.body;
-
 			const update = await libraryService.updateBook(id, body);
 
 			if (update.error === serviceErrors.NO_DATABASE_CHANGES) {

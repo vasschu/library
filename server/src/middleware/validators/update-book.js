@@ -3,8 +3,8 @@ export const updateBook = {
                       typeof title === 'undefined'),
     author: content => ((typeof content === 'string' && (content.length > 0 && content.length < 255)) ||
                         typeof content === 'undefined'),
-    description: desc => ((typeof desc === 'string' && (desc.length > 15 && desc.length < 255)) ||
+    description: desc => ((typeof desc === 'string' && (desc.length > 15 && desc.length < 5000)) ||
                         typeof desc === 'undefined'),
     image: img => (typeof img === 'string' ||
-                    typeof img === 'undefined' || typeof img === null),
+                    typeof img === 'undefined'),
 };
