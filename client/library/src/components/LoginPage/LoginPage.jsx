@@ -2,6 +2,8 @@
 import React, { useContext, useState } from 'react';
 import { AuthContext } from '../Context/AuthContext';
 import { useHistory } from 'react-router-dom';
+import userService from './../../data/userService'
+
 
 const LoginPage = () => {
 	const [user, onChangeUser] = useState('');
@@ -13,12 +15,12 @@ const LoginPage = () => {
 
 	const data = { username: user, password: pass };
 
-	const loginUser = () => {
-		fetch(`http://localhost:5500/auth/session`, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(data),
-		})
+	const loginUser = (data) => {userService.loginUser(data)
+		// fetch(`http://localhost:5500/auth/session`, {
+		// 	method: 'POST',
+		// 	headers: { 'Content-Type': 'application/json' },
+		// 	body: JSON.stringify(data),
+		// })
 			.then((res) => res.json())
 			.then((res) => { 
 				if (res.token) {

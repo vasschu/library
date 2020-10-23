@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import userService from './../../data/userService'
 
 const RegisterPage = () => {
 	const [user, setUser] = useState('');
@@ -8,14 +9,15 @@ const RegisterPage = () => {
 
 	const data = { username: user, password: pass };
 
-	let history = useHistory();
+  let history = useHistory();
 
-	const registerUser = () => {
-		fetch(`http://localhost:5500/users`, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(data),
-		})
+  const registerUser = () => { userService.create(data)
+	// const registerUser = () => {
+	// 	fetch(`http://localhost:5500/users`, {
+	// 		method: 'POST',
+	// 		headers: { 'Content-Type': 'application/json' },
+	// 		body: JSON.stringify(data),
+	// 	})
 			.then((res) => res.json())
 			.then((res) => {
         if(res.user) {

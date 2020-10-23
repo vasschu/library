@@ -1,5 +1,6 @@
 node_modules/
 
 data/pool.js
-src/config.js
+config.js
+client/library/debug.log
 server/src/config.js
