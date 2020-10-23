@@ -7,8 +7,8 @@ import Books from './components/Books/Books';
 import User from './components/User/User';
 import NotFound from './components/NotFound';
 import LandingPage from './components/LandingPage/LandingPage';
-import LoginPage from './components/LoginPage/LoginPage';
-import RegisterPage from './components/RegisterPage/RegisterPage';
+import LoginPage from './components/LoginPage/LoginPage.jsx';
+import RegisterPage from './components/RegisterPage/RegisterPage.jsx';
 import IndividualBook from './components/IndividualBook/IndividualBook';
 import { AuthContext } from './components/Context/AuthContext';
 
