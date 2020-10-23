@@ -15,12 +15,12 @@ const LoginPage = () => {
 
 	const data = { username: user, password: pass };
 
-	const loginUser = (data) => {userService.loginUser(data)
-		// fetch(`http://localhost:5500/auth/session`, {
-		// 	method: 'POST',
-		// 	headers: { 'Content-Type': 'application/json' },
-		// 	body: JSON.stringify(data),
-		// })
+	const loginUser = () => {
+		fetch(`http://localhost:5500/auth/session`, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(data),
+		})
 			.then((res) => res.json())
 			.then((res) => { 
 				if (res.token) {

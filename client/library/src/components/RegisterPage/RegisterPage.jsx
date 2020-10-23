@@ -11,13 +11,14 @@ const RegisterPage = () => {
 
   let history = useHistory();
 
-  const registerUser = () => { userService.create(data)
-	// const registerUser = () => {
-	// 	fetch(`http://localhost:5500/users`, {
-	// 		method: 'POST',
-	// 		headers: { 'Content-Type': 'application/json' },
-	// 		body: JSON.stringify(data),
-	// 	})
+  const registerUser = () => {
+    // userService.create(data)
+	const registerUser = () => {
+		fetch(`http://localhost:5500/users`, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(data),
+		})
 			.then((res) => res.json())
 			.then((res) => {
         if(res.user) {
