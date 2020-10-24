@@ -12,6 +12,7 @@ import RegisterPage from './components/RegisterPage/RegisterPage.jsx';
 import IndividualBook from './components/IndividualBook/IndividualBook';
 import { AuthContext } from './components/Context/AuthContext';
 
+
 function App() {
 	const isAuth = !!localStorage.getItem('token');
 	const [auth, setAuth] = useState(isAuth);
@@ -28,21 +29,21 @@ function App() {
 	return (
   <div className='App'>
     <BrowserRouter>
-      <AuthContext.Provider value={{ isLoggedIn: auth, setLoginState }}>
-        <Header />
-        <Switch>
-          {/* We can add conditional for redirect auth user -> homepage / unauth user -> landingpage */}
-          <Redirect path='/' exact to='/landing' />
-          <Route path='/landing' component={LandingPage} />
-          <Route path='/login' component={LoginPage} />
-          <Route path='/register' component={RegisterPage} />
-          <Route path='/books' exact component={Books} />
-          <Route path='/books/:id' component={IndividualBook} />
-          <Route path='/user' exact component={User} />
-          <Route path='*' component={NotFound} />
-        </Switch>
-        <Footer />
-      </AuthContext.Provider>
+        <AuthContext.Provider value={{ isLoggedIn: auth, setLoginState }}>
+          <Header />
+          <Switch>
+            {/* We can add conditional for redirect auth user -> homepage / unauth user -> landingpage */}
+            <Redirect path='/' exact to='/landing' />
+            <Route path='/landing' component={LandingPage} />
+            <Route path='/login' component={LoginPage} />
+            <Route path='/register' component={RegisterPage} />
+            <Route path='/books' exact component={Books} />
+            <Route path='/books/:id' component={IndividualBook} />
+            <Route path='/user' exact component={User} />
+            <Route path='*' component={NotFound} />
+          </Switch>
+          <Footer />
+        </AuthContext.Provider>
     </BrowserRouter>
   </div>
 	);

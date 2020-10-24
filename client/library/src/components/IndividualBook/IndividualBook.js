@@ -6,9 +6,10 @@ import BorrowButton from '../Books/Book/BorrowButton';
 import Reviews from '../Reviews/Reviews';
 import EditBook from './EditBook/EditBook';
 import { token, tokenData } from '../../common/common.js'
+import booksSurvice from '../../data/booksData.js'
 
 const IndividualBook = (props) => {
-	console.log(token);
+
 	const { id } = props.match.params;
 	
 	const [book, setBook] = useState('');
@@ -17,75 +18,37 @@ const IndividualBook = (props) => {
 	const [updatedBook, setUpdatedBook] = useState('')
 
 	useEffect(() => {
-		fetch(`http://localhost:5500/books/${id}`, {
-			method: 'GET',
-			headers: {
-				Authorization: 'Bearer ' + token,
-				'Accept': 'application/json, text/plain, */*',
-				'Content-Type': 'application/json'
-			}
-		})
-			.then((res) => res.json())
-			.then((book) => setBook(book))
+		booksSurvice.getBookById(id)
+			.then((book) => setBook(book.data))
 			.catch((err) => setError(err));
 	}, [id]);
 
 	const { image, title, author, borrowed, description, borrow_user } = book;
 
 	useEffect(() => {
-		fetch(`http://localhost:5500/books/${id}/rate`, {
-			method: 'GET',
-			headers: {
-				'Authorization': 'Bearer ' + token,
-				'Accept': 'application/json, text/plain, */*',
-				'Content-Type': 'application/json'
-			}
-		})
-			.then((res) => res.json())
-			.then((rate) => setRating(rate))
+		booksSurvice.getBookRating(id)
+			.then((rate) => setRating(rate.data))
 			.catch((err) => setError(err));
 	}, [id]);
 
 	
 	const deleteBook = (id) => {
-		  fetch(`http://localhost:5500/books/${id}`, {
-			method: 'DELETE',
-			headers: {
-				'Authorization': 'Bearer ' + token,
-				'Accept': 'application/json, text/plain, */*',
-				'Content-Type': 'application/json'
-			}
-		})
-		.then(res => res.json())
-		.then(resp => console.log(resp))
+		  booksSurvice.deleteBook(id)
+		.then(resp => console.log(resp.data))
 		.catch(err => setError(err))
 	}
 
 	const borrowBook = (id) => {
-		fetch(`http://localhost:5500/books/${id}`, {
-			method: 'POST',
-			body: JSON.stringify({}),
-			headers: {
-				'Authorization': 'Bearer ' + token,
-				'Accept': 'application/json, text/plain, */*',
-				'Content-Type': 'application/json'
-			}
-		})
-		.then(res => res.json())
-		.then(data => setBook(data))
+		booksSurvice.borrowBook(id)
+		.then(book => setBook(book.data))
+		.catch(err => setError(err))
 	}
 
 	const returnBook = (id) => {
-		fetch(`http://localhost:5500/books/${id}`, {
-			method: 'PATCH',
-			headers: {
-				'Authorization': 'Bearer ' + token,
-				'Accept': 'application/json, text/plain, */*',
-				'Content-Type': 'application/json'
-			}
-		})
-		.then(res => res.json())
-		.then(data => setBook(data.res))
+		booksSurvice.returnBook(id)
+		.then(book => setBook(book.data.res))
+		.catch(err => setError(err))
+
 	}
 
 	const editBook = (data) => {
@@ -95,24 +58,14 @@ const IndividualBook = (props) => {
 	  };
   
 	  useEffect(() => {
-		  console.log(JSON.stringify(updatedBook));
 		if (updatedBook) {
-		  fetch(`http://localhost:5500/books/${id}`, {
-			method: 'PUT',
-			headers: {
-				'Authorization': 'Bearer ' + token,
-				'Accept': 'application/json, text/plain, */*',
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(updatedBook),
-		})
-		.then(res => res.json())
+		  booksSurvice.editBook(id, updatedBook)
 		.then(data => setBook(data))
 		.catch(err => setError(err))
 	  }
 	}, [updatedBook])
 
-	const { sub: logedUser } = tokenData;
+	const { sub: logedUser, role } = tokenData;
 
 	const { rating } = rated;
 	const fixedRating = !rating ? rating : rating.toFixed();
@@ -120,7 +73,7 @@ const IndividualBook = (props) => {
 	
 
 	// check if admin
-	const adminDelete = true && 
+	const adminDelete = role === 'admin' && 
 	(<NavLink to='/books'>
   		<button onClick={() => deleteBook(id)}>Delete Book</button>
 		</NavLink>);

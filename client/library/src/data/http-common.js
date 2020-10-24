@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { token } from './../common/common';
+import { token } from './../common/common.js';
 
 export default axios.create({
 	baseURL: 'http://localhost:5500/',
