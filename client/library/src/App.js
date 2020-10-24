@@ -6,7 +6,7 @@ import Footer from './components/Footer/Footer';
 import Books from './containers/Books/Books';
 import User from './components/User/User';
 import NotFound from './components/NotFound';
-import LandingPage from './components/LandingPage/LandingPage';
+import LandingPage from './containers/LandingPage/LandingPage';
 import LoginPage from './components/LoginPage/LoginPage.jsx';
 import RegisterPage from './components/RegisterPage/RegisterPage.jsx';
 import IndividualBook from './containers/IndividualBook/IndividualBook';
@@ -35,10 +35,10 @@ function App() {
         <Switch>
           {/* We can add conditional for redirect auth user -> homepage / unauth user -> landingpage */}
           <Redirect path='/' exact to='/landing' />
-          <Route path='/landing' component={LandingPage} />
-          <Route path='/login' component={LoginPage} />
           <Route path='/register' component={RegisterPage} />
+          <Route path='/login' component={LoginPage} />
           <BooksProvider>
+            <Route path='/landing' component={LandingPage} />
             <Route path='/books' exact component={Books} />
             <Route path='/books/:id' component={IndividualBook} />
           </BooksProvider>
