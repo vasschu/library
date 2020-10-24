@@ -91,9 +91,9 @@ const returnBook = async (bookId, userId, role) => {
  * @return {object} holds 'error' if operation fails or 'result' if return is succesful
  */
 const createBook = async (body) => {
-	const { title, author, description } = body;
+	const { title, author, description, image } = body;
 
-	const response = await libraryData.createBook(title, author, description);
+	const response = await libraryData.createBook(title, author, description, image);
 	return { error: null, result: response };
 };
 

@@ -12,7 +12,7 @@ const Books = () => {
     const [newBook, setNewBook] = useState()
   // console.log(books)
 
-  const { books, getAllBooks, addBook } = useContext(BooksContext);
+  const { books, book: s, getAllBooks, addBook } = useContext(BooksContext);
 
     useEffect(() => {
       getAllBooks()

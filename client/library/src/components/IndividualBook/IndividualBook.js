@@ -14,19 +14,19 @@ const IndividualBook = (props) => {
 	const { id } = props.match.params;
 	const { book, rate, removeBook, updateBook, retrieveIndividualBook, 
 		borrowBook, returnBook, getBookRating } = useContext(BooksContext);
-
+		console.log(book)
 	const [error, setError] = useState(null);
 	const [updatedBook, setUpdatedBook] = useState('')
 
 	useEffect(() => {
 		retrieveIndividualBook(id)
-	}, [id, retrieveIndividualBook]);
+	}, [id]);
 	// console.log(bookCon)
 	const { image, title, author, borrowed, description, borrow_user } = book;
 
 	useEffect(() => {
 		getBookRating(id);
-	}, [id, getBookRating]);
+	}, [id]);
 
 	const editBook = (data) => {
 		if (data) { 
@@ -38,7 +38,7 @@ const IndividualBook = (props) => {
 		if (updatedBook) {
 			updateBook(id, updatedBook);
 	  }
-	}, [id, updatedBook, updateBook])
+	}, [id, updatedBook])
 
 	const { sub: logedUser, role } = tokenData;
 	const { rating } = rate;

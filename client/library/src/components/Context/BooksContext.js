@@ -20,6 +20,8 @@ export const BooksProvider = ({children}) => {
     const addBook = (book) => {
         console.log(book)
         BooksService.create(book)
+        .then(res => console.log(res))
+        .catch(err => console.log(err))
     }
 
     const removeBook = (id) => {
@@ -60,7 +62,7 @@ export const BooksProvider = ({children}) => {
     return (
       <BooksContext.Provider value={{
             books,
-            bookCon: book,
+            book,
             rate,
             getAllBooks, 
             addBook, 

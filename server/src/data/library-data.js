@@ -13,7 +13,6 @@ const getAll = async () => {
 	where b.is_unlisted = 0
 	order by b.id asc;`;
 	const allBooks = await books.formatBookData(await pool.query(sql));
-
 	return allBooks;
 };
 
@@ -30,6 +29,7 @@ const getBy = async (column, value) => {
 	WHERE b.${column} like "%${value}%";`;
 
 	const foundBooks = books.formatBookData(await pool.query(sql, [value]));
+	// console.log(foundBooks)
 
 	return await foundBooks;
 };
@@ -88,11 +88,11 @@ const getBorrowedBookByUser = async (userId, bookId, isDeleted) => {
  * @param {string} description
  * @returns {object} details for the created book
  */
-const createBook = async (title, author, description) => {
+const createBook = async (title, author, description, image) => {
 	const sql = `INSERT INTO library.books (title, author, description, image)
 	VALUES (?, ?, ?, ?);`;
 
-	return await pool.query(sql, [title, author, description, 0]);
+	return await pool.query(sql, [title, author, description, image]);
 };
 
 /**
