@@ -8,9 +8,8 @@ import './Book.css'
 const Book = ({book, tokenData}) => {
 
     const {id, image, title, author, borrowed, borrow_user } = book;
-	const { borrowBook, returnBook } = useContext(BooksContext);
-
-    console.log(tokenData)
+  const { borrowBook, returnBook } = useContext(BooksContext);
+  
 return (
   <div className="book">
     <img src={image} alt="book-cover" />

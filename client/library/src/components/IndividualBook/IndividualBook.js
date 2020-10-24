@@ -11,34 +11,23 @@ import { BooksContext } from '../Context/BooksContext'
 
 const IndividualBook = (props) => {
 
-	const { id } = props.match.params;
 	const { book, rate, removeBook, updateBook, retrieveIndividualBook, 
 		borrowBook, returnBook, getBookRating } = useContext(BooksContext);
-		console.log(book)
-	const [error, setError] = useState(null);
-	const [updatedBook, setUpdatedBook] = useState('')
+	
+		const { id } = props.match.params;
+		const { image, title, author, borrowed, description, borrow_user } = book;
 
 	useEffect(() => {
 		retrieveIndividualBook(id)
 	}, [id]);
-	// console.log(bookCon)
-	const { image, title, author, borrowed, description, borrow_user } = book;
 
 	useEffect(() => {
 		getBookRating(id);
 	}, [id]);
 
-	const editBook = (data) => {
-		if (data) { 
-		  setUpdatedBook(data)
-		}
+	const editBook = (id, data) => {
+		updateBook(id, data);
 	  };
-  
-	  useEffect(() => {
-		if (updatedBook) {
-			updateBook(id, updatedBook);
-	  }
-	}, [id, updatedBook])
 
 	const { sub: logedUser, role } = tokenData;
 	const { rating } = rate;
@@ -58,7 +47,7 @@ const IndividualBook = (props) => {
   <div className='book'>
     <img src={image} alt='book-cover' />
     <div className='book-info'>
-      <EditBook title={title} description={description} author={author} image={image} fixedRating={fixedRating} editBook={editBook} />
+      <EditBook title={title} description={description} author={author} image={image} fixedRating={fixedRating} editBook={(data) => editBook(id, data)} />
       {adminDelete}
       <br />
       <BorrowButton

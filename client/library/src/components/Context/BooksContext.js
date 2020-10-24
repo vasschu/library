@@ -15,13 +15,34 @@ export const BooksProvider = ({children}) => {
     const getAllBooks = () => {
         BooksService.getBooks()
         .then((resBooks) => setBooks(resBooks.data))
+        .catch(err => {
+            if (err.response) {
+              // client received an error response (5xx, 4xx)
+              alert(err.response.data)
+            } else if (err.request) {
+              // client never received a response, or request never left
+              console.log(err.request)
+            } else {
+              // anything else
+              console.log(err)
+            }})
     }
 
     const addBook = (book) => {
         console.log(book)
         BooksService.create(book)
         .then(res => console.log(res))
-        .catch(err => console.log(err))
+        .catch(err => {
+            if (err.response) {
+              // client received an error response (5xx, 4xx)
+              alert(err.response.data.Message)
+            } else if (err.request) {
+              // client never received a response, or request never left
+              console.log(err.request)
+            } else {
+              // anything else
+              console.log(err)
+            }})
     }
 
     const removeBook = (id) => {

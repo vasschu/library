@@ -6,34 +6,18 @@ import './Books.css'
 import { BooksContext } from '../Context/BooksContext'
 
 const Books = () => {
-  // console.log(tokenData)
-    // const [books, setBooks] = useState([]);
-    const [error, setError] = useState(null);
-    const [newBook, setNewBook] = useState()
-  // console.log(books)
-
-  const { books, book: s, getAllBooks, addBook } = useContext(BooksContext);
+  const { books, getAllBooks, addBook } = useContext(BooksContext);
 
     useEffect(() => {
       getAllBooks()
     }, [])
 
 
-    const book = (data) => {
-      if (data) { 
-        setNewBook(data)
-      }
+    const createBook = (data) => {
+      addBook(data);
     };
 
-    useEffect(() => {
-      if (!newBook){
-        return;
-      }
-      addBook(newBook);
-  }, [newBook])
-
-
-const isAdmin = tokenData.role === 'admin' && <AddBook book={book} />
+const isAdmin = tokenData.role === 'admin' && <AddBook book={(data) => createBook(data)} />
 
 return (
   <>
