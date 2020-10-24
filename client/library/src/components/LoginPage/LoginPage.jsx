@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useContext, useState } from 'react';
-import { AuthContext } from '../Context/AuthContext';
+import { AuthContext } from '../../context/AuthContext';
 import { useHistory } from 'react-router-dom';
 import userService from './../../data/userService'
 

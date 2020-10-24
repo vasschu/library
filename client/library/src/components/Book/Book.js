@@ -2,7 +2,7 @@
 import React, { useContext } from 'react';
 import {NavLink} from 'react-router-dom';
 import BorrowButton from './BorrowButton'
-import {BooksContext} from '../../Context/BooksContext'
+import {BooksContext} from '../../context/BooksContext'
 import './Book.css'
 
 const Book = ({book, tokenData}) => {

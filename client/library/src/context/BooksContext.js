@@ -1,13 +1,12 @@
 
 import React, { createContext, useState } from 'react';
-import BooksService from '../../data/booksData.js'
+import BooksService from '../data/booksData.js'
 
 const initialState = []
 
 export const BooksContext = createContext(initialState);
 
 export const BooksProvider = ({children}) => {
-    // const [ state, dispatch ] = useReducer(BooksReducer, initialState);
     const [ books, setBooks ] = useState([]);
     const [ book, setBook ] = useState({});
     const [ rate, setRate ] = useState('')
@@ -34,13 +33,10 @@ export const BooksProvider = ({children}) => {
         .then(res => console.log(res))
         .catch(err => {
             if (err.response) {
-              // client received an error response (5xx, 4xx)
               alert(err.response.data.Message)
             } else if (err.request) {
-              // client never received a response, or request never left
               console.log(err.request)
             } else {
-              // anything else
               console.log(err)
             }})
     }

@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useContext } from 'react'
-import Book from './Book/Book'
-import AddBook from './AddBook/AddBook'
+import Book from '../../components/Book/Book'
+import AddBook from '../../components/AddBook/AddBook'
 import { tokenData } from '../../common/common.js'
 import './Books.css'
-import { BooksContext } from '../Context/BooksContext'
+import { BooksContext } from '../../context/BooksContext'
 
 const Books = () => {
   const { books, getAllBooks, addBook } = useContext(BooksContext);

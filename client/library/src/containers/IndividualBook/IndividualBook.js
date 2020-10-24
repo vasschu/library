@@ -1,12 +1,12 @@
 /* eslint-disable react/prop-types */
 import React, {useState, useEffect, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
-import AddReview from '../Reviews/Review/AddReview';
-import BorrowButton from '../Books/Book/BorrowButton';
-import Reviews from '../Reviews/Reviews';
-import EditBook from './EditBook/EditBook';
+import AddReview from '../../components/Reviews/Review/AddReview';
+import BorrowButton from '../../components/Book/BorrowButton';
+import Reviews from '../../components/Reviews/Reviews';
+import EditBook from '../../components/EditBook/EditBook';
 import { tokenData } from '../../common/common.js'
-import { BooksContext } from '../Context/BooksContext'
+import { BooksContext } from '../../context/BooksContext'
 
 
 const IndividualBook = (props) => {

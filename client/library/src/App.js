@@ -3,15 +3,15 @@ import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import './App.css';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
-import Books from './components/Books/Books';
+import Books from './containers/Books/Books';
 import User from './components/User/User';
 import NotFound from './components/NotFound';
 import LandingPage from './components/LandingPage/LandingPage';
 import LoginPage from './components/LoginPage/LoginPage.jsx';
 import RegisterPage from './components/RegisterPage/RegisterPage.jsx';
-import IndividualBook from './components/IndividualBook/IndividualBook';
-import { AuthContext } from './components/Context/AuthContext';
-import { BooksProvider } from './components/Context/BooksContext'
+import IndividualBook from './containers/IndividualBook/IndividualBook';
+import { AuthContext } from './context/AuthContext';
+import { BooksProvider } from './context/BooksContext'
 
 
 function App() {
