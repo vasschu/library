@@ -1,55 +1,32 @@
 /* eslint-disable react/prop-types */
-import React, {useState, useEffect } from 'react';
+import React, {useState, useEffect, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import AddReview from '../Reviews/Review/AddReview';
 import BorrowButton from '../Books/Book/BorrowButton';
 import Reviews from '../Reviews/Reviews';
 import EditBook from './EditBook/EditBook';
-import { token, tokenData } from '../../common/common.js'
-import booksSurvice from '../../data/booksData.js'
+import { tokenData } from '../../common/common.js'
+import { BooksContext } from '../Context/BooksContext'
+
 
 const IndividualBook = (props) => {
 
 	const { id } = props.match.params;
-	
-	const [book, setBook] = useState('');
-	const [rated, setRating] = useState('');
+	const { book, rate, removeBook, updateBook, retrieveIndividualBook, 
+		borrowBook, returnBook, getBookRating } = useContext(BooksContext);
+
 	const [error, setError] = useState(null);
 	const [updatedBook, setUpdatedBook] = useState('')
 
 	useEffect(() => {
-		booksSurvice.getBookById(id)
-			.then((book) => setBook(book.data))
-			.catch((err) => setError(err));
-	}, [id]);
-
+		retrieveIndividualBook(id)
+	}, [id, retrieveIndividualBook]);
+	// console.log(bookCon)
 	const { image, title, author, borrowed, description, borrow_user } = book;
 
 	useEffect(() => {
-		booksSurvice.getBookRating(id)
-			.then((rate) => setRating(rate.data))
-			.catch((err) => setError(err));
-	}, [id]);
-
-	
-	const deleteBook = (id) => {
-		  booksSurvice.deleteBook(id)
-		.then(resp => console.log(resp.data))
-		.catch(err => setError(err))
-	}
-
-	const borrowBook = (id) => {
-		booksSurvice.borrowBook(id)
-		.then(book => setBook(book.data))
-		.catch(err => setError(err))
-	}
-
-	const returnBook = (id) => {
-		booksSurvice.returnBook(id)
-		.then(book => setBook(book.data.res))
-		.catch(err => setError(err))
-
-	}
+		getBookRating(id);
+	}, [id, getBookRating]);
 
 	const editBook = (data) => {
 		if (data) { 
@@ -59,15 +36,12 @@ const IndividualBook = (props) => {
   
 	  useEffect(() => {
 		if (updatedBook) {
-		  booksSurvice.editBook(id, updatedBook)
-		.then(data => setBook(data))
-		.catch(err => setError(err))
+			updateBook(id, updatedBook);
 	  }
-	}, [updatedBook])
+	}, [id, updatedBook, updateBook])
 
 	const { sub: logedUser, role } = tokenData;
-
-	const { rating } = rated;
+	const { rating } = rate;
 	const fixedRating = !rating ? rating : rating.toFixed();
 
 	
@@ -75,7 +49,7 @@ const IndividualBook = (props) => {
 	// check if admin
 	const adminDelete = role === 'admin' && 
 	(<NavLink to='/books'>
-  		<button onClick={() => deleteBook(id)}>Delete Book</button>
+  		<button onClick={() => removeBook(id)}>Delete Book</button>
 		</NavLink>);
 
 	return (

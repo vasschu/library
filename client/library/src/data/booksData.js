@@ -1,4 +1,5 @@
 import http from './http-common.js';
+import React from 'react';
 
     const getBooks = () => {
         return http.get('/books');
