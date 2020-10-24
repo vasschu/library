@@ -165,7 +165,7 @@ libraryController
 			const update = await libraryService.updateBook(id, body);
 
 			if (update.error === serviceErrors.NO_DATABASE_CHANGES) {
-				return res.status(400).send({ messages: 'Update was unsuccessful' });
+				return res.status(400).send({ message: 'Update was unsuccessful' });
 			}
 
 			return res.status(200).send(update.result);
@@ -184,7 +184,7 @@ libraryController
 		const del = await libraryService.deleteBook(id);
 
 		if (del.error === serviceErrors.NO_DATABASE_CHANGES) {
-			return res.status(400).send({ messages: 'Delete was unsuccessful' });
+			return res.status(400).send({ message: 'Delete was unsuccessful' });
 		}
 
 		return res.status(200).send({ message: 'Deleted successfully' });

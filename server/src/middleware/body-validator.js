@@ -12,5 +12,5 @@ export const validateBody = (schema) => (req, res, next) => {
 		return next();
 	}
 
-	res.status(400).send({ Message: 'Invalid body!' });
+	res.status(400).send({ message: 'Invalid body!' });
 };
