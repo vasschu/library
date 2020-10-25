@@ -20,6 +20,8 @@ const IndividualBook = (props) => {
 		getBookRating,
 	} = useContext(BooksContext);
 
+const [addReviewToggle , setAddReviewToggle] = useState(false)
+
 	const { id } = props.match.params;
 	const { image, title, author, borrowed, description, borrow_user } = book;
 
@@ -46,6 +48,13 @@ const IndividualBook = (props) => {
   </NavLink>
 	);
 
+	//check if add review is active
+	const addReview = addReviewToggle ? (<AddReview bookId={id} addReviewToggle={setAddReviewToggle} />)
+	: (
+  <NavLink to={'/books/' + id + '/reviews'}>
+    <button onClick={()=>setAddReviewToggle(true)}>Add review</button>
+  </NavLink>);
+
 	return (
 		//book info
 		//reviews
@@ -69,10 +78,7 @@ const IndividualBook = (props) => {
         logedUser={logedUser}
         returnBook={() => returnBook(id)}
       />
-      <NavLink to={'/books/' + id + '/reviews'}>
-        <button>Add a review</button>
-      </NavLink>
-      {/* <AddReview bookId={id} /> */}
+      {addReview}
     </div>
     <Reviews id={id} />
   </div>

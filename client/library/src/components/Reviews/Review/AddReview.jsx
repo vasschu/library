@@ -1,8 +1,10 @@
-import React, { useState, useEffect, TextInput } from 'react';
+import React, { useState} from 'react';
 import SaveButton from './SaveButton';
+import PropTypes from 'prop-types';
+
 
 const AddReview = (props) => {
-	const { bookId } = props;
+	const { bookId, addReviewToggle } = props;
 	const [title, onChangeTitle] = useState('');
 	const [body, onChangeBody] = useState('');
 
@@ -32,9 +34,17 @@ const AddReview = (props) => {
       {' '}
       must find a way to place rating here. Stars maybe? Select from list?
     </p>
+    <button className='cancel-review-button' onClick={() => addReviewToggle(false)}>
+      Close
+    </button>
     <SaveButton onclicktitle={title} body={body} userId={1} bookId={bookId} />
   </div>
 	);
 };
+
+AddReview.propTypes = {
+	bookId: PropTypes.number,
+	addReviewToggle: PropTypes.func,
+	  };
 
 export default AddReview;

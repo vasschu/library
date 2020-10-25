@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import DeleteButton from './DeleteButton';
-import EditButton from './EditButton';
 import PropTypes from 'prop-types';
 
 
@@ -20,7 +19,7 @@ const Review = (props) => {
     <p>Review:{content}</p>
     <p>From: {username}</p>
     <DeleteButton id={id} deleteFunction={deleteReview} />
-    <EditButton id={id} />
+    <button className='edit-review-button'>Edit</button>
   </div>
 	);
 };
