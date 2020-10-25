@@ -17,15 +17,22 @@ const Reviews = (props) => {
 			.then((res) => setReview(res.data))
 			.catch((err) => setError(err))}
 	
-			useEffect(() => {
-				fetchReviews();
-			  },[fetchReviews]);
+	useEffect(() => {
+	fetchReviews();
+	},[fetchReviews]);
 
+	const displayReviews = reviews.length ? 
+	(
+  <div className='review'>
+    {reviews.map((r) => {return <Review key={r.id} review={r} bookId={id} update={fetchReviews} />;})}
+  </div>)
+  : (
+    <div className='review'>
+      No reviews published.  
+    </div>)
 	return (
   <div className='review'>
-    {reviews.map((r) => {
-				return <Review key={r.id} review={r} bookId={id} update={fetchReviews} />;
-			})}
+    {displayReviews}
   </div>
 	);
 };
