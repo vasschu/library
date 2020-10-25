@@ -46,7 +46,9 @@ export const tokenIsBlacklisted = () => {
 		if (!blackList.has(req.token)) {
 			next();
 		} else {
-			res.status(403).send({ message: 'You logged out. Please login again' });
+			res
+				.status(403)
+				.send({ message: 'You are currently logged out. Please login again' });
 		}
 	};
 };

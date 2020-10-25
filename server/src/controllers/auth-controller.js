@@ -56,9 +56,7 @@ authController
 		async (req, res) => {
 			const name = req.user.username;
 			addTokenToBlacklist(req.token);
-			res
-				.status(202)
-				.send(`{ "message" : User '${name}' has been logged out.}`);
+			res.status(202).send({ message: `User '${name}' has been logged out.` });
 		},
 	);
 

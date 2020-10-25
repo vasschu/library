@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import userService from './../../data/userService'
+import userData from './../../data/userData'
 
 const RegisterPage = () => {
 	const [user, setUser] = useState('');
@@ -11,21 +11,16 @@ const RegisterPage = () => {
 
   let history = useHistory();
 
-  const registerUser = () => {
-    // userService.create(data)
+
 	const registerUser = () => {
-		fetch(`http://localhost:5500/users`, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(data),
-		})
-			.then((res) => res.json())
+    userData.registerUser(data)
 			.then((res) => {
-        if(res.user) {
-          alert(`${res.message} Click OK to be redirected to login`)
+        console.log(res.data);
+        if(res.data.user) {
+          alert(`${res.data.message} Click OK to be redirected to login`)
           history.push('/login')
         } else {
-          throw new Error (res.message)
+          throw new Error (res.data.message)
         }
 			})
       .catch((err) => alert(err))
@@ -65,5 +60,5 @@ const RegisterPage = () => {
   </div>
 	);
 };
-}
+
 export default RegisterPage;

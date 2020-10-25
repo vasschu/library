@@ -2,7 +2,7 @@
 import React, { useContext, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { useHistory } from 'react-router-dom';
-import userService from './../../data/userService'
+import userData from './../../data/userData'
 
 
 const LoginPage = () => {
@@ -16,19 +16,14 @@ const LoginPage = () => {
 	const data = { username: user, password: pass };
 
 	const loginUser = () => {
-		fetch(`http://localhost:5500/auth/session`, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(data),
-		})
-			.then((res) => res.json())
-			.then((res) => { 
-				if (res.token) {
+    userData.loginUser(data)
+    .then((res) => { 
+				if (res.data.token) {
           alert('Successful login, please click OK to enter the temple of knowledge')
-          setLoginState(true, res.token);
+          setLoginState(true, res.data.token);
           history.push('/books')
 				} else {
-          throw new Error (res.message)
+          throw new Error (res.data.message)
         }
 			})
 			.catch((err) => alert(err));
