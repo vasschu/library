@@ -10,17 +10,21 @@ const Reviews = (props) => {
 	const [reviews, setReview] = useState([]);
 	const [error, setError] = useState(null);
 
-	useEffect(() => {
+	
+	const fetchReviews =() => {
 		reviewData
 			.getReviews(id)
 			.then((res) => setReview(res.data))
-			.catch((err) => setError(err));
-	}, [id]);
+			.catch((err) => setError(err))}
+	
+			useEffect(() => {
+				fetchReviews();
+			  },[fetchReviews]);
 
 	return (
   <div className='review'>
     {reviews.map((r) => {
-				return <Review key={r.id} review={r} bookId={id} />;
+				return <Review key={r.id} review={r} bookId={id} update={fetchReviews} />;
 			})}
   </div>
 	);

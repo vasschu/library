@@ -1,11 +1,12 @@
-import React, { useEffect, useState, Fragment } from 'react';
-import './User.css'
+import React from 'react';
+import './User.css';
+import {tokenData} from './../../common/common'
 
 const User = () => {
-	//we will extract the following info from the Token
-	//ID
-	//Username
-	//Role
+console.log(tokenData);
+const {sub, username, role} = tokenData
+
+const readingPoints = 5000
 
 	//display the current reading points
 
@@ -15,16 +16,16 @@ const User = () => {
 	// get history of review likes - (must implement)
 
 	return (
-  <div className="user">
+  <div className='user'>
     <h1>
-      User info will follow here. Tokens and some backend rework will be
-      needed. Data is now created with dummy info
+      {`Hello ${username}`}
     </h1>
-    <div>User name: Vasko</div>
     <br />
-    <div>User Level: Admin</div>
+    <div>{`Library level: ${role}`}</div>
     <br />
-    <div>User Points: 5000</div>
+    <div>{`Your ID: ${sub}`}</div>
+    <br />
+    <div>{`Current reading points: ${readingPoints}`}</div>
     <br />
 
     <div>toggle container for history of borrowed books</div>

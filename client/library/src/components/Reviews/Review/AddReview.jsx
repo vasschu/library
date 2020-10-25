@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {tokenData} from './../../../common/common'
 import userData from './../../../data/reviewsData'
@@ -26,7 +26,11 @@ const AddReview = (props) => {
 		{addReviewToggle(false)}
 	})
 		.catch(err => alert(err))
-	}
+  }
+  
+  useEffect(() => {
+    },[addReviewToggle]);
+
 
 	return (
   <div className='add-review'>

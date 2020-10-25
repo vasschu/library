@@ -5,11 +5,12 @@ import userData from './../../../data/reviewsData'
 const Review = (props) => {
 
 const {title, content, username, id } = props.review
-const {bookId} = props
+const {bookId, update } = props
 
 const deleteReview = (bookId, reviewId) => {
   userData.deleteReview(bookId, reviewId)
-  .then(res => alert(res.data.message))
+  // .then(res => alert(res.data.message))
+  update(bookId)
 };
 
 	return (
@@ -29,7 +30,8 @@ const deleteReview = (bookId, reviewId) => {
 
 Review.propTypes = {
 review: PropTypes.object,
-bookId: PropTypes.string
+bookId: PropTypes.string,
+update: PropTypes.func
   };
 
 
