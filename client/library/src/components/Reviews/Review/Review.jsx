@@ -1,16 +1,17 @@
 import React from 'react';
-import DeleteButton from './DeleteButton';
 import PropTypes from 'prop-types';
-
-
+import userData from './../../../data/reviewsData'
 
 const Review = (props) => {
-	const deleteReview = (id) => {
-		console.log(`Delete Data ${id}`);
-	};
 
-	const {title, content, username, id} = props.review
-	
+const {title, content, username, id } = props.review
+const {bookId} = props
+
+const deleteReview = (bookId, reviewId) => {
+  userData.deleteReview(bookId, reviewId)
+  .then(res => alert(res.data.message))
+};
+
 	return (
   <div className='review'>
     <hr />
@@ -18,7 +19,9 @@ const Review = (props) => {
     <hr />
     <p>Review:{content}</p>
     <p>From: {username}</p>
-    <DeleteButton id={id} deleteFunction={deleteReview} />
+    <button className='delete-review-button' onClick={() => deleteReview(bookId, id)}>
+      Delete
+    </button>
     <button className='edit-review-button'>Edit</button>
   </div>
 	);
@@ -26,6 +29,7 @@ const Review = (props) => {
 
 Review.propTypes = {
 review: PropTypes.object,
+bookId: PropTypes.string
   };
 
 

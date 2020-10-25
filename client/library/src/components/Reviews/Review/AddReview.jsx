@@ -1,6 +1,7 @@
 import React, { useState} from 'react';
-import SaveButton from './SaveButton';
 import PropTypes from 'prop-types';
+import {tokenData} from './../../../common/common'
+import userData from './../../../data/reviewsData'
 
 
 const AddReview = (props) => {
@@ -10,6 +11,22 @@ const AddReview = (props) => {
 
 	const updateTitle = (value) => onChangeTitle(value);
 	const updateBody = (value) => onChangeBody(value);
+
+	const data = {
+		title: title,
+		content: body,
+		users_id: tokenData.sub,
+		books_id: bookId,
+	};
+
+	const addReview = () => {
+		userData.addReview(bookId, data)
+		.then(res => {
+		if (res.status === 201)
+		{addReviewToggle(false)}
+	})
+		.catch(err => alert(err))
+	}
 
 	return (
   <div className='add-review'>
@@ -34,16 +51,18 @@ const AddReview = (props) => {
       {' '}
       must find a way to place rating here. Stars maybe? Select from list?
     </p>
+    <button className='save-review-button' onClick={addReview}>
+      Save
+    </button>
     <button className='cancel-review-button' onClick={() => addReviewToggle(false)}>
       Close
     </button>
-    <SaveButton onclicktitle={title} body={body} userId={1} bookId={bookId} />
   </div>
 	);
 };
 
 AddReview.propTypes = {
-	bookId: PropTypes.number,
+	bookId: PropTypes.string,
 	addReviewToggle: PropTypes.func,
 	  };
 

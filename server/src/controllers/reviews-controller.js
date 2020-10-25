@@ -59,7 +59,7 @@ reviewsController
 				const reviews = await reviewsService.postReview(body, req.user.id, id);
 
 				if (reviews.error === serviceErrors.DUPLICATE_RECORD) {
-					return res.status(400).send({
+					return res.status(409).send({
 						message: 'You have already posted a review for this book',
 					});
 				}

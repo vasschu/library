@@ -15,19 +15,19 @@ const Reviews = (props) => {
 			.getReviews(id)
 			.then((res) => setReview(res.data))
 			.catch((err) => setError(err));
-	}, [id, reviews]);
+	}, [id]);
 
 	return (
   <div className='review'>
     {reviews.map((r) => {
-				return <Review key={r.id} review={r} />;
+				return <Review key={r.id} review={r} bookId={id} />;
 			})}
   </div>
 	);
 };
 
 Reviews.propTypes = {
-	id: PropTypes.number,
+	id: PropTypes.string,
   };
 
 export default Reviews;
