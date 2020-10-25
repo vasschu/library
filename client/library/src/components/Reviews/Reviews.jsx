@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
 import Review from './Review/Review';
+import reviewData from '../../data/reviewsData';
+import PropTypes from 'prop-types';
+
 
 const Reviews = (props) => {
 	const { id } = props;
@@ -9,19 +11,23 @@ const Reviews = (props) => {
 	const [error, setError] = useState(null);
 
 	useEffect(() => {
-		fetch(`http://localhost:5500/books/${id}/reviews/`)
-			.then((res) => res.json())
-			.then((reviews) => setReview(reviews))
+		reviewData
+			.getReviews(id)
+			.then((res) => setReview(res.data))
 			.catch((err) => setError(err));
-	}, []);
+	}, [id, reviews]);
 
 	return (
-		<div className='review'>
-			{reviews.map((r) => {
+  <div className='review'>
+    {reviews.map((r) => {
 				return <Review key={r.id} review={r} />;
 			})}
-		</div>
+  </div>
 	);
 };
+
+Reviews.propTypes = {
+	id: PropTypes.number,
+  };
 
 export default Reviews;
