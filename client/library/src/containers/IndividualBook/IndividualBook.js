@@ -20,7 +20,8 @@ const IndividualBook = (props) => {
 		getBookRating,
 	} = useContext(BooksContext);
 
-const [addReviewToggle , setAddReviewToggle] = useState(false)
+	const [addReviewToggle, setAddReviewToggle] = useState(false);
+	const [showReviewToggle, setShowReviewToggle] = useState(false);
 
 	const { id } = props.match.params;
 	const { image, title, author, borrowed, description, borrow_user } = book;
@@ -49,11 +50,23 @@ const [addReviewToggle , setAddReviewToggle] = useState(false)
 	);
 
 	//check if add review is active
-	const addReview = addReviewToggle ? (<AddReview bookId={id} addReviewToggle={setAddReviewToggle} />)
-	: (
+	const addReview = addReviewToggle ? (
+  <AddReview bookId={id} addReviewToggle={setAddReviewToggle} />
+	) : (
   <NavLink to={'/books/' + id + '/reviews'}>
-    <button onClick={()=>setAddReviewToggle(true)}>Add review</button>
-  </NavLink>);
+    <button onClick={() => setAddReviewToggle(true)}>Add review</button>
+  </NavLink>
+	);
+
+	//show/hide reviews
+	const showReview = !showReviewToggle ?
+	(<button className='show-review-button' onClick={()=>{setShowReviewToggle(true)}}>Show Reviews</button>):
+	(
+  <div>
+    <button className='hide-review-button' onClick={()=>{setShowReviewToggle(false)}}>Hide Reviews</button>
+    <Reviews id={id} />
+  </div>)
+
 
 	return (
 		//book info
@@ -80,7 +93,8 @@ const [addReviewToggle , setAddReviewToggle] = useState(false)
       />
       {addReview}
     </div>
-    <Reviews id={id} />
+    {/* <Reviews id={id} /> */}
+    {showReview}
   </div>
 	);
 };
