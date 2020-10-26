@@ -7,7 +7,8 @@ import userData from './../../../data/reviewsData'
 const AddReview = (props) => {
 	const { bookId, addReviewToggle } = props;
 	const [title, onChangeTitle] = useState('');
-	const [body, onChangeBody] = useState('');
+  const [body, onChangeBody] = useState('');
+  const [reviews, setReviews] = useState([])
 
 	const updateTitle = (value) => onChangeTitle(value);
 	const updateBody = (value) => onChangeBody(value);
@@ -27,10 +28,6 @@ const AddReview = (props) => {
 	})
 		.catch(err => alert(err))
   }
-  
-  useEffect(() => {
-    },[addReviewToggle]);
-
 
 	return (
   <div className='add-review'>

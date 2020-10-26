@@ -28,8 +28,8 @@ const deleteReview = (bookId, reviewId) => {
 // 	return http.patch(`/books/${id}`);
 // };
 
-// const editBook = (id, body) => {
-// 	return http.put(`/books/${id}`, body);
-// };
+const editReview = (bookId, reviewId, data) => {
+	return http.put(`/books/${bookId}/reviews/${reviewId}`, data);
+};
 
-export default { getReviews, addReview, deleteReview };
+export default { getReviews, addReview, deleteReview, editReview };
