@@ -9,8 +9,7 @@ const {bookId, update } = props
 
 const deleteReview = (bookId, reviewId) => {
   userData.deleteReview(bookId, reviewId)
-  // .then(res => alert(res.data.message))
-  update(bookId)
+  .then(res => update(bookId))
 };
 
 	return (

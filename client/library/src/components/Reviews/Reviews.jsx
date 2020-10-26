@@ -11,15 +11,15 @@ const Reviews = (props) => {
 	const [error, setError] = useState(null);
 
 	
-	const fetchReviews =() => {
+	const fetchReviews = (id) => {
 		reviewData
 			.getReviews(id)
-			.then((res) => setReview(res.data))
+			.then((res) => setReview([...res.data]))
 			.catch((err) => setError(err))}
 	
 	useEffect(() => {
-	fetchReviews();
-	},[fetchReviews]);
+	fetchReviews(id);
+	},[id]);
 
 	const displayReviews = reviews.length ? 
 	(
