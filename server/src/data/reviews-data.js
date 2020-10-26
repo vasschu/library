@@ -144,7 +144,8 @@ const updateReviewScore = async (reviewScoreId, rating) => {
 const getReviewByUser = async (bookId, userId) => {
 	const sql = `SELECT * FROM reviews
 	WHERE books_id = ?
-	AND users_id = ?`;
+	AND users_id = ?
+	AND is_deleted = 0`;
 	const reviews = await pool.query(sql, [bookId, userId]);
 
 	return reviews[0];
