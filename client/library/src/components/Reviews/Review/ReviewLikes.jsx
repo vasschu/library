@@ -38,7 +38,7 @@ const ReviewLikes = (props) => {
 rating.rating ? setLikes(prev => prev + 1) : setDislikes(prev => prev + 1) 
     }
   })
-  .catch(err => toastError(err) )
+  .catch(err => toastError(err.response.data.message))
   }
 
 
