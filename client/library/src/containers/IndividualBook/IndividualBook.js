@@ -92,6 +92,7 @@ const IndividualBook = (props) => {
         description={description}
         author={author}
         image={image}
+        role={role}
         editBook={(data) => updateBook(id, data)}
       />
       {adminDelete}

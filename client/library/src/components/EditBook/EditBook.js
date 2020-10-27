@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 
 const EditBook = (props) => {
-    const {editBook, title, description, author, image } = props; 
+    const {editBook, title, description, author, image, role } = props; 
 
     const [isEditMode, setEditMode] = useState(false);
 
@@ -45,7 +45,7 @@ const EditBook = (props) => {
           <h2>{title}</h2>
           <p>{author}</p>
           <p>{description}</p>
-          {true && 
+          {role === 'admin' && 
           (<button onClick={() => setEditMode(prev => !prev)}>Edit Book Info</button>)}
         </>
           )
@@ -60,5 +60,6 @@ EditBook.propTypes = {
   title: PropTypes.string, 
   description: PropTypes.string, 
   author: PropTypes.string, 
-  image: PropTypes.string
+  image: PropTypes.string,
+  role: PropTypes.string,
 }
