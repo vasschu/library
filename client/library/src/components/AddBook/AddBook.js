@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './AddBook.css'
+import PropTypes from 'prop-types';
 
 const AddBook = ({book}) => {
   
@@ -56,3 +57,7 @@ const AddBook = ({book}) => {
 }
 
 export default AddBook;
+
+AddBook.propTypes = {
+  book: PropTypes.func,
+}

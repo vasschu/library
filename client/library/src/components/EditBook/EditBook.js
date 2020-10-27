@@ -1,5 +1,6 @@
-/* eslint-disable react/jsx-closing-tag-location */
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+
 
 const EditBook = (props) => {
     const {editBook, title, description, author, image } = props; 
@@ -45,9 +46,7 @@ const EditBook = (props) => {
           <p>{author}</p>
           <p>{description}</p>
           {true && 
-          (<>
-            <button onClick={() => setEditMode(prev => !prev)}>Edit Book Info</button>
-          </ >)}
+          (<button onClick={() => setEditMode(prev => !prev)}>Edit Book Info</button>)}
         </>
           )
 
@@ -55,3 +54,11 @@ const EditBook = (props) => {
 }
 
 export default EditBook;
+
+EditBook.propTypes = {
+  editBook: PropTypes.func, 
+  title: PropTypes.string, 
+  description: PropTypes.string, 
+  author: PropTypes.string, 
+  image: PropTypes.string
+}
