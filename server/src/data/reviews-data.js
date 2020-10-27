@@ -62,8 +62,9 @@ const updateReview = async (id, title, content) => {
 	const sql = `UPDATE reviews
     SET title = ?, content = ?
     WHERE id = ?;`;
-
-	return await pool.query(sql, [title, content, id]);
+	const updatedContent = await pool.query(sql, [title, content, id]);
+	console.log(updatedContent[0]);
+	return updatedContent;
 };
 
 /**

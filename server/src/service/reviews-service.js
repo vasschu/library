@@ -79,7 +79,9 @@ const updateReviewById = async (reviewid, body, role, users_id) => {
 		if (!update.affectedRows) {
 			return { error: serviceErrors.NO_DATABASE_CHANGES, result: null };
 		}
-		return { error: null, result: update };
+		const updatedReview = await getReviewById(reviewid);
+
+		return { error: null, result: updatedReview };
 	}
 
 	return { error: serviceErrors.NOT_PERMITTED, result: null };

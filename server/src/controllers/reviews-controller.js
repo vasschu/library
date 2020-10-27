@@ -108,10 +108,7 @@ reviewsController
 						.status(400)
 						.send({ message: 'Changes were not made on the review' });
 				}
-
-				res
-					.status(200)
-					.send({ message: 'The review was updated successfully' });
+				res.status(200).send(update.result);
 			} catch (err) {
 				throw new Error(err);
 			}

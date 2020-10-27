@@ -20,13 +20,17 @@ const Reviews = (props) => {
 			
 	const updateReviews = (bookId, reviewId, data) => {
 		reviewData.editReview(bookId, reviewId, data)
-		.then(fetchReviews(id))
-		// .then((res) => {if(res.data.message === 'The review was updated successfully')
-		// {
-		// 	const reviewIndex = reviews.findIndex(el=> el.id === reviewId)
-		// 	const copy = [...reviews]
-		// 	copy[reviewIndex] = "" /*updatedReview*/
-		// }})
+		.then((res) => { if(!res.data.message)
+		{
+const reviewIndex = reviews.findIndex(el=> el.id === reviewId)
+const copy = [...reviews]
+const updatedReview = reviews[reviewIndex]
+updatedReview.title = res.data.title
+updatedReview.content = res.data.content
+copy[reviewIndex] = updatedReview
+
+setReview(copy)
+		}})
 	}
 			
 	useEffect(() => {
