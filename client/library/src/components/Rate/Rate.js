@@ -16,6 +16,7 @@ const Rate = ({ rate }) => {
       e.preventDefault();
 
         rate({rating});
+        changeVisibility(prev => !prev)
     }
   
     const createFormVisibility = isHidden ? (
