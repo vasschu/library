@@ -4,16 +4,11 @@ import userData from './../../../data/reviewsData'
 
 const Review = (props) => {
   const {title, content, username, id } = props.review
-  const {bookId, test, updateStateUpdate } = props
+  const {bookId, deleteReview, updateStateUpdate } = props
   
 const [updateMode, setModeUpdate] = useState(false);
 const [viewContent, setViewText] = useState(content);
 const [viewTitle, setViewTitle] = useState(title);
-
-const deleteReview = (bookId, reviewId) => {
-  userData.deleteReview(bookId, reviewId)
-  .then(test(bookId))
-};
 
 const saveEdit = () => {
   updateStateUpdate(bookId, id, { title: viewTitle, content: viewContent });
@@ -63,7 +58,7 @@ const saveEdit = () => {
 Review.propTypes = {
 review: PropTypes.object,
 bookId: PropTypes.string,
-test: PropTypes.func,
+deleteReview: PropTypes.func,
 updateStateUpdate: PropTypes.func
   };
 
