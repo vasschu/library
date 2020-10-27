@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 
 const Reviews = (props) => {
-	const { id } = props;
+	const { id, userToken, role } = props;
 	
 	const [reviews, setReview] = useState([]);
 	const [error, setError] = useState(null);
@@ -48,7 +48,16 @@ const Reviews = (props) => {
 	const displayReviews = reviews.length ? 
 	(
   <div className='review'>
-    {reviews.map((r) => {return <Review key={r.id} review={r} bookId={id} deleteReview={deleteReview} updateStateUpdate={updateReviews} />;})}
+    {reviews.map((r) => {
+	return <Review
+  key={r.id}
+  review={r}
+  bookId={id}
+  deleteReview={deleteReview}
+  updateStateUpdate={updateReviews}
+  userToken={userToken}
+  role={role}
+	       />;})}
   </div>)
   : (
     <div className='review'>
@@ -63,6 +72,8 @@ const Reviews = (props) => {
 
 Reviews.propTypes = {
 	id: PropTypes.string,
+	userToken: PropTypes.string,
+	role: PropTypes.string,
   };
 
 export default Reviews;

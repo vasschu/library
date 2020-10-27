@@ -38,7 +38,7 @@ const IndividualBook = (props) => {
 		updateBook(id, data);
 	};
 
-	const { sub: logedUser, role } = tokenData;
+	const { sub: logedUser, role, username } = tokenData;
 	const { rating } = rate;
 	const fixedRating = !rating ? rating : rating.toFixed();
 
@@ -59,14 +59,28 @@ const IndividualBook = (props) => {
 	);
 
 	//show/hide reviews
-	const showReview = !showReviewToggle ?
-	(<button className='show-review-button' onClick={()=>{setShowReviewToggle(true)}}>Show Reviews</button>):
-	(
+	const showReview = !showReviewToggle ? (
+  <button
+    className='show-review-button'
+    onClick={() => {
+				setShowReviewToggle(true);
+    }}
+  >
+    Show Reviews
+  </button>
+	) : (
   <div>
-    <button className='hide-review-button' onClick={()=>{setShowReviewToggle(false)}}>Hide Reviews</button>
-    <Reviews id={id} />
-  </div>)
-
+    <button
+      className='hide-review-button'
+      onClick={() => {
+					setShowReviewToggle(false);
+      }}
+    >
+      Hide Reviews
+    </button>
+    <Reviews id={id} userToken={username} role={role} />
+  </div>
+	);
 
 	return (
 		//book info
@@ -93,7 +107,7 @@ const IndividualBook = (props) => {
       />
       {addReview}
     </div>
-    {/* <Reviews id={id} /> */}
+
     {showReview}
   </div>
 	);
