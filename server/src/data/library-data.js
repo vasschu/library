@@ -92,7 +92,8 @@ const createBook = async (title, author, description, image) => {
 	const sql = `INSERT INTO library.books (title, author, description, image)
 	VALUES (?, ?, ?, ?);`;
 
-	return await pool.query(sql, [title, author, description, image]);
+	const bookInfo =  await pool.query(sql, [title, author, description, image]);
+	return await getById(bookInfo.insertId);
 };
 
 /**

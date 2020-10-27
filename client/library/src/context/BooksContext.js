@@ -30,7 +30,12 @@ export const BooksProvider = ({children}) => {
     const addBook = (book) => {
         console.log(book)
         BooksService.create(book)
-        .then(res => console.log(res))
+        .then(res => {
+          console.log(res.data)
+          if (typeof res.data === 'object') {
+            setBooks(books => [...books, res.data])
+          }
+        })
         .catch(err => {
             if (err.response) {
               alert(err.response.data.Message)

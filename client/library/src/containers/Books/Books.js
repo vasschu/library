@@ -6,11 +6,11 @@ import './Books.css'
 import { BooksContext } from '../../context/BooksContext'
 
 const Books = () => {
-  const { books, getAllBooks, addBook } = useContext(BooksContext);
+  const { books, book, getAllBooks, addBook } = useContext(BooksContext);
   // console.log(tokenData)
     useEffect(() => {
       getAllBooks()
-    }, [])
+    }, [book])
 
 
     const createBook = (data) => {
