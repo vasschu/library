@@ -1,19 +1,22 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import userData from './../../../data/reviewsData'
+
 
 const Review = (props) => {
   const {title, content, username, id } = props.review
-  const {bookId, test, updateStateUpdate } = props
+  const {bookId, deleteReview, updateStateUpdate, userToken, role } = props
   
 const [updateMode, setModeUpdate] = useState(false);
 const [viewContent, setViewText] = useState(content);
 const [viewTitle, setViewTitle] = useState(title);
 
-const deleteReview = (bookId, reviewId) => {
-  userData.deleteReview(bookId, reviewId)
-  .then(test(bookId))
-};
+const canEdit = (role === 'admin' || userToken === username) && (
+  <div>
+    <button className='delete-review-button' onClick={() => deleteReview(bookId, id)}>
+      Delete
+    </button>
+    <button className='edit-review-button' onClick={() => setModeUpdate(true)}>Edit</button>
+  </div>)
 
 const saveEdit = () => {
   updateStateUpdate(bookId, id, { title: viewTitle, content: viewContent });
@@ -48,10 +51,7 @@ const saveEdit = () => {
           <hr />
           <p>Review:{content}</p>
           <p>From: {username}</p>
-          <button className='delete-review-button' onClick={() => deleteReview(bookId, id)}>
-            Delete
-          </button>
-          <button className='edit-review-button' onClick={() => setModeUpdate(true)}>Edit</button>
+          {canEdit}
         </>
     )}
 
@@ -63,7 +63,9 @@ const saveEdit = () => {
 Review.propTypes = {
 review: PropTypes.object,
 bookId: PropTypes.string,
-test: PropTypes.func,
+userToken: PropTypes.string,
+role: PropTypes.string,
+deleteReview: PropTypes.func,
 updateStateUpdate: PropTypes.func
   };
 

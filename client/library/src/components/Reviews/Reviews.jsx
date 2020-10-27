@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 
 const Reviews = (props) => {
-	const { id } = props;
+	const { id, userToken, role } = props;
 	
 	const [reviews, setReview] = useState([]);
 	const [error, setError] = useState(null);
@@ -17,19 +17,26 @@ const Reviews = (props) => {
 		.getReviews(id)
 		.then((res) => setReview([...res.data]))
 		.catch((err) => setError(err))}
+
+		const deleteReview = (bookId, reviewId) => {
+			reviewData.deleteReview(bookId, reviewId)
+			.then(res => {const reviewsWithoutDeleted = reviews.filter(r => r.id !== res.data.id)
+			setReview(reviewsWithoutDeleted)
+			})
+		  };
 			
 	const updateReviews = (bookId, reviewId, data) => {
 		reviewData.editReview(bookId, reviewId, data)
 		.then((res) => { if(!res.data.message)
 		{
-const reviewIndex = reviews.findIndex(el=> el.id === reviewId)
-const copy = [...reviews]
-const updatedReview = reviews[reviewIndex]
-updatedReview.title = res.data.title
-updatedReview.content = res.data.content
-copy[reviewIndex] = updatedReview
+		const reviewIndex = reviews.findIndex(el=> el.id === reviewId)
+		const copy = [...reviews]
+		const updatedReview = reviews[reviewIndex]
+		updatedReview.title = res.data.title
+		updatedReview.content = res.data.content
+		copy[reviewIndex] = updatedReview
 
-setReview(copy)
+		setReview(copy)
 		}})
 	}
 			
@@ -41,7 +48,16 @@ setReview(copy)
 	const displayReviews = reviews.length ? 
 	(
   <div className='review'>
-    {reviews.map((r) => {return <Review key={r.id} review={r} bookId={id} test={fetchReviews} updateStateUpdate={updateReviews} />;})}
+    {reviews.map((r) => {
+	return <Review
+  key={r.id}
+  review={r}
+  bookId={id}
+  deleteReview={deleteReview}
+  updateStateUpdate={updateReviews}
+  userToken={userToken}
+  role={role}
+	       />;})}
   </div>)
   : (
     <div className='review'>
@@ -56,6 +72,8 @@ setReview(copy)
 
 Reviews.propTypes = {
 	id: PropTypes.string,
+	userToken: PropTypes.string,
+	role: PropTypes.string,
   };
 
 export default Reviews;
