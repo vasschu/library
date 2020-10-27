@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
+import ReviewLikes from './ReviewLikes'
 
 
 const Review = (props) => {
@@ -48,10 +49,11 @@ const saveEdit = () => {
         <>
           <hr />
           <p>Title: {title}</p>
-          <hr />
           <p>Review:{content}</p>
           <p>From: {username}</p>
           {canEdit}
+          <ReviewLikes reviewId={id} />
+          <hr />
         </>
     )}
 
