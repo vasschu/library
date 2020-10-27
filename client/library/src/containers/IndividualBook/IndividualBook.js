@@ -1,12 +1,13 @@
-/* eslint-disable react/prop-types */
 import React, { useState, useEffect, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import AddReview from '../../components/Reviews/Review/AddReview';
 import BorrowButton from '../../components/Book/BorrowButton';
 import Reviews from '../../components/Reviews/Reviews';
 import EditBook from '../../components/EditBook/EditBook';
+import Rate from '../../components/Rate/Rate'
 import { tokenData } from '../../common/common.js';
 import { BooksContext } from '../../context/BooksContext';
+import PropTypes from 'prop-types';
 
 const IndividualBook = (props) => {
 	const {
@@ -18,6 +19,7 @@ const IndividualBook = (props) => {
 		borrowBook,
 		returnBook,
 		getBookRating,
+		rateBook
 	} = useContext(BooksContext);
 
 	const [addReviewToggle, setAddReviewToggle] = useState(false);
@@ -25,6 +27,9 @@ const IndividualBook = (props) => {
 
 	const { id } = props.match.params;
 	const { image, title, author, borrowed, description, borrow_user } = book;
+	const { sub: logedUser, role, username } = tokenData;
+	const { rating } = rate;
+	const fixedRating = !rating ? 'none' : rating.toFixed();
 
 	useEffect(() => {
 		retrieveIndividualBook(id);
@@ -33,14 +38,6 @@ const IndividualBook = (props) => {
 	useEffect(() => {
 		getBookRating(id);
 	}, [id]);
-
-	const editBook = (id, data) => {
-		updateBook(id, data);
-	};
-
-	const { sub: logedUser, role, username } = tokenData;
-	const { rating } = rate;
-	const fixedRating = !rating ? rating : rating.toFixed();
 
 	// check if admin
 	const adminDelete = role === 'admin' && (
@@ -88,13 +85,14 @@ const IndividualBook = (props) => {
   <div className='book'>
     <img src={image} alt='book-cover' />
     <div className='book-info'>
+      <span>Rating: {fixedRating} / 5</span>
+      <Rate rate={(userRating) => rateBook(id, userRating)} />
       <EditBook
         title={title}
         description={description}
         author={author}
         image={image}
-        fixedRating={fixedRating}
-        editBook={(data) => editBook(id, data)}
+        editBook={(data) => updateBook(id, data)}
       />
       {adminDelete}
       <br />
@@ -114,3 +112,7 @@ const IndividualBook = (props) => {
 };
 
 export default IndividualBook;
+
+IndividualBook.propTypes = {
+  match: PropTypes.object,
+}

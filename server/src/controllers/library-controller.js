@@ -222,7 +222,7 @@ libraryController
 
 			return res
 				.status(200)
-				.send({ message: 'Rated successfully', level: rate.level });
+				.send({ message: rate.result, level: rate.level });
 		},
 	)
 

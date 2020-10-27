@@ -1,6 +1,7 @@
 
 import React, { createContext, useState } from 'react';
 import BooksService from '../data/booksData.js'
+import PropTypes from 'prop-types';
 
 const initialState = []
 
@@ -28,17 +29,15 @@ export const BooksProvider = ({children}) => {
     }
 
     const addBook = (book) => {
-        console.log(book)
         BooksService.create(book)
         .then(res => {
-          console.log(res.data)
           if (typeof res.data === 'object') {
             setBooks(books => [...books, res.data])
           }
         })
         .catch(err => {
             if (err.response) {
-              alert(err.response.data.Message)
+              alert(err.response.data.message)
             } else if (err.request) {
               console.log(err.request)
             } else {
@@ -49,37 +48,95 @@ export const BooksProvider = ({children}) => {
     const removeBook = (id) => {
         BooksService.deleteBook(id)
         .then(resBook => setBook(resBook.data))
+        .catch(err => {
+          if (err.response) {
+            alert(err.response.data.message)
+          } else if (err.request) {
+            console.log(err.request)
+          } else {
+            console.log(err)
+          }})
     }
 
     const updateBook = (id, info) => {
         BooksService.editBook(id, info)
         .then(resBook => setBook(resBook.data))
+        .catch(err => {
+          if (err.response) {
+            alert(err.response.data.message)
+          } else if (err.request) {
+            console.log(err.request)
+          } else {
+            console.log(err)
+          }})
 
     }
 
     const retrieveIndividualBook = (id) => {
         BooksService.getBookById(id)
         .then(resBook => setBook(resBook.data))
+        .catch(err => {
+          if (err.response) {
+            alert(err.response.data.message)
+          } else if (err.request) {
+            console.log(err.request)
+          } else {
+            console.log(err)
+          }})
     }
 
     const borrowBook = (id) => {
         BooksService.borrowBook(id)
         .then(resBook => setBook(resBook.data))
+        .catch(err => {
+          if (err.response) {
+            alert(err.response.data.message)
+          } else if (err.request) {
+            console.log(err.request)
+          } else {
+            console.log(err)
+          }})
     }
 
     const returnBook = (id) => {
         BooksService.returnBook(id)
         .then(resBook => setBook(resBook.data.res))
+        .catch(err => {
+          if (err.response) {
+            alert(err.response.data.message)
+          } else if (err.request) {
+            console.log(err.request)
+          } else {
+            console.log(err)
+          }})
     }
 
     const getBookRating = (id) => {
         BooksService.getBookRating(id)
         .then(bookRate => setRate(bookRate.data))
+        .catch(err => {
+          if (err.response) {
+            alert(err.response.data.message)
+          } else if (err.request) {
+            console.log(err.request)
+          } else {
+            console.log(err)
+          }})
     }
 
-    // const rateBook = (id, rating) => {
-
-    // }
+    const rateBook = (id, rating) => {
+      console.log(rating)
+      BooksService.rateBook(id, rating)
+      .then(res => setBook(res.data.message))
+      .catch(err => {
+        if (err.response) {
+          alert(err.response.data.message)
+        } else if (err.request) {
+          console.log(err.request)
+        } else {
+          console.log(err)
+        }})
+    }
 
     return (
       <BooksContext.Provider value={{
@@ -93,10 +150,16 @@ export const BooksProvider = ({children}) => {
             retrieveIndividualBook,
             borrowBook,
             returnBook,
-            getBookRating      
+            getBookRating,
+            rateBook      
       }}
       >
         {children}
       </BooksContext.Provider>
         )
 }
+
+BooksProvider.propTypes = {
+  children: PropTypes.element,
+}
+

@@ -175,10 +175,11 @@ const rateBook = async (bookId, user, rating) => {
 	if (!rate.affectedRows) {
 		return { error: serviceErrors.NO_DATABASE_CHANGES, result: null };
 	}
-
 	const changedLevel = await changeLevel(id, role);
+	
+	const book = await libraryData.getById(bookId)
 
-	return { error: null, result: rate, level: changedLevel };
+	return { error: null, result: book, level: changedLevel };
 };
 
 const getAverageBookRating = async (bookId) => {

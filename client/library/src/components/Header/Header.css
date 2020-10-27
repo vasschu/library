@@ -39,7 +39,7 @@
     font-size: 17px;
 
     
-    border-radius: 10px;
+    border-radius: 7px;
     border-right: 1px solid white;
 }
 
@@ -50,7 +50,7 @@
 
 .auth input {
     width:  300px;
-    border-radius: 10px;
+    border-radius: 7px;
     border: 1px solid rgb(172, 172, 172);
     font-size: 17px;
     margin-right: 5px;
@@ -72,12 +72,12 @@
 }
 
 .register {
-    border-radius: 10px 0 0 10px;
+    border-radius: 7px 0 0 7px;
     border-right: 1px solid white;
 }
 
 .login {
-    border-radius: 0 10px 10px 0;
+    border-radius: 0 7px 7px 0;
     border-left: 1px solid white;
 
 }

@@ -34,6 +34,11 @@ import http from './http-common.js';
 
     }
 
+    const rateBook = (id, body) => {
+        return http.put(`/books/${id}/rate`, body)
+
+    }
+
 export default {
     getBooks,
     create,
@@ -42,5 +47,6 @@ export default {
     deleteBook,
     borrowBook,
     returnBook,
-    editBook
+    editBook,
+    rateBook
 }

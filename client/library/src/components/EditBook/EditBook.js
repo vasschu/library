@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 
 const EditBook = (props) => {
-    const {editBook, title, description, author, image, fixedRating} = props; 
+    const {editBook, title, description, author, image } = props; 
 
     const [isEditMode, setEditMode] = useState(false);
 
@@ -34,15 +34,15 @@ const EditBook = (props) => {
       <> 
         <input type='text' value={newTitle} onChange={e => setNewTitle(e.target.value)} />
         <input type='text' value={newAuthor} onChange={e => setNewAuthor(e.target.value)} />
-        <p>Rating: {fixedRating} / 5</p>
         <input type='text' value={newDescription} onChange={e => setNewDescription(e.target.value)} />
         <input type='text' placeholder='Add new image link...' value={newImage} onChange={e => setNewImage(e.target.value)} />
         <button onClick={edit}>Save Book Info</button>
+        <button onClick={() => setEditMode(prev => !prev)}>Cancel</button>
+
       </> ) : (
         <> 
           <h2>{title}</h2>
           <p>{author}</p>
-          <p>Rating: {fixedRating} / 5</p>
           <p>{description}</p>
           {true && 
           (<>
