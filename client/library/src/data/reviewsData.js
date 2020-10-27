@@ -16,8 +16,8 @@ const editReview = (bookId, reviewId, data) => {
 	return http.put(`/books/${bookId}/reviews/${reviewId}`, data);
 };
 
-const likeReviewRating = (id) => {
-	return http.get(`/books/${id}`);
+const likeReviewRating = (bookId, reviewId, rating) => {
+	return http.post(`/books/${bookId}/reviews/${reviewId}`, rating);
 };
 
 // const getBookRating = (id) => {
@@ -31,4 +31,10 @@ const likeReviewRating = (id) => {
 // 	return http.patch(`/books/${id}`);
 // };
 
-export default { getReviews, addReview, deleteReview, editReview };
+export default {
+	getReviews,
+	addReview,
+	deleteReview,
+	editReview,
+	likeReviewRating,
+};
