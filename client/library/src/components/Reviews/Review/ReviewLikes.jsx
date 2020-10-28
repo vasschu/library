@@ -4,9 +4,7 @@ import PropTypes from 'prop-types';
 import {tokenData} from './../../../common/common'
 import {toastError} from './../../../common/toaster'
 import reviewsData from './../../../data/reviewsData'
-
-toast.configure()
-
+import { toast } from 'react-toastify';
 
 
 const ReviewLikes = (props) => {
