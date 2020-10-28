@@ -39,9 +39,8 @@ const AddReview = (props) => {
 
 	return (
   <div className='add-review'>
-    <span>Note: will toggle this section with the button above</span>
-    <br />
-    <span>Title</span>
+    <hr />
+    <div>Title:  </div>
     <input
       placeholder='Title'
       style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
@@ -49,17 +48,15 @@ const AddReview = (props) => {
       value={title}
     />
     <br />
-    <span>Review</span>
+    <div>Review: </div>
     <input
       placeholder='Review'
       style={{ height: 200, borderColor: 'gray', borderWidth: 1 }}
       onChange={(e) => updateBody(e.target.value)}
       value={body}
     />
-    <p>
-      {' '}
-      must find a way to place rating here. Stars maybe? Select from list?
-    </p>
+    <br />
+    <hr />
     <button className='save-review-button' onClick={addReview}>
       Save
     </button>

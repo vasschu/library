@@ -118,8 +118,10 @@ const IndividualBook = (props) => {
       />
       {addReview}
     </div>
-
+    <br />
+    <hr />
     {showReview}
+    <hr />
   </div>
 	);
 };
