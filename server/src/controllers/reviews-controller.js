@@ -14,10 +14,10 @@ import {
 } from '../auth/auth-middleware.js';
 
 const reviewsController = express.Router();
-// reviewsController.use(authMiddleware);
-// reviewsController.use(roleMiddleware('regular', 'admin'));
-// reviewsController.use(tokenExtract());
-// reviewsController.use(tokenIsBlacklisted());
+reviewsController.use(authMiddleware);
+reviewsController.use(roleMiddleware('regular', 'admin'));
+reviewsController.use(tokenExtract());
+reviewsController.use(tokenIsBlacklisted());
 
 reviewsController
 	/**

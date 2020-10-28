@@ -3,8 +3,9 @@ import './User.css';
 import {tokenData} from './../../common/common'
 
 const User = () => {
-console.log(tokenData);
-const {sub, username, role} = tokenData
+const tokenPayload = tokenData()
+
+const {sub, username, role} = tokenPayload
 
 const readingPoints = 5000
 

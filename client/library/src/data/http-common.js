@@ -1,10 +1,9 @@
 import axios from 'axios';
-import { token } from './../common/common.js';
 
 const http = axios.create({
 	baseURL: 'http://localhost:5500/',
 	headers: {
-		Authorization: `Bearer ${token()}`,
+		Authorization: `Bearer ${localStorage.getItem('token')}`,
 		Accept: 'application/json, text/plain, */*',
 	},
 });

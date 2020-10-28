@@ -13,10 +13,11 @@ const AddReview = (props) => {
 	const updateTitle = (value) => onChangeTitle(value);
 	const updateBody = (value) => onChangeBody(value);
 
+  const tokenPayload = tokenData()
 	const data = {
 		title: title,
 		content: body,
-		users_id: tokenData.sub,
+		users_id: tokenPayload.sub,
 		books_id: bookId,
 	};
 

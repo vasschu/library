@@ -1,10 +1,8 @@
 import React, {useState } from 'react';
 import {useParams} from 'react-router-dom'
 import PropTypes from 'prop-types';
-import {tokenData} from './../../../common/common'
 import {toastError} from './../../../common/toaster'
 import reviewsData from './../../../data/reviewsData'
-import { toast } from 'react-toastify';
 
 
 const ReviewLikes = (props) => {

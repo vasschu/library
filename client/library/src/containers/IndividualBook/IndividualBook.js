@@ -4,7 +4,7 @@ import AddReview from '../../components/Reviews/Review/AddReview';
 import BorrowButton from '../../components/Book/BorrowButton';
 import Reviews from '../../components/Reviews/Reviews';
 import EditBook from '../../components/EditBook/EditBook';
-import Rate from '../../components/Rate/Rate'
+import Rate from '../../components/Rate/Rate';
 import { tokenData } from '../../common/common.js';
 import { BooksContext } from '../../context/BooksContext';
 import PropTypes from 'prop-types';
@@ -19,15 +19,16 @@ const IndividualBook = (props) => {
 		borrowBook,
 		returnBook,
 		getBookRating,
-		rateBook
+		rateBook,
 	} = useContext(BooksContext);
 
 	const [addReviewToggle, setAddReviewToggle] = useState(false);
 	const [showReviewToggle, setShowReviewToggle] = useState(false);
 
+	const tokenPayload = tokenData();
 	const { id } = props.match.params;
 	const { image, title, author, borrowed, description, borrow_user } = book;
-	const { sub: logedUser, role, username } = tokenData;
+	const { sub: logedUser, role, username } = tokenPayload;
 	const { rating } = rate;
 	const fixedRating = !rating ? 'none' : rating.toFixed();
 
@@ -115,5 +116,5 @@ const IndividualBook = (props) => {
 export default IndividualBook;
 
 IndividualBook.propTypes = {
-  match: PropTypes.object,
-}
+	match: PropTypes.object,
+};
