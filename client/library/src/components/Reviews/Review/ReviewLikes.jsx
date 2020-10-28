@@ -2,22 +2,12 @@ import React, {useState } from 'react';
 import {useParams} from 'react-router-dom'
 import PropTypes from 'prop-types';
 import {tokenData} from './../../../common/common'
+import {toastError} from './../../../common/toaster'
 import reviewsData from './../../../data/reviewsData'
-import { toast } from 'react-toastify';
 
 toast.configure()
 
-const toastError = (message) => {
-  toast.error(message, {
-    position: "top-right",
-    autoClose: 3000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    })
-}
+
 
 const ReviewLikes = (props) => {
   const {reviewId} = props
