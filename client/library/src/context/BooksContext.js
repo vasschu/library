@@ -56,7 +56,6 @@ export const BooksProvider = ({ children }) => {
 	const getAllBooks = () => {
 		BooksService.getBooks()
 			.then((resBooks) => {
-				console.log(resBooks.data);
 				setBooks(resBooks.data);
 			})
 			.catch((err) => {
@@ -158,7 +157,6 @@ export const BooksProvider = ({ children }) => {
 		BooksService.returnBook(id)
 			.then((resBook) => {
 				setBook(resBook.data.res);
-				console.log(resBook.data.level, tokenPayload.role);
 				if (resBook.data.level && resBook.data.level !== tokenPayload.role) {
 					toastRole(resBook.data.level);
 				}
@@ -189,10 +187,8 @@ export const BooksProvider = ({ children }) => {
 	};
 
 	const rateBook = (id, rating) => {
-		console.log(rating);
 		BooksService.rateBook(id, rating)
 			.then((res) => {
-				console.log(res.data);
 				setBook(res.data.message);
 				toastSuccess('The book was rated successfully!');
 

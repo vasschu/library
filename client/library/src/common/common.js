@@ -8,7 +8,6 @@ export const tokenData = () => {
 	const token = localStorage.getItem('token');
 	if (token) {
 		const tokenPayload = decode(token);
-		console.log(tokenPayload);
 		return tokenPayload;
 	}
 };

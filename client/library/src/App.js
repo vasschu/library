@@ -19,38 +19,39 @@ function App() {
 	const setLoginState = (isLogged, token = null) => {
 		if (isLogged) {
 			localStorage.setItem('token', token);
-      console.log(auth)
-      setAuth(prev => !prev);
+			setAuth((prev) => !prev);
 		} else {
 			localStorage.removeItem('token');
-			setAuth(prev => !prev);
+			setAuth((prev) => !prev);
 		}
 	};
 
 	return (
-  <div className='App'>
-    <BrowserRouter>
-      <AuthContext.Provider value={{ isLoggedIn: auth, setLoginState }}>
-        <Header />
-        <Switch>
-          {/* We can add conditional for redirect auth user -> homepage / unauth user -> landingpage */}
-          <Redirect path='/' exact to='/landing' />
-          <Route path='/register' component={RegisterPage} />
-          <Route path='/login' component={LoginPage} />
-          <Route path='/landing' component={LandingPage} />
-          {auth && <>
-            <BooksProvider>
-              <Route path='/books' exact component={Books} />
-              <Route path='/books/:id' component={IndividualBook} />
-            </BooksProvider>
-            <Route path='/user' exact component={User} /> 
-          </>}
-          <Route path='*' component={NotFound} />
-        </Switch>
-        <Footer />
-      </AuthContext.Provider>
-    </BrowserRouter>
-  </div>
+		<div className='App'>
+			<BrowserRouter>
+				<AuthContext.Provider value={{ isLoggedIn: auth, setLoginState }}>
+					<Header />
+					<Switch>
+						{/* We can add conditional for redirect auth user -> homepage / unauth user -> landingpage */}
+						<Redirect path='/' exact to='/landing' />
+						<Route path='/register' component={RegisterPage} />
+						<Route path='/login' component={LoginPage} />
+						<Route path='/landing' component={LandingPage} />
+						{auth && (
+							<>
+								<BooksProvider>
+									<Route path='/books' exact component={Books} />
+									<Route path='/books/:id' component={IndividualBook} />
+								</BooksProvider>
+								<Route path='/user' exact component={User} />
+							</>
+						)}
+						<Route path='*' component={NotFound} />
+					</Switch>
+					<Footer />
+				</AuthContext.Provider>
+			</BrowserRouter>
+		</div>
 	);
 }
 
