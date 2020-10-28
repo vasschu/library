@@ -175,7 +175,7 @@ reviewsController
 			if (!error) {
 				res.status(200).send({ res: result, level: level });
 			} else {
-				res.status(404).send({ message: 'This is duplicate review.' });
+				res.status(400).send({ message: 'This is duplicate review.' });
 			}
 		},
 	);
