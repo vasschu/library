@@ -4,9 +4,11 @@ import AddBook from '../../components/AddBook/AddBook'
 import { tokenData } from '../../common/common.js'
 import './Books.css'
 import { BooksContext } from '../../context/BooksContext'
+import { AuthContext } from '../../context/AuthContext'
 
 const Books = () => {
   const { books, book, getAllBooks, addBook } = useContext(BooksContext);
+  // console.log(AuthContext)
 
     useEffect(() => {
       getAllBooks()

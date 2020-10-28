@@ -1,22 +1,24 @@
 /* eslint-disable react/prop-types */
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { BooksContext } from '../../context/BooksContext'
+import axios from 'axios';
 import './LandingPage.css';
 
 const LandingPage = () => {
-const { book, retrieveIndividualBook } = useContext(BooksContext)
-// const {image} = book;
-console.log(book)  
+  const [ book, setBook ] = useState()
 
   useEffect(() => {
-      retrieveIndividualBook(1);
+    const random = Math.ceil(Math.random() * 4);   
+      axios.get(`http://localhost:5500/landing/${random}`)
+      .then(bookRes => {
+        console.log(bookRes)
+        setBook(bookRes.data)})
   }, [])
-
+  console.log(book)
     return (
         // visualize book
       <div className='home-page-layout'>
-        <img src='{image}' alt="alternatetext" />
+        {book && <img src={book.image} alt="alternatetext" />}
         <div className="call-to-action">
           <h1 className="call-to-action-text">Get access to the world's greatest
             stories<br />with Library.

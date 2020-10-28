@@ -8,6 +8,7 @@ import libraryController from './controllers/library-controller.js';
 import reviewsController from './controllers/reviews-controller.js';
 import usersController from './controllers/users-controller.js';
 import authController from './controllers/auth-controller.js';
+import publicController from './controllers/public-controller.js';
 
 const app = express();
 const PORT = 5500;
@@ -24,6 +25,7 @@ libraryController.use(reviewsController);
 
 app.use('/users', usersController);
 app.use('/auth', authController);
+app.use('/landing', publicController);
 
 //this is wildcard to capture all unsuported requests
 app.all('*', (req, res) =>
