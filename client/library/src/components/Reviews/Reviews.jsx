@@ -1,22 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Review from './Review/Review';
-import reviewData from '../../data/reviewsData';
 import PropTypes from 'prop-types';
+import reviewData from './../../data/reviewsData'
 
 
 
 const Reviews = (props) => {
-	const { id, userToken, role } = props;
-	
-	const [reviews, setReview] = useState([]);
-	const [error, setError] = useState(null);
+	const { id, userToken, role, reviews, setReview } = props;
 
-	
-	const fetchReviews = (id) => {
-		reviewData
-		.getReviews(id)
-		.then((res) => setReview([...res.data]))
-		.catch((err) => setError(err))}
 
 		const deleteReview = (bookId, reviewId) => {
 			reviewData.deleteReview(bookId, reviewId)
@@ -39,11 +30,6 @@ const Reviews = (props) => {
 		setReview(copy)
 		}})
 	}
-			
-	useEffect(() => {
-	fetchReviews(id);
-	},[]);
-
 
 	const displayReviews = reviews.length ? 
 	(
@@ -74,6 +60,8 @@ Reviews.propTypes = {
 	id: PropTypes.string,
 	userToken: PropTypes.string,
 	role: PropTypes.string,
+	reviews: PropTypes.array,
+	setReview: PropTypes.func
   };
 
 export default Reviews;

@@ -4,11 +4,11 @@ import {tokenData} from './../../../common/common'
 import userData from './../../../data/reviewsData'
 
 
+
 const AddReview = (props) => {
-	const { bookId, addReviewToggle } = props;
+	const { bookId, addReviewToggle, reviews, setReview } = props;
 	const [title, onChangeTitle] = useState('');
   const [body, onChangeBody] = useState('');
-  const [reviews, setReviews] = useState([])
 
 	const updateTitle = (value) => onChangeTitle(value);
 	const updateBody = (value) => onChangeBody(value);
@@ -23,11 +23,18 @@ const AddReview = (props) => {
 
 	const addReview = () => {
 		userData.addReview(bookId, data)
-		.then(res => {
-		if (res.status === 201)
-		{addReviewToggle(false)}
-	})
-		.catch(err => alert(err))
+    .then(res => {
+    const newReview = {
+    content: res.data.content,
+    id: res.data.id,
+    title: res.data.id,
+    username: res.data.username,
+    }
+    const reviewsCopy = [...reviews, newReview]
+
+    setReview(reviewsCopy)
+    {addReviewToggle(false)}})
+.catch(err => alert(err))	
   }
 
 	return (
@@ -65,7 +72,9 @@ const AddReview = (props) => {
 
 AddReview.propTypes = {
 	bookId: PropTypes.string,
-	addReviewToggle: PropTypes.func,
+  addReviewToggle: PropTypes.func,
+	reviews: PropTypes.array,
+	setReview: PropTypes.func,
 	  };
 
 export default AddReview;

@@ -8,6 +8,7 @@ import Rate from '../../components/Rate/Rate';
 import { tokenData } from '../../common/common.js';
 import { BooksContext } from '../../context/BooksContext';
 import PropTypes from 'prop-types';
+import reviewData from './../../data/reviewsData'
 
 const IndividualBook = (props) => {
 	const {
@@ -24,6 +25,7 @@ const IndividualBook = (props) => {
 
 	const [addReviewToggle, setAddReviewToggle] = useState(false);
 	const [showReviewToggle, setShowReviewToggle] = useState(false);
+	const [reviews, setReview] = useState([]);
 
 	const tokenPayload = tokenData();
 	const { id } = props.match.params;
@@ -33,12 +35,21 @@ const IndividualBook = (props) => {
 	const fixedRating = !rating ? 'none' : rating.toFixed();
 
 	useEffect(() => {
-		retrieveIndividualBook(id);
+    retrieveIndividualBook(id);
+    fetchReviews(id)
 	}, [id]);
 
 	useEffect(() => {
 		getBookRating(id);
 	}, [id]);
+
+	//fetch review data
+	const fetchReviews = (id) => {
+		reviewData
+			.getReviews(id)
+			.then((res) => setReview([...res.data]))
+			// .catch((err) => toast(err));
+	};
 
 	// check if admin
 	const adminDelete = role === 'admin' && (
@@ -49,7 +60,7 @@ const IndividualBook = (props) => {
 
 	//check if add review is active
 	const addReview = addReviewToggle ? (
-  <AddReview bookId={id} addReviewToggle={setAddReviewToggle} />
+  <AddReview bookId={id} addReviewToggle={setAddReviewToggle} reviews={reviews} setReview={setReview} />
 	) : (
   <NavLink to={'/books/' + id + '/reviews'}>
     <button onClick={() => setAddReviewToggle(true)}>Add review</button>
@@ -76,7 +87,7 @@ const IndividualBook = (props) => {
     >
       Hide Reviews
     </button>
-    <Reviews id={id} userToken={username} role={role} />
+    <Reviews id={id} userToken={username} role={role} reviews={reviews} setReview={setReview} />
   </div>
 	);
 
