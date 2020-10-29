@@ -4,7 +4,7 @@ import './App.css';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import Books from './containers/Books/Books';
-import User from './components/User/User';
+import User from './containers/User/User';
 import NotFound from './components/NotFound';
 import LandingPage from './containers/LandingPage/LandingPage';
 import LoginPage from './components/LoginPage/LoginPage.jsx';
@@ -27,30 +27,34 @@ function App() {
 	};
 
 	return (
-  <div className='App'>
-    <BrowserRouter>
-      <AuthContext.Provider value={{ isLoggedIn: auth, setLoginState }}>
-        <Header />
-        <Switch>
-          {auth ? <Redirect path='/' exact to='/books' /> : <Redirect path='/' exact to='/landing' />}
-          <Route path='/register' component={RegisterPage} />
-          <Route path='/login' component={LoginPage} />
-          <Route path='/landing' component={LandingPage} />
-          {auth && (
-            <>
-              <BooksProvider>
-                <Route path='/books' exact component={Books} />
-                <Route path='/books/:id' component={IndividualBook} />
-              </BooksProvider>
-              <Route path='/user' exact component={User} />
-            </>
+		<div className='App'>
+			<BrowserRouter>
+				<AuthContext.Provider value={{ isLoggedIn: auth, setLoginState }}>
+					<Header />
+					<Switch>
+						{auth ? (
+							<Redirect path='/' exact to='/books' />
+						) : (
+							<Redirect path='/' exact to='/landing' />
 						)}
-          <Route path='*' component={NotFound} />
-        </Switch>
-        <Footer />
-      </AuthContext.Provider>
-    </BrowserRouter>
-  </div>
+						<Route path='/register' component={RegisterPage} />
+						<Route path='/login' component={LoginPage} />
+						<Route path='/landing' component={LandingPage} />
+						{auth && (
+							<>
+								<BooksProvider>
+									<Route path='/books' exact component={Books} />
+									<Route path='/books/:id' component={IndividualBook} />
+								</BooksProvider>
+								<Route path='/user' exact component={User} />
+							</>
+						)}
+						<Route path='*' component={NotFound} />
+					</Switch>
+					<Footer />
+				</AuthContext.Provider>
+			</BrowserRouter>
+		</div>
 	);
 }
 
