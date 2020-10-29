@@ -93,7 +93,12 @@ const returnBook = async (bookId, userId, role) => {
 const createBook = async (body) => {
 	const { title, author, description, image } = body;
 
-	const response = await libraryData.createBook(title, author, description, image);
+	const response = await libraryData.createBook(
+		title,
+		author,
+		description,
+		image,
+	);
 	return { error: null, result: response };
 };
 
@@ -105,24 +110,23 @@ const createBook = async (body) => {
  */
 const updateBook = async (id, body) => {
 	const book = await libraryData.getById(id);
-	console.log(book, '***', body, id)
 	const title = body.title || book.title;
 	const author = body.author || book.author;
 	const description = body.description || book.description;
 	const image = body.image || book.image;
-	
+
 	const updated = await libraryData.updateBook(
 		id,
 		title,
 		author,
 		description,
 		image,
-		);
-		
-		if (!updated.affectedRows) {
-			return { error: serviceErrors.NO_DATABASE_CHANGES, result: null };
-		}
-		
+	);
+
+	if (!updated.affectedRows) {
+		return { error: serviceErrors.NO_DATABASE_CHANGES, result: null };
+	}
+
 	const updatedBook = await libraryData.getById(id);
 	return { error: null, result: updatedBook };
 };
@@ -176,8 +180,8 @@ const rateBook = async (bookId, user, rating) => {
 		return { error: serviceErrors.NO_DATABASE_CHANGES, result: null };
 	}
 	const changedLevel = await changeLevel(id, role);
-	
-	const book = await libraryData.getById(bookId)
+
+	const book = await libraryData.getById(bookId);
 
 	return { error: null, result: book, level: changedLevel };
 };
@@ -185,8 +189,8 @@ const rateBook = async (bookId, user, rating) => {
 const getAverageBookRating = async (bookId) => {
 	const rate = await libraryData.getAverageBookRate(bookId);
 
-	return rate
-}
+	return rate;
+};
 
 export default {
 	getAllRecords,

@@ -61,7 +61,6 @@ libraryController
 		const booksToShow = await libraryService.getBookById(+id);
 
 		const { error, result } = booksToShow;
-		console.log(result)
 		if (!error) {
 			res.status(200).send(result);
 		} else {
@@ -80,8 +79,6 @@ libraryController
 		isBannedMiddleware(),
 		// validateBody(borrowBookShema),
 		async (req, res) => {
-			console.log(req.user);
-			console.log(req.params);
 			const { id } = req.params;
 			// const userId = req.body.users_id;
 
@@ -107,7 +104,7 @@ libraryController
 	 */
 	.patch('/:id', validateBody(borrowBookShema), async (req, res) => {
 		const { id } = req.params;
-		console.log(id)
+
 		// const userId = req.body.users_id;
 		const { role } = req.user;
 
@@ -176,19 +173,21 @@ libraryController
 	 * Delete book (admin only)
 	 * @param {number} id from http
 	 * @return {object} return message if book is deleted*/
-	.delete('/:id/',
+	.delete(
+		'/:id/',
 		// roleMiddleware('admin'),
 		async (req, res) => {
-		const { id } = req.params;
+			const { id } = req.params;
 
-		const del = await libraryService.deleteBook(id);
+			const del = await libraryService.deleteBook(id);
 
-		if (del.error === serviceErrors.NO_DATABASE_CHANGES) {
-			return res.status(400).send({ message: 'Delete was unsuccessful' });
-		}
+			if (del.error === serviceErrors.NO_DATABASE_CHANGES) {
+				return res.status(400).send({ message: 'Delete was unsuccessful' });
+			}
 
-		return res.status(200).send({ message: 'Deleted successfully' });
-	})
+			return res.status(200).send({ message: 'Deleted successfully' });
+		},
+	)
 
 	/**
 	 * Rate book
@@ -220,20 +219,16 @@ libraryController
 				res.status(400).send({ message: 'Rating was unsuccessfull' });
 			}
 
-			return res
-				.status(200)
-				.send({ message: rate.result, level: rate.level });
+			return res.status(200).send({ message: rate.result, level: rate.level });
 		},
 	)
 
 	.get('/:id/rate', async (req, res) => {
 		const { id } = req.params;
 
-		const rating = await libraryService.getAverageBookRating(id)
+		const rating = await libraryService.getAverageBookRating(id);
 
-		return res
-		.status(200)
-		.send({rating})
-	})
+		return res.status(200).send({ rating });
+	});
 
 export default libraryController;

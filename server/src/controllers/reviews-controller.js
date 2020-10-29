@@ -178,6 +178,25 @@ reviewsController
 				res.status(400).send({ message: 'This is duplicate review.' });
 			}
 		},
-	);
+	)
+	/**
+	 * Get reviews likes for specific review
+	 * @param {number} review_id optional from req.params {:reviewid}
+	 * @return {object} return object with all reviews or error msg
+	 */
+	.get('/:id/reviews/:reviewid', async (req, res) => {
+		try {
+			const { reviewid } = req.params;
+			const reviews = await reviewsService.getReviewLikes(reviewid, null);
+			if (reviews.error === serviceErrors.NOT_FOUND) {
+				return res
+					.status(202)
+					.send({ message: 'No ratings found for this review' });
+			}
+			res.status(200).send(reviews.result);
+		} catch (err) {
+			throw new Error(err);
+		}
+	});
 
 export default reviewsController;

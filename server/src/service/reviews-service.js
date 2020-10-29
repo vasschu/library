@@ -176,6 +176,19 @@ const rateReviewById = async (review_id, user_id, rating, role) => {
 	}
 };
 
+/**
+ * get all review likes
+ * @param {number} review_id the id of the review
+ * @returns {object} containing all likes for the given review
+ */
+const getReviewLikes = async (review_id, user_id) => {
+	const reviewLikes = await reviewsData.getReviewLikes(review_id, user_id);
+	if (reviewLikes.length > 0) {
+		return { error: null, result: reviewLikes };
+	}
+	return { error: serviceErrors.NOT_FOUND, result: null };
+};
+
 export default {
 	getAllBookReviews,
 	postReview,
@@ -183,4 +196,5 @@ export default {
 	updateReviewById,
 	deleteReviewById,
 	rateReviewById,
+	getReviewLikes,
 };

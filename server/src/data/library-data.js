@@ -29,7 +29,6 @@ const getBy = async (column, value) => {
 	WHERE b.${column} like "%${value}%";`;
 
 	const foundBooks = books.formatBookData(await pool.query(sql, [value]));
-	// console.log(foundBooks)
 
 	return await foundBooks;
 };
@@ -92,7 +91,7 @@ const createBook = async (title, author, description, image) => {
 	const sql = `INSERT INTO library.books (title, author, description, image)
 	VALUES (?, ?, ?, ?);`;
 
-	const bookInfo =  await pool.query(sql, [title, author, description, image]);
+	const bookInfo = await pool.query(sql, [title, author, description, image]);
 	return await getById(bookInfo.insertId);
 };
 
@@ -233,12 +232,12 @@ const changeLevel = async (userId, role) => {
 const getAverageBookRate = async (bookId) => {
 	const sql = `SELECT AVG(rating) AS average
 	FROM book_ratings
-	WHERE books_id = ?;`
+	WHERE books_id = ?;`;
 
 	const res = await pool.query(sql, [bookId]);
-	console.log(res)
+
 	return res[0].average;
-}
+};
 
 export default {
 	getAll,
@@ -255,5 +254,5 @@ export default {
 	createRate,
 	updateRate,
 	changeLevel,
-	getAverageBookRate
+	getAverageBookRate,
 };
