@@ -3,6 +3,7 @@ import usersService from '../service/users-service.js';
 import { logInBody } from '../middleware/validators/login-body.js';
 import { validateBody } from '../middleware/body-validator.js';
 import serviceErrors from '../common/error-messages/service-errors.js';
+import { calculatePoints } from './../common/points-calculator.js';
 
 import { authMiddleware } from '../auth/auth-middleware.js';
 import { roleMiddleware } from '../auth/auth-middleware.js';
@@ -72,8 +73,21 @@ usersController
 		} else {
 			res
 				.status(202)
-				.send(`User ${result.username}, with id ${result.id} is banned. Their level is now ${level}`);
+				.send(
+					`User ${result.username}, with id ${result.id} is banned. Their level is now ${level}`,
+				);
 		}
+	})
+
+	/**
+	 * Get user points
+	 * @param {number} user_id from req.user.id
+	 * @return {number} Current user points
+	 */
+	.get('/', authMiddleware, async (req, res) => {
+		console.log(req.user);
+		const currentUserPoints = await calculatePoints(req.user.id);
+		res.status(201).send({ message: null, result: currentUserPoints });
 	});
 
 export default usersController;
