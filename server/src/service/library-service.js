@@ -161,11 +161,13 @@ const rateBook = async (bookId, user, rating) => {
 		return { error: serviceErrors.NOT_FOUND, result: null };
 	}
 
-	const isReviewed = await reviewsData.getReviewByUser(bookId, id);
+	// the code bellow is disabled to improve user expirience. We want to rate books without review being given.
 
-	if (!isReviewed) {
-		return { error: serviceErrors.NOT_PERMITTED, result: null };
-	}
+	// const isReviewed = await reviewsData.getReviewByUser(bookId, id);
+
+	// if (!isReviewed) {
+	// 	return { error: serviceErrors.NOT_PERMITTED, result: null };
+	// }
 
 	const ratedBook = await libraryData.getBookRating(bookId, id);
 
