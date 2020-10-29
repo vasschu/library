@@ -1,4 +1,4 @@
-import React, {useState } from 'react';
+import React, {useState, useEffect } from 'react';
 import {useParams} from 'react-router-dom'
 import PropTypes from 'prop-types';
 import {toastError} from './../../../common/toaster'
@@ -7,14 +7,30 @@ import reviewsData from './../../../data/reviewsData'
 
 const ReviewLikes = (props) => {
   const {reviewId} = props
- 
   const {id} = useParams()
-  
-  const data = {likes: 5,
-    dislikes: 2}
 
-  const [likes, setLikes] = useState(data.likes)
-  const [dislikes, setDislikes] = useState(data.dislikes)
+  const reviewRatings = (bookId, reviewId) => {
+  const reviewLikesData = reviewsData.getReviewLikes(bookId, reviewId)
+  .then(res => {if(res.data.message){
+    setLikes(0)
+    setDislikes(0)
+  } else {
+  const likesAndDislikes =res.data.reduce((acc, el) => {
+    el.rating ? acc.likes++ : acc.dislikes++
+    return acc
+  }, {likes: 0, dislikes: 0})
+  setLikes(likesAndDislikes.likes)
+  setDislikes(likesAndDislikes.dislikes)
+  }})
+}
+
+const [likes, setLikes] = useState(0)
+const [dislikes, setDislikes] = useState(0)
+
+  useEffect(() => {
+    reviewRatings(id,reviewId)
+  }, [id])
+
 
 
   //must implement logic here to update the numbers in proper way. must handle the errors

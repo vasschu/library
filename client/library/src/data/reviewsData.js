@@ -20,9 +20,10 @@ const likeReviewRating = (bookId, reviewId, rating) => {
 	return http.post(`/books/${bookId}/reviews/${reviewId}`, rating);
 };
 
-// const getBookRating = (id) => {
-// 	return http.get(`/books/${id}/rate`);
-// };
+const getReviewLikes = (bookId, reviewId) => {
+	return http.get(`/books/${bookId}/reviews/${reviewId}`);
+};
+
 // const borrowBook = (id) => {
 // 	return http.post(`/books/${id}`);
 // };
@@ -37,4 +38,5 @@ export default {
 	deleteReview,
 	editReview,
 	likeReviewRating,
+	getReviewLikes,
 };
