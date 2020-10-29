@@ -13,11 +13,12 @@ const logoutUser = () => {
 };
 
 const userPoints = () => {
-	return http.delete('/auth/session');
+	return http.get('/users');
 };
 
 export default {
 	registerUser,
 	loginUser,
 	logoutUser,
+	userPoints,
 };

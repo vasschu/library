@@ -85,7 +85,6 @@ usersController
 	 * @return {number} Current user points
 	 */
 	.get('/', authMiddleware, async (req, res) => {
-		console.log(req.user);
 		const currentUserPoints = await calculatePoints(req.user.id);
 		res.status(201).send({ message: null, result: currentUserPoints });
 	});

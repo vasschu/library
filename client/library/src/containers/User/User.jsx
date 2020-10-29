@@ -1,17 +1,24 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import './User.css';
 import {tokenData} from '../../common/common'
+import userdata from './../../data/userData'
+import userData from './../../data/userData';
 
 const User = () => {
 const tokenPayload = tokenData()
 
+const [points, setPoints] = useState(0)
+
 const {sub, username, role} = tokenPayload
 
-//implement 
-const readingPoints = 5000
+const readingPoints = () => {
+userData.userPoints()
+.then(res => setPoints(res.data.result))
+}
 
-
-
+useEffect(() => {
+  readingPoints()
+}, [points])
 
 	return (
   <div className='card'>
@@ -23,7 +30,7 @@ const readingPoints = 5000
     <p className='title'>{`Library level: ${role}`}</p>
     <p className='title'>{`Your ID: ${sub}`}</p>
     <br />
-    <div>{`Current reading points: ${readingPoints}`}</div>
+    <div>{`Current reading points: ${points}`}</div>
     <br />
     <button id='userHistory'>Books History</button>
     <br />
