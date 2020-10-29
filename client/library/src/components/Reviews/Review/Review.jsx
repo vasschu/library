@@ -5,7 +5,7 @@ import ReviewLikes from './ReviewLikes'
 
 const Review = (props) => {
   const {title, content, username, id } = props.review
-  const {bookId, deleteReview, updateStateUpdate, userToken, role } = props
+  const {bookId, deleteReview, updateStateUpdate, userToken, role, userId } = props
   
 const [updateMode, setModeUpdate] = useState(false);
 const [viewContent, setViewText] = useState(content);
@@ -52,7 +52,7 @@ const saveEdit = () => {
           <p>Review:{content}</p>
           <p>From: {username}</p>
           {canEdit}
-          <ReviewLikes reviewId={id} />
+          <ReviewLikes reviewId={id} userId={userId} />
           <hr />
         </>
     )}
@@ -68,7 +68,8 @@ bookId: PropTypes.string,
 userToken: PropTypes.string,
 role: PropTypes.string,
 deleteReview: PropTypes.func,
-updateStateUpdate: PropTypes.func
+updateStateUpdate: PropTypes.func,
+userId: PropTypes.number
   };
 
 

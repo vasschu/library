@@ -6,7 +6,7 @@ import reviewData from './../../data/reviewsData'
 
 
 const Reviews = (props) => {
-	const { id, userToken, role, reviews, setReview } = props;
+	const { id, userId, userToken, role, reviews, setReview } = props;
 
 
 		const deleteReview = (bookId, reviewId) => {
@@ -43,6 +43,7 @@ const Reviews = (props) => {
   updateStateUpdate={updateReviews}
   userToken={userToken}
   role={role}
+  userId={userId}
 	       />;})}
   </div>)
   : (
@@ -61,7 +62,8 @@ Reviews.propTypes = {
 	userToken: PropTypes.string,
 	role: PropTypes.string,
 	reviews: PropTypes.array,
-	setReview: PropTypes.func
+	setReview: PropTypes.func,
+	userId: PropTypes.number
   };
 
 export default Reviews;

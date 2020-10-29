@@ -6,17 +6,25 @@ import reviewsData from './../../../data/reviewsData'
 
 
 const ReviewLikes = (props) => {
-  const {reviewId} = props
+  const {reviewId, userId} = props
   const {id} = useParams()
 
+const [likes, setLikes] = useState(0)
+const [dislikes, setDislikes] = useState(0)
+const [likeToggle, setLikeToggle] = useState(false)
+const [dislikeToggle, setDislikeToggle] = useState(false)
+
   const reviewRatings = (bookId, reviewId) => {
-  const reviewLikesData = reviewsData.getReviewLikes(bookId, reviewId)
+  reviewsData.getReviewLikes(bookId, reviewId)
   .then(res => {if(res.data.message){
     setLikes(0)
     setDislikes(0)
   } else {
   const likesAndDislikes =res.data.reduce((acc, el) => {
     el.rating ? acc.likes++ : acc.dislikes++
+    if(el.user_id === userId) {
+      el.rating ? setLikeToggle(true) : setDislikeToggle(true)
+    }
     return acc
   }, {likes: 0, dislikes: 0})
   setLikes(likesAndDislikes.likes)
@@ -24,38 +32,52 @@ const ReviewLikes = (props) => {
   }})
 }
 
-const [likes, setLikes] = useState(0)
-const [dislikes, setDislikes] = useState(0)
-
-  useEffect(() => {
-    reviewRatings(id,reviewId)
-  }, [id])
-
-
-
   //must implement logic here to update the numbers in proper way. must handle the errors
   const rateRevew = (bookId, reviewId, rating) => {
     reviewsData.likeReviewRating(bookId, reviewId, rating)
     .then(res => {if (res.data.res.message){
-rating.rating ? setLikes(prev => prev + 1) : setDislikes(prev => prev + 1) 
+if(rating.rating)
+  {
+  setLikes(prev => prev + 1)
+  setLikeToggle(true)
+  setDislikeToggle(false)}
+  else {
+  setDislikes(prev => prev + 1) 
+  setLikeToggle(false) 
+  setDislikeToggle(true)} 
     }
   })
   .catch(err => toastError(err.response.data.message))
   }
 
+  useEffect(() => {
+    reviewRatings(id,reviewId)
+  }, [rateRevew])
 
 	return (
   <div className='review-likes'>    
     <p>{likes} of {likes + dislikes} users found this helpful</p>
     <p>Do you find this helpful</p>
-    <button onClick={() => rateRevew(id, reviewId, {rating: 1})}>like</button>
-    <button onClick={() => rateRevew(id, reviewId, {rating: 0})}>dislike</button>
+    <button
+      className={likeToggle ? 'borrow-unavailable-btn' : 'borrow-available-btn'}
+      disabled={likeToggle}
+      onClick={() => rateRevew(id, reviewId, {rating: 1})}
+    >like
+    </button>
+    <button
+      className={dislikeToggle ? 'borrow-unavailable-btn' : 'borrow-available-btn'}
+      disabled={dislikeToggle}
+      onClick={() => rateRevew(id, reviewId,
+    {rating: 0})}
+    >dislike
+    </button>
   </div>
     )
 };
 
 ReviewLikes.propTypes = {
   reviewId: PropTypes.number,
+  userId: PropTypes.number
   };
 
 
