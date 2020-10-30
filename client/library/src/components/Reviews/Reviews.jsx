@@ -31,6 +31,7 @@ const Reviews = (props) => {
 		}})
 	}
 
+
 	const displayReviews = reviews.length ? 
 	(
   <div className='review'>

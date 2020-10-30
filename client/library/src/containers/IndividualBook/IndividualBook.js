@@ -51,88 +51,88 @@ const IndividualBook = (props) => {
 
 	// check if admin
 	const adminDelete = role === 'admin' && (
-		<NavLink to='/books'>
-			<button onClick={() => removeBook(id)}>Delete Book</button>
-		</NavLink>
+  <NavLink to='/books'>
+    <button onClick={() => removeBook(id)}>Delete Book</button>
+  </NavLink>
 	);
 
 	//check if add review is active
 	const addReview = addReviewToggle ? (
-		<AddReview
-			bookId={id}
-			addReviewToggle={setAddReviewToggle}
-			reviews={reviews}
-			setReview={setReview}
-		/>
+  <AddReview
+    bookId={id}
+    addReviewToggle={setAddReviewToggle}
+    reviews={reviews}
+    setReview={setReview}
+  />
 	) : (
-		<NavLink to={'/books/' + id + '/reviews'}>
-			<button onClick={() => setAddReviewToggle(true)}>Add review</button>
-		</NavLink>
+  <NavLink to={'/books/' + id + '/reviews'}>
+    <button onClick={() => setAddReviewToggle(true)}>Add review</button>
+  </NavLink>
 	);
 
 	//show/hide reviews
 	const showReview = !showReviewToggle ? (
-		<button
-			className='show-review-button'
-			onClick={() => {
+  <button
+    className='show-review-button'
+    onClick={() => {
 				setShowReviewToggle(true);
-			}}
-		>
-			Show Reviews
-		</button>
+    }}
+  >
+    Show Reviews
+  </button>
 	) : (
-		<div>
-			<button
-				className='hide-review-button'
-				onClick={() => {
+  <div>
+    <button
+      className='hide-review-button'
+      onClick={() => {
 					setShowReviewToggle(false);
-				}}
-			>
-				Hide Reviews
-			</button>
-			<Reviews
-				id={id}
-				userId={logedUser}
-				userToken={username}
-				role={role}
-				reviews={reviews}
-				setReview={setReview}
-			/>
-		</div>
+      }}
+    >
+      Hide Reviews
+    </button>
+    <Reviews
+      id={id}
+      userId={logedUser}
+      userToken={username}
+      role={role}
+      reviews={reviews}
+      setReview={setReview}
+    />
+  </div>
 	);
 
 	return (
 		//book info
 		//reviews
-		<div className='book'>
-			<img src={image} alt='book-cover' />
-			<div className='book-info'>
-				<span>Rating: {fixedRating} / 5</span>
-				<Rate rate={(userRating) => rateBook(id, userRating)} />
-				<EditBook
-					title={title}
-					description={description}
-					author={author}
-					image={image}
-					role={role}
-					editBook={(data) => updateBook(id, data)}
-				/>
-				{adminDelete}
-				<br />
-				<BorrowButton
-					borrowed={borrowed}
-					borrowBook={() => borrowBook(id)}
-					borrowUser={borrow_user}
-					logedUser={logedUser}
-					returnBook={() => returnBook(id)}
-				/>
-				{addReview}
-			</div>
-			<br />
-			<hr />
-			{showReview}
-			<hr />
-		</div>
+  <div className='book'>
+    <img src={image} alt='book-cover' />
+    <div className='book-info'>
+      <span>Rating: {fixedRating} / 5</span>
+      <Rate rate={(userRating) => rateBook(id, userRating)} />
+      <EditBook
+        title={title}
+        description={description}
+        author={author}
+        image={image}
+        role={role}
+        editBook={(data) => updateBook(id, data)}
+      />
+      {adminDelete}
+      <br />
+      <BorrowButton
+        borrowed={borrowed}
+        borrowBook={() => borrowBook(id)}
+        borrowUser={borrow_user}
+        logedUser={logedUser}
+        returnBook={() => returnBook(id)}
+      />
+      {addReview}
+    </div>
+    <br />
+    <hr />
+    {showReview}
+    <hr />
+  </div>
 	);
 };
 

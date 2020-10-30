@@ -205,7 +205,6 @@ const getUserBookHistory = async (userId) => {
 		null,
 		null,
 	);
-	console.log(userBookHistory);
 	if (!userBookHistory) {
 		return { error: serviceErrors.NOT_FOUND, result: null };
 	}

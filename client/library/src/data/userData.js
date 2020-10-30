@@ -16,9 +16,14 @@ const userPoints = () => {
 	return http.get('/users');
 };
 
+const userBorrowdBooksHisotry = () => {
+	return http.get('/users/history');
+};
+
 export default {
 	registerUser,
 	loginUser,
 	logoutUser,
 	userPoints,
+	userBorrowdBooksHisotry,
 };

@@ -72,7 +72,8 @@ WHERE ${borrow.bookId} = ${bookId} and ${borrow.isDeleted} = 0`;
  * @return {array} contains all books matching the passed arguments.
  */
 const getBorrowedBookByUser = async (userId, bookId, isDeleted) => {
-	const sql = `select * from borrowed_books
+	const sql = `select  bb.id, bb.users_id, bb.books_id, bb.borrow_date, bb.return_date, bb.is_deleted, b.title from borrowed_books bb
+	join books b on b.id = bb.books_id
 	where (${userId} is null or users_id = ${userId})
 	and (${bookId} is null or books_id = ${bookId})
 	and (${isDeleted} is null or is_deleted = ${isDeleted})`;
