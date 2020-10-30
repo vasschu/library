@@ -194,6 +194,25 @@ const getAverageBookRating = async (bookId) => {
 	return rate;
 };
 
+/**
+ * Delete a book
+ * @param {number} id the book's id
+ * @return {object} holds 'error' if operation fails or 'result' if return is succesful
+ */
+const getUserBookHistory = async (userId) => {
+	const userBookHistory = await libraryData.getBorrowedBookByUser(
+		userId,
+		null,
+		null,
+	);
+	console.log(userBookHistory);
+	if (!userBookHistory) {
+		return { error: serviceErrors.NOT_FOUND, result: null };
+	}
+
+	return { error: null, result: userBookHistory };
+};
+
 export default {
 	getAllRecords,
 	filterBooksByName,
@@ -205,4 +224,5 @@ export default {
 	deleteBook,
 	rateBook,
 	getAverageBookRating,
+	getUserBookHistory,
 };

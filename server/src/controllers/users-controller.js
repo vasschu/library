@@ -1,5 +1,6 @@
 import express from 'express';
 import usersService from '../service/users-service.js';
+import libraryService from '../service/library-service.js';
 import { logInBody } from '../middleware/validators/login-body.js';
 import { validateBody } from '../middleware/body-validator.js';
 import serviceErrors from '../common/error-messages/service-errors.js';
@@ -87,6 +88,25 @@ usersController
 	.get('/', authMiddleware, async (req, res) => {
 		const currentUserPoints = await calculatePoints(req.user.id);
 		res.status(201).send({ message: null, result: currentUserPoints });
+	})
+
+	/**
+	 * Get user book History
+	 * @param {number} user_id from req.user.id
+	 * @return {object} return 'error' if no books found or array containing book info {"id","title","author","borrowed","is_unlisted"}
+	 */
+	.get('/history', authMiddleware, async (req, res) => {
+		const userId = req.user.id;
+		const booksToShow = await libraryService.getUserBookHistory(userId);
+
+		const { error, result } = booksToShow;
+		if (!error) {
+			res.status(200).send(result);
+		} else {
+			res
+				.status(404)
+				.send({ message: 'No books history found for this user.' });
+		}
 	});
 
 export default usersController;

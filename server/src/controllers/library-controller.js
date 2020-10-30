@@ -229,6 +229,25 @@ libraryController
 		const rating = await libraryService.getAverageBookRating(id);
 
 		return res.status(200).send({ rating });
+	})
+
+	/**
+	 * Get user book History
+	 * @param {number} user_id from req.user.id
+	 * @return {object} return 'error' if no books found or array containing book info {"id","title","author","borrowed","is_unlisted"}
+	 */
+	.get('/history', async (req, res) => {
+		const userId = req.user.id;
+		const booksToShow = await libraryService.getUserBookHistory(userId);
+
+		const { error, result } = booksToShow;
+		if (!error) {
+			res.status(200).send(result);
+		} else {
+			res
+				.status(404)
+				.send({ message: 'No books history found for this user.' });
+		}
 	});
 
 export default libraryController;
