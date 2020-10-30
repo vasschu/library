@@ -1,8 +1,9 @@
-import React, { Fragment, useState } from 'react';
-import './AddBook.css'
-import PropTypes from 'prop-types';
+import React, { Fragment, useState, useContext } from 'react';
+import './AddBook.css';
+import { BooksContext } from '../../context/BooksContext.js';
 
-const AddBook = ({book}) => {
+const AddBook = () => {
+  const { addBook } = useContext(BooksContext);
   const [isHidden, changeVisibility] = useState(true);
   
   const setOpposite = (e) => {
@@ -97,7 +98,7 @@ const AddBook = ({book}) => {
       return { ...data, [input.name]: input.value };
     }, {});
 
-    book(userData);
+    addBook(userData);
     setForm(initialValue);
   };
   const inputForm = Object.values(form).map(input => {
@@ -142,6 +143,6 @@ const AddBook = ({book}) => {
 
 export default AddBook;
 
-AddBook.propTypes = {
-  book: PropTypes.func,
-}
+// AddBook.propTypes = {
+//   book: PropTypes.func,
+// }

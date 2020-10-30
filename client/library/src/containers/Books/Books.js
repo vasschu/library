@@ -6,7 +6,7 @@ import './Books.css';
 import { BooksContext } from '../../context/BooksContext';
 
 const Books = () => {
-	const { books, book, getAllBooks, addBook } = useContext(BooksContext);
+	const { books, book, getAllBooks } = useContext(BooksContext);
 	const tokenPayload = tokenData();
 
 	useEffect(() => {
@@ -14,7 +14,7 @@ const Books = () => {
 	}, [book]);
 
 	const isAdmin = tokenPayload.role === 'admin' && (
-  <AddBook book={(data) => addBook(data)} />
+  <AddBook />
 	);
 
 	return (
@@ -22,8 +22,8 @@ const Books = () => {
     {isAdmin}
     <div className='books'>
       {books.map((book) => {
-					return <Book key={book.id} book={book} tokenData={tokenPayload} />;
-				})}
+						return <Book key={book.id} book={book} tokenData={tokenPayload} />;
+					})}
     </div>
   </>
 	);
