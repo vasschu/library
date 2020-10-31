@@ -10,10 +10,10 @@ export const userLevels = {
 };
 
 const readerPoints = {
-	returnedBook: 1000,
+	returnedBook: 500,
 	// delayedReturn: -75,
-	ratedBook: 1000,
-	ratedReview: 1000,
+	ratedBook: 100,
+	ratedReview: 5,
 	isBanned: -500,
 };
 
