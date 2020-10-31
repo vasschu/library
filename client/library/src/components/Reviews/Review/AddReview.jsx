@@ -1,65 +1,125 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {tokenData} from './../../../common/common'
 import userData from './../../../data/reviewsData'
-
-
+import {toastSuccess, toastError} from './../../../common/toaster'
 
 const AddReview = (props) => {
 	const { bookId, addReviewToggle, reviews, setReview } = props;
-	const [title, onChangeTitle] = useState('');
-  const [body, onChangeBody] = useState('');
-
-	const updateTitle = (value) => onChangeTitle(value);
-	const updateBody = (value) => onChangeBody(value);
 
   const tokenPayload = tokenData()
-	const data = {
-		title: title,
-		content: body,
-		users_id: tokenPayload.sub,
-		books_id: bookId,
-	};
 
-	const addReview = () => {
-		userData.addReview(bookId, data)
+  const initialForm = {
+    title: {
+      value: '',
+      name: 'title',
+      type: 'text',
+      placeholder: 'Title...',
+      valid: true,
+      validators: {
+        required: true,
+        minLength: 1,
+        maxLength: 20,
+      }
+    },
+    content: {
+      value: '',
+      name: 'content',
+      type: 'text',
+      placeholder: 'Review...',
+      valid: true,
+      validators: {
+        required: true,
+        minLength: 1,
+        maxLength: 255,
+      }
+    }
+  }
+
+  const [form, setForm] = useState(initialForm);
+
+  const onChange = (ev) => {
+    const { name, value } = ev.target;
+
+    const currentTarget = { ...form[name] };
+    currentTarget.value = value;
+    currentTarget.valid = true;
+
+    if (currentTarget.validators.required) {
+      currentTarget.valid = currentTarget.valid && currentTarget.value.length > 0;
+    }
+
+    if (currentTarget.validators.minLength) {
+      currentTarget.valid = currentTarget.valid && currentTarget.value.length >= currentTarget.validators.minLength;
+    }
+
+    if (currentTarget.validators.maxLength) {
+      currentTarget.valid = currentTarget.valid && currentTarget.value.length <= currentTarget.validators.maxLength;
+    }
+
+    if (!currentTarget.validators.required && !currentTarget.value.length) {
+      currentTarget.valid = true;
+    }
+
+    setForm({ ...form, [name]: currentTarget });
+  }
+  
+	const formView = Object.values(form).map((input) => {
+    return (
+      <Fragment key={input.name}>
+        <input
+          style={
+            input.valid
+              ? { border: '1px solid grey' }
+              : { border: '1px solid red' }
+          }
+          name={input.name}
+          type={input.type}
+          placeholder={input.placeholder}
+          value={input.value}
+          onChange={onChange}
+        />
+        <br />
+      </Fragment>
+		);
+	});
+
+
+	const addReview = (ev) => {
+    ev.preventDefault()
+
+    const newReviewData = {
+      title: form.title.value,
+      content: form.content.value,
+      users_id: tokenPayload.sub
+    }
+
+		userData.addReview(bookId, newReviewData)
     .then(res => {
+      console.log(res.data)
     const newReview = {
     content: res.data.content,
     id: res.data.id,
-    title: res.data.id,
+    title: res.data.title,
     username: res.data.username,
     }
     const reviewsCopy = [...reviews, newReview]
 
     setReview(reviewsCopy)
-    {addReviewToggle(false)}})
-.catch(err => alert(err))	
+    {addReviewToggle(false)}
+  toastSuccess('Review Added')
+  })
+.catch(err => toastError(err.response.data.message))	
   }
 
 	return (
   <div className='add-review'>
     <hr />
-    <div>Title:  </div>
-    <input
-      placeholder='Title'
-      style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-      onChange={(e) => updateTitle(e.target.value)}
-      value={title}
-    />
-    <br />
-    <div>Review: </div>
-    <input
-      placeholder='Review'
-      style={{ height: 200, borderColor: 'gray', borderWidth: 1 }}
-      onChange={(e) => updateBody(e.target.value)}
-      value={body}
-    />
-    <br />
-    <hr />
-    <button className='save-review-button' onClick={addReview}>
-      Save
-    </button>
+    <form className="add-review-form" onSubmit={addReview}>
+      {formView}
+      <br />
+      <button type="submit">Save</button>
+    </form>
     <button className='cancel-review-button' onClick={() => addReviewToggle(false)}>
       Close
     </button>
