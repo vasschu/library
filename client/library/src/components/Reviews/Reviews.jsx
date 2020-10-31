@@ -2,6 +2,7 @@ import React from 'react';
 import Review from './Review/Review';
 import PropTypes from 'prop-types';
 import reviewData from './../../data/reviewsData'
+import {toastSuccess, toastError} from './../../common/toaster'
 
 
 
@@ -13,7 +14,9 @@ const Reviews = (props) => {
 			reviewData.deleteReview(bookId, reviewId)
 			.then(res => {const reviewsWithoutDeleted = reviews.filter(r => r.id !== res.data.id)
 			setReview(reviewsWithoutDeleted)
+			toastSuccess('Review Removed')
 			})
+			.catch(err => toastError(err.response.data.message))
 		  };
 			
 	const updateReviews = (bookId, reviewId, data) => {
@@ -28,7 +31,9 @@ const Reviews = (props) => {
 		copy[reviewIndex] = updatedReview
 
 		setReview(copy)
+		toastSuccess('Review Updated')
 		}})
+		.catch(err => toastError(err.response.data.message))	
 	}
 
 
