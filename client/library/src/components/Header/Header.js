@@ -4,7 +4,7 @@ import { AuthContext } from '../../context/AuthContext';
 import './Header.css';
 import userData from './../../data/userData.js';
 import { useHistory } from 'react-router-dom';
-import SearchBook from '../SearchBook/SearchBook'
+import SearchBook from '../SearchBook/SearchBook.js'
 import { toastSuccess, toastError } from './../../common/toaster';
 
 const Header = () => {
