@@ -26,18 +26,18 @@ const SearchBook = () => {
 
         searchBook(searchTerm);
         history.push({
-            path: '/books',
+            pathname: '/books',
             search: `?search=${searchTerm}`
         })
         setSearhTerm('')
     }
 
-    const style = isValid ? {border: '1px solid grey'} : {border: '1px solid red'}
+    const inputStyle = isValid ? {border: '1px solid grey'} : {border: '1px solid red'}
 
     return (
       <form onSubmit={handleSubmit}>
-        <input type='text' style={style} placeholder="Search a book..." value={searchTerm} onChange={handleChange} />
-        <button type='submit'>Search</button>
+        <input type='text' style={inputStyle} placeholder="Search a book..." value={searchTerm} onChange={handleChange} />
+        {isValid ? <button type='submit'>Search</button> : <button style={{ cursor: 'not-allowed' }}>Search</button>}
       </form>
     )
 
