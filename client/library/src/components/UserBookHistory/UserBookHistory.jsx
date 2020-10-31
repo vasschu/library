@@ -1,9 +1,12 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
+import { Link } from 'react-router-dom';
+
 
 
 const UserBookHistory = (props) => {
 const {data} = props
+
 
 if(data.return_date){
 	data.borrowStatus = "Returned"
@@ -16,7 +19,7 @@ console.log(data);
 	
 	return (
   <div className='Borrowed book'>
-    <div><a href={"http://localhost:3000/books/"+data.books_id}>{`Book: ${data.title}`}</a></div>
+    <div><Link to={`/books/${data.books_id}`}>{`Book: ${data.title}`}</Link></div>
     <br />
     <div>{`Status: ${data.borrowStatus}`}</div>
     <br />

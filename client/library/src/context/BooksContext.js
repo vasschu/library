@@ -51,6 +51,7 @@ export const BooksProvider = ({ children }) => {
 	const [books, setBooks] = useState([]);
 	const [book, setBook] = useState({});
 	const [rate, setRate] = useState('');
+	const [searched, setSearched] = useState('');
 	const tokenPayload = tokenData();
 
 	const getAllBooks = () => {
@@ -211,12 +212,13 @@ export const BooksProvider = ({ children }) => {
 		BooksService.searchBook(searchTerm)
 		.then((res) => {
 			console.log(res.data)
-			setBooks(res.data)
+			// setBooks(res.data)
+			setSearched(res.data)
 		})
 		.catch((err) => {
 			if (err.response) {
 				toastError(err.response.data.message);
-				setBooks([])
+				setSearched([])
 			} else if (err.request) {
 				toastError('Ooops, something went wrong!');
 			} else {
@@ -231,6 +233,7 @@ export const BooksProvider = ({ children }) => {
 				books,
 				book,
 				rate,
+				searched,
 				getAllBooks,
 				addBook,
 				removeBook,

@@ -5,7 +5,7 @@ import './Header.css';
 import userData from './../../data/userData.js';
 import { useHistory } from 'react-router-dom';
 import SearchBook from '../SearchBook/SearchBook'
-
+import { toastSuccess, toastError } from './../../common/toaster';
 
 const Header = () => {
 	const style = {
@@ -13,15 +13,20 @@ const Header = () => {
 		textDecoration: 'none',
 		color: 'black',
 	};
-  const { isLoggedIn, setLoginState } = useContext(AuthContext);
-  
-  let history = useHistory();
+	const { isLoggedIn, setLoginState } = useContext(AuthContext);
+
+	let history = useHistory();
 
 	const logout = () => {
-    userData.logoutUser()
-    .then((res) => alert(res.data.message))
-    setLoginState(false);
-    history.push('/landing')
+		userData
+			.logoutUser()
+			.then((res) => {
+				console.log(res);
+				toastSuccess(res.data.message);
+				setLoginState(false);
+				history.push('/landing');
+			})
+			.catch((err) => toastError(err));
 	};
 
 	// this should check if user is authenticated - but we need to make auth first :)
