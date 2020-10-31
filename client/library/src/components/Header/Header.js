@@ -4,6 +4,7 @@ import { AuthContext } from '../../context/AuthContext';
 import './Header.css';
 import userData from './../../data/userData.js';
 import { useHistory } from 'react-router-dom';
+import SearchBook from '../SearchBook/SearchBook'
 
 
 const Header = () => {
@@ -45,8 +46,7 @@ const Header = () => {
       <h1>Library</h1>
     </NavLink>
     <div className='search'>
-      <input type='text' placeholder='Search a book...' />
-      <button>Search</button>
+      <SearchBook />
     </div>
     <div className='auth-header-links'>
       <NavLink to='/books' className='books-header'>

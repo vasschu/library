@@ -35,11 +35,11 @@ libraryController
 	 * @return {object} return 'error' if no books found or array containing book objects {"id","title","author","borrowed","is_unlisted"}
 	 */
 	.get('/', async (req, res) => {
-		const { search } = req.query;
-
+		const search = req.query.search;
 		let booksToShow = '';
 		if (search) {
 			booksToShow = await libraryService.filterBooksByName(search);
+			console.log(booksToShow)
 		} else {
 			booksToShow = await libraryService.getAllRecords();
 		}
@@ -131,7 +131,7 @@ libraryController
 	 */
 	.post(
 		'/',
-		// roleMiddleware('admin'),
+		roleMiddleware('admin'),
 		validateBody(createBook),
 		async (req, res) => {
 			const createBook = await libraryService.createBook(req.body);

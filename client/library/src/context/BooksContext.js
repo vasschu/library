@@ -207,9 +207,27 @@ export const BooksProvider = ({ children }) => {
 			});
 	};
 
+	const searchBook = (searchTerm) => {
+		BooksService.searchBook(searchTerm)
+		.then((res) => {
+			console.log(res.data)
+			setBooks(res.data)
+		})
+		.catch((err) => {
+			if (err.response) {
+				toastError(err.response.data.message);
+				setBooks([])
+			} else if (err.request) {
+				toastError('Ooops, something went wrong!');
+			} else {
+				toastError('Ooops, something went wrong!');
+			}
+		});
+	}
+
 	return (
-		<BooksContext.Provider
-			value={{
+  <BooksContext.Provider
+    value={{
 				books,
 				book,
 				rate,
@@ -222,10 +240,11 @@ export const BooksProvider = ({ children }) => {
 				returnBook,
 				getBookRating,
 				rateBook,
-			}}
-		>
-			{children}
-		</BooksContext.Provider>
+				searchBook,
+    }}
+  >
+    {children}
+  </BooksContext.Provider>
 	);
 };
 
