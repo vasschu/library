@@ -10,10 +10,10 @@ export const userLevels = {
 };
 
 const readerPoints = {
-	returnedBook: 100,
+	returnedBook: 1000,
 	// delayedReturn: -75,
-	ratedBook: 20,
-	ratedReview: 5,
+	ratedBook: 1000,
+	ratedReview: 1000,
 	isBanned: -500,
 };
 
@@ -64,7 +64,7 @@ export const calculatePoints = async (userId) => {
  */
 export const changeLevel = async (userId, role) => {
 	const points = await calculatePoints(userId);
-
+	console.log(points);
 	let changeLevel;
 	if (
 		points <= userLevels.powerReader &&

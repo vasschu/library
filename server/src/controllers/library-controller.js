@@ -106,12 +106,12 @@ libraryController
 		const { id } = req.params;
 
 		// const userId = req.body.users_id;
-		const { role } = req.user;
+		const { username } = req.user;
 
-		const bookToReturn = await libraryService.returnBook(id, req.user.id, role);
+		const bookToReturn = await libraryService.returnBook(id, req.user.id, username);
 
-		const { error, result, level } = bookToReturn;
-
+		const { error, result, level } = await bookToReturn;
+		console.log(level)
 		if (!error) {
 			res.status(201).send({ res: result, level: level });
 		} else {

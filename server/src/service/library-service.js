@@ -1,7 +1,7 @@
 import libraryData from '../data/library-data.js';
 import * as books from '../common/books-table-common.js';
 import serviceErrors from '../common/error-messages/service-errors.js';
-import reviewsData from '../data/reviews-data.js';
+import usersData from '../data/users-data.js';
 import { changeLevel } from '../common/points-calculator.js';
 
 /**
@@ -67,7 +67,7 @@ const borrowBook = async (bookId, userId) => {
  * @param {number} userId to search the users table with
  * @return {object} holds 'error' if operation fails or 'result' if return is succesful
  */
-const returnBook = async (bookId, userId, role) => {
+const returnBook = async (bookId, userId, username) => {
 	const isBookBorrowedByThisUser = await libraryData.getBorrowedBookByUser(
 		userId,
 		bookId,
@@ -77,11 +77,12 @@ const returnBook = async (bookId, userId, role) => {
 	if (isBookBorrowedByThisUser[0]) {
 		const book = await libraryData.returnBookById(bookId);
 
-		const changedLevel = await changeLevel(userId, role);
+		const { level } = await usersData.getWithRole(username);
+		const changedLevel = await changeLevel(userId, level);
 
 		return { error: null, result: book[0], level: changedLevel };
 	} else {
-		return { error: 'make error file', result: null };
+		return { error: 'make error file', result: null, level: null };
 	}
 };
 
@@ -154,7 +155,7 @@ const deleteBook = async (id) => {
  * @return {object} holds 'error' if operation fails or 'result' if return is succesful
  */
 const rateBook = async (bookId, user, rating) => {
-	const { id, role } = user;
+	const { id, username } = user;
 	const isBorrowed = await libraryData.getById(bookId, id);
 
 	if (!isBorrowed) {
@@ -181,7 +182,9 @@ const rateBook = async (bookId, user, rating) => {
 	if (!rate.affectedRows) {
 		return { error: serviceErrors.NO_DATABASE_CHANGES, result: null };
 	}
-	const changedLevel = await changeLevel(id, role);
+
+	const { level } = await usersData.getWithRole(username);
+	const changedLevel = await changeLevel(id, level);
 
 	const book = await libraryData.getById(bookId);
 

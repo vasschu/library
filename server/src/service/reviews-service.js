@@ -1,6 +1,6 @@
 import reviewsData from '../data/reviews-data.js';
 import serviceErrors from '../common/error-messages/service-errors.js';
-
+import usersData from '../data/users-data.js';
 import { changeLevel } from '../common/points-calculator.js';
 
 /**
@@ -147,7 +147,7 @@ const deleteReviewById = async (reviewid, userId, bookId, role) => {
  * @returns {object} error and result key:value pairs. If there is no error,
  * result holds a success message.
  */
-const rateReviewById = async (review_id, user_id, rating, role) => {
+const rateReviewById = async (review_id, user_id, rating, username) => {
 	const hasThisUserRatedThis = await reviewsData.getReviewLikes(
 		review_id,
 		user_id,
@@ -167,7 +167,8 @@ const rateReviewById = async (review_id, user_id, rating, role) => {
 	} else {
 		await reviewsData.rateReview(review_id, user_id, rating);
 
-		const changedLevel = await changeLevel(user_id, role);
+		const { level } = await usersData.getWithRole(username);
+		const changedLevel = await changeLevel(user_id, level);
 		return {
 			error: null,
 			result: { message: `You ${+rating ? 'liked' : 'disliked'} this review` },

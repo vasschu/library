@@ -168,7 +168,7 @@ reviewsController
 				reviewid,
 				req.user.id,
 				rating,
-				req.user.role,
+				req.user.username,
 			);
 
 			const { error, result, level } = reviewRating;
