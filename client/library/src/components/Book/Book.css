@@ -1,7 +1,7 @@
 .book {
     display: grid;
-    grid-template-columns: auto auto;
-    justify-content: space-evenly;
+    grid-template-columns: 45% 45%;
+    justify-content: space-around;
     
     border: none;
     border-radius: 7px;
@@ -14,11 +14,12 @@
     margin: 25px;
     
     align-items: center;
-    align-content: center;
+    /* align-content: center; */
+    /* align-self: center; */
 }
 
 .book img {
-    width: 275px;
+    width: 250px;
     margin-right: 10px;
 }
 

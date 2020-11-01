@@ -12,7 +12,6 @@ import LoginPage from './containers/LoginPage/LoginPage.jsx';
 import RegisterPage from './containers/RegisterPage/RegisterPage.jsx';
 import IndividualBook from './containers/IndividualBook/IndividualBook';
 import { AuthContext } from './context/AuthContext';
-import { SearchBooksProvider } from './context/SearchBookContext';
 
 function App() {
 	const isAuth = !!localStorage.getItem('token');
@@ -31,28 +30,26 @@ function App() {
   <div className='App'>
     <BrowserRouter>
       <AuthContext.Provider value={{ isLoggedIn: auth, setLoginState }}>
-        <SearchBooksProvider>
-          <Header />
-          <Switch>
-            {auth ? (
-              <Redirect path='/' exact to='/books' />
+        <Header />
+        <Switch>
+          {auth ? (
+            <Redirect path='/' exact to='/books' />
 							) : (
   <Redirect path='/' exact to='/landing' />
 							)}
-            <Route path='/register' component={RegisterPage} />
-            <Route path='/login' component={LoginPage} />
-            <Route path='/landing' component={LandingPage} />
-            {auth && (
-              <>
-                <Route path='/books' exact component={Books} />
-                <Route path='/books/:id' component={IndividualBook} />
-                <Route path='/user' exact component={User} />
-              </>
+          <Route path='/register' component={RegisterPage} />
+          <Route path='/login' component={LoginPage} />
+          <Route path='/landing' component={LandingPage} />
+          {auth && (
+            <>
+              <Route path='/books' exact component={Books} />
+              <Route path='/books/:id' component={IndividualBook} />
+              <Route path='/user' exact component={User} />
+            </>
 							)}
-            <Route path='*' component={NotFound} />
-          </Switch>
-          {/* <Footer /> */}
-        </SearchBooksProvider>
+          <Route path='*' component={NotFound} />
+        </Switch>
+        {/* <Footer /> */}
       </AuthContext.Provider>
     </BrowserRouter>
   </div>
