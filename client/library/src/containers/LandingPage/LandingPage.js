@@ -10,29 +10,30 @@ const LandingPage = () => {
 	useEffect(() => {
 		const random = Math.ceil(Math.random() * 4);
 
-		axios.get(`http://localhost:5500/landing/${random}`).then((bookRes) => {
+    axios.get(`http://localhost:5500/landing/${random}`)
+    .then((bookRes) => {
 			setBook(bookRes.data);
 		});
 	}, []);
 
 	return (
 		// visualize book
-		<div className='home-page-layout'>
-			<div>
-				<h2>Our pick for you:</h2>
-				{book && <img src={book.image} alt='alternatetext' />}
-			</div>
-			<div className='call-to-action'>
-				<h1 className='call-to-action-text'>
-					Get access to the world's greatest stories
-					<br />
-					with BestReads.
-				</h1>
-				<NavLink to='/register'>
-					<button className='call-to-action-button'>Join us today</button>
-				</NavLink>
-			</div>
-		</div>
+  <div className='home-page-layout'>
+    <div>
+      <h2>Our pick for you:</h2>
+      {book && <img src={book.image} alt='alternatetext' />}
+    </div>
+    <div className='call-to-action'>
+      <h1 className='call-to-action-text'>
+        Get access to the world's greatest stories
+        <br />
+        with BestReads.
+      </h1>
+      <NavLink to='/register'>
+        <button className='call-to-action-button'>Join us today</button>
+      </NavLink>
+    </div>
+  </div>
 	);
 };
 

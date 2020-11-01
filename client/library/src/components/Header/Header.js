@@ -41,10 +41,14 @@ const Header = () => {
 
 	const header_option = !isLoggedIn ? (
   <div className='unauth'>
-    {/* <img src={logo} alt='logo' /> */}
-    <NavLink to='/landing' style={style}>
-      <h1>BestReads</h1>
-    </NavLink>
+    <div>
+      <NavLink to='/landing' style={style}>
+        <img src={logo} alt='logo' />
+      </NavLink>
+      <NavLink to='/landing' style={style}>
+        <span>BestReads</span>
+      </NavLink>
+    </div>
     <div className='auth-buttons'>
       <NavLink to='/register'>
         <button className='register'>Register</button>
@@ -56,9 +60,14 @@ const Header = () => {
   </div>
 	) : (
   <div className='auth'>
-    <NavLink to='/books' style={style}>
-      <h1>BestReads</h1>
-    </NavLink>
+    <div>
+      <NavLink to='/books' style={style}>
+        <img src={logo} alt='logo' />
+      </NavLink>
+      <NavLink to='/books' style={style}>
+        <span>BestReads</span>
+      </NavLink>
+    </div>
     <div className='search'>
       <SearchBook />
     </div>
