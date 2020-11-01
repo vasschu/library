@@ -46,6 +46,7 @@ function App() {
               <>
                 <Route path='/books' exact component={Books} />
                 <Route path='/books/:id' component={IndividualBook} />
+                <Route path='/users/allusers' exact component={UsersAdmin} />
                 <Route path='/user' exact component={User} />
               </>
 							)}

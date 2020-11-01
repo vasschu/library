@@ -1,22 +1,30 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { Link } from 'react-router-dom';
+
 
 
 
 const UsersList = (props) => {
-const {data} = props
+const {data, banUser, deleteUser} = props
 
-console.log(data);
+const reason = 'You are banned'
+
+const banEntry = () => {
+banUser(data.id, reason)
+}
+
+const deleteEntry = () => {
+  deleteUser(data.id)
+}
 
 	return (
   <div className='user-info'>
     <div>{`user: ${data.username}`}</div>
     <br />
-    <div>{`User Status: ${data.is_banned}`}</div>
+    <div>{`Ban status: ${data.is_banned}`}</div>
     <br />
-    <button className='close-edit-review-button' onClick={() => console.log(`Delete ${data.username}`)}>Delete</button>
-    <button className='close-edit-review-button' onClick={() => console.log(`Ban ${data.username}`)}>Ban</button>
+    <button className='close-edit-review-button' onClick={deleteEntry}>Delete</button>
+    <button className='close-edit-review-button' onClick={banEntry}>Ban</button>
     <hr />
   </div>
 	);
