@@ -7,26 +7,19 @@ import { Link } from 'react-router-dom';
 const UsersList = (props) => {
 const {data} = props
 
-
-if(data.return_date){
-	data.borrowStatus = "Returned"
-} else {
-	data.borrowStatus = "Borrowed"
-	data.return_date = "n/a"
-}
+console.log(data);
 
 	return (
-  <div className='Borrowed book'>
-    <div><Link to={`/books/${data.books_id}`}>{`Book: ${data.title}`}</Link></div>
+  <div className='user-info'>
+    <div>{`user: ${data.username}`}</div>
     <br />
-    <div>{`Status: ${data.borrowStatus}`}</div>
+    <div>{`User Status: ${data.is_banned}`}</div>
     <br />
-    <div>{`Borrowed on: ${data.borrow_date}`}</div>
-    <br />
-    <div>{`Returned on: ${data.return_date}`}</div>
+    <button className='close-edit-review-button' onClick={() => console.log(`Delete ${data.username}`)}>Delete</button>
+    <button className='close-edit-review-button' onClick={() => console.log(`Ban ${data.username}`)}>Ban</button>
     <hr />
   </div>
 	);
-};
+  }
 
 export default UsersList;
