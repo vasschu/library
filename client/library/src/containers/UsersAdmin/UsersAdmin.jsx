@@ -1,14 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import './UsersAdmin.css';
-import {tokenData} from '../../common/common'
 import userData from '../../data/userData';
 import UsersLists from './../../components/UsersList/UsersList'
 import { handleError } from '../../common/handleErrors';
 import { toastSuccess } from '../../common/toaster';
 
 const UsersAdmin = () => {
-const tokenPayload = tokenData()
-const {role} = tokenPayload
+
 
 const [currentUsers, setCurrentUsers] = useState([])
 
