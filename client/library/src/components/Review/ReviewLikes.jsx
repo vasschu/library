@@ -64,7 +64,7 @@ const [dislikeToggle, setDislikeToggle] = useState(false)
 	return (
   <div className='review-likes'>    
     <p>{likes} of {likes + dislikes} users found this helpful</p>
-    <p>Do you find this helpful</p>
+    <p>Do you find this helpful?</p>
     <button
       className={likeToggle ? 'borrow-unavailable-btn' : 'borrow-available-btn'}
       disabled={likeToggle}

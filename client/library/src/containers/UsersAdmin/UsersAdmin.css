@@ -1,5 +1,5 @@
 .card {
-	box-shadow: 0 4px 8px 0 rgba(255, 116, 2, 0.897);
+	box-shadow: 0 4px 8px 0 #cecece;
 	max-width: 800px;
 	margin: auto;
 	text-align: center;

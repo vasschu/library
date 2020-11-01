@@ -3,6 +3,8 @@ import { useHistory } from 'react-router-dom';
 import userData from '../../data/userData';
 import {toastSuccess, toastError} from '../../common/toaster'
 import { handleError } from '../../common/handleErrors';
+import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import '../LoginPage/LoginPage.css'
 
 
 const RegisterPage = () => {
@@ -65,8 +67,9 @@ const RegisterPage = () => {
   
 	const formView = Object.values(form).map((input) => {
     return (
-      <Fragment key={input.name}>
-        <input
+      <FormGroup className="input-fields" key={input.name}>
+        <Label htmlFor={input.name}>{input.name}</Label>
+        <Input
           style={
             input.valid
               ? { border: '1px solid grey' }
@@ -79,7 +82,7 @@ const RegisterPage = () => {
           onChange={onChange}
         />
         <br />
-      </Fragment>
+      </FormGroup>
 		);
 	});
 
@@ -105,14 +108,14 @@ const RegisterPage = () => {
 
 	return (
   <div>
-    <h1 className='call-to-action-text'>
+    <h2 className='call-to-action-text'>
       Don't be stupid. Register now.
-    </h1>
-    <form className="register-form" onSubmit={registerUser}>
+    </h2>
+    <Form className="register-form" onSubmit={registerUser}>
       {formView}
       <br />
       <button type="submit">Register</button>
-    </form>
+    </Form>
   </div>
 	);
 };

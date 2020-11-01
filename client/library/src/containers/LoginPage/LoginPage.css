@@ -1,0 +1,8 @@
+.input-fields {
+    margin: 0 825px;
+    font-size: 17px;
+}
+
+.input-fields > input {
+    font-size: 17px;
+}

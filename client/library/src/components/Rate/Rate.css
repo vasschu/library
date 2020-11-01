@@ -2,3 +2,10 @@
     width: 100px;
     background-color: red;
 }
+.rate-book{
+    text-align: center;
+    align-self: start;
+    align-items: center;
+    align-content: center;
+    margin: 0 375px;
+}

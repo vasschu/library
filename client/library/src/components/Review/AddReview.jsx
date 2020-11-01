@@ -4,6 +4,8 @@ import {tokenData} from '../../common/common.js'
 import userData from '../../data/reviewsData'
 import {toastSuccess } from '../../common/toaster'
 import { handleError } from '../../common/handleErrors.js';
+import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+
 
 const AddReview = (props) => {
 	const { bookId, addReviewToggle, reviews, setReview } = props;
@@ -67,8 +69,8 @@ const AddReview = (props) => {
   
 	const formView = Object.values(form).map((input) => {
     return (
-      <Fragment key={input.name}>
-        <input
+      <FormGroup key={input.name}>
+        <Input
           style={
             input.valid
               ? { border: '1px solid grey' }
@@ -81,7 +83,7 @@ const AddReview = (props) => {
           onChange={onChange}
         />
         <br />
-      </Fragment>
+      </FormGroup>
 		);
 	});
 
@@ -115,11 +117,11 @@ const AddReview = (props) => {
 	return (
   <div className='add-review'>
     <hr />
-    <form className="add-review-form" onSubmit={addReview}>
+    <Form className="add-review-form" onSubmit={addReview}>
       {formView}
       <br />
       <button type="submit">Save</button>
-    </form>
+    </Form>
     <button className='cancel-review-button' onClick={() => addReviewToggle(false)}>
       Close
     </button>

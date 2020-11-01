@@ -13,6 +13,7 @@
     align-self: center;
 
     margin-bottom: 25px;
+    margin-top: 10px;
 }
 
 .unauth {
@@ -35,11 +36,11 @@
     color: white;
     border: none;
     width: 100px;
-    height: 30px;
+    height: 35px;
     font-size: 17px;
 
     
-    border-radius: 7px;
+    border-radius: 5px;
     border-right: 1px solid white;
 }
 
@@ -50,7 +51,7 @@
 
 .auth input {
     width:  300px;
-    border-radius: 7px;
+    border-radius: 5px;
     border: 1px solid rgb(172, 172, 172);
     font-size: 17px;
     margin-right: 5px;
@@ -73,12 +74,12 @@
 }
 
 .register {
-    border-radius: 7px 0 0 7px;
+    border-radius: 5px 0 0 5px;
     border-right: 1px solid white;
 }
 
 .login {
-    border-radius: 0 7px 7px 0;
+    border-radius: 0 5px 5px 0;
     border-left: 1px solid white;
 
 }
@@ -91,12 +92,13 @@
     text-decoration: none;
     color: black;
     font-size: 25px;
-    font-weight: bold;
+    font-weight: 500;
     
 }
 
 .books-header:hover, .user-header:hover {
     text-decoration: underline;
+    color: black;
 }
 
 .books-header {

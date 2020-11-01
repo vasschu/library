@@ -128,6 +128,8 @@ const EditBook = (props) => {
     <h2>{title}</h2>
     <p>{author}</p>
     <p>{description}</p>
+    <br />
+    <br />
     {role === 'admin' && (
       <button onClick={() => setEditMode((prev) => !prev)}>
         Edit Book Info

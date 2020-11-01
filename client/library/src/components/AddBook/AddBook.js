@@ -67,7 +67,7 @@ const AddBook = ({addBook}) => {
   const onChange = (ev) => {
     const { name, value } = ev.target;
     const currentTarget = { ...form[name] };
-    
+
     currentTarget.value = value;
     currentTarget.valid = true;
 
@@ -123,7 +123,7 @@ const AddBook = ({addBook}) => {
     <button onClick={setOpposite}>Add Book</button>
     ) : (
       <>
-        <h2>Book Info:</h2>
+        <h2>Add a new book</h2>
         <form className="create-book-form" onSubmit={sendToParent}>
           {inputForm}
           <br />

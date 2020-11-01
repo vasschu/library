@@ -19,7 +19,10 @@ const LandingPage = () => {
 	return (
 		// visualize book
   <div className='home-page-layout'>
-    {book && <img src={book.image} alt='alternatetext' />}
+    <div>
+      <h2>Our pick for you:</h2>
+      {book && <img src={book.image} alt='alternatetext' />}
+    </div>
     <div className='call-to-action'>
       <h1 className='call-to-action-text'>
         Get access to the world's greatest stories

@@ -12,6 +12,7 @@
     "@types/react-table": "^7.0.25",
     "@types/react-toastify": "^4.1.0",
     "axios": "^0.20.0",
+    "bootstrap": "^4.5.3",
     "jwt-decode": "^3.0.0",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",

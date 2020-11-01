@@ -4,6 +4,7 @@ import {tokenData} from '../../common/common'
 import userData from './../../data/userData';
 import UserBookHistory from './../../components/UserBookHistory/UserBookHistory'
 import { handleError } from '../../common/handleErrors';
+import { Badge } from 'reactstrap';
 
 const User = () => {
 const tokenPayload = tokenData()
@@ -53,9 +54,9 @@ useEffect(() => {
     <h1>
       {`Hello, ${username}`}
     </h1>
-    <p className='title'>{`Library level: ${role}`}</p>
-    <p className='title'>{`Your ID: ${sub}`}</p>
-    <div>{`Current reading points: ${points}`}</div>
+    <h3 className='title'>Library level: <Badge color="secondary">{role}</Badge></h3>
+    <h5 className='title'>{`Your ID: ${sub}`}</h5>
+    <h5>{`Current reading points: ${points}`}</h5>
     <hr />
     <h3>{`${username}'s activity:`}</h3>
     <br />

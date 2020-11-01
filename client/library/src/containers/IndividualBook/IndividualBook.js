@@ -11,6 +11,7 @@ import reviewData from './../../data/reviewsData';
 import { toastSuccess, toastRole } from '../../common/toaster.js'
 import BooksService from '../../data/booksData.js'
 import { handleError } from '../../common/handleErrors.js'
+import './IndividualBook.css'
 
 
 const IndividualBook = (props) => {
@@ -27,7 +28,7 @@ const IndividualBook = (props) => {
 	const { image, title, author, borrowed, description, borrow_user } = book;
 	const { sub: logedUser, role, username } = tokenPayload;
 	const { rating } = rate;
-  	const fixedRating = !rating ? 'none' : rating.toFixed();
+  	const currentRating = !rating ? 'none' : rating.toFixed(2);
 
 
 	const removeBook = (id) => {
@@ -163,35 +164,39 @@ const IndividualBook = (props) => {
 	return (
 		//book info
 		//reviews
-  <div className='book'>
-    <img src={image} alt='book-cover' />
-    <div className='book-info'>
-      <span>Rating: {fixedRating} / 5</span>
-      <Rate rate={(userRating) => rateBook(id, userRating)} />
-      <EditBook
-        title={title}
-        description={description}
-        author={author}
-        image={image}
-        role={role}
-        editBook={(data) => updateBook(id, data)}
-      />
-      {adminDelete}
+  <>
+    <div className='individual-book'>
+      <img src={image} alt='book-cover' />
+      <div className='book-info'>
+        <h5>Rating: {currentRating} / 5</h5>
+        <Rate rate={(userRating) => rateBook(id, userRating)} />
+        <br />
+        <br />
+        <EditBook
+          title={title}
+          description={description}
+          author={author}
+          image={image}
+          role={role}
+          editBook={(data) => updateBook(id, data)}
+        />
+        {adminDelete}
+        <br />
+        <BorrowButton
+          borrowed={borrowed}
+          borrowBook={() => borrowBook(id)}
+          borrowUser={borrow_user}
+          logedUser={logedUser}
+          returnBook={() => returnBook(id)}
+        />
+        {addReview}
+      </div>
       <br />
-      <BorrowButton
-        borrowed={borrowed}
-        borrowBook={() => borrowBook(id)}
-        borrowUser={borrow_user}
-        logedUser={logedUser}
-        returnBook={() => returnBook(id)}
-      />
-      {addReview}
     </div>
-    <br />
     <hr />
     {showReview}
-    <hr />
-  </div>
+    {/* <hr /> */}
+  </>
 	);
 };
 

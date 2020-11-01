@@ -4,6 +4,8 @@ import { useHistory } from 'react-router-dom';
 import userData from '../../data/userData'
 import {toastSuccess, toastError} from '../../common/toaster'
 import { handleError } from '../../common/handleErrors.js'
+import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import './LoginPage.css'
 
 
 const LoginPage = () => {
@@ -69,8 +71,9 @@ const LoginPage = () => {
   
 	const formView = Object.values(form).map((input) => {
     return (
-      <Fragment key={input.name}>
-        <input
+      <FormGroup className="input-fields" key={input.name}>
+        <Label htmlFor={input.name}>{input.name}</Label>
+        <Input
           style={
             input.valid
               ? { border: '1px solid grey' }
@@ -83,7 +86,7 @@ const LoginPage = () => {
           onChange={onChange}
         />
         <br />
-      </Fragment>
+      </FormGroup>
 		);
 	});
 
@@ -107,14 +110,14 @@ const LoginPage = () => {
 	return (
   <div className='login-page-layout'>
     <div className='call-to-action'>
-      <h1 className='call-to-action-text'>
+      <h2 className='call-to-action-text'>
         Login to get access to the world's greatest stories
-      </h1>
-      <form className="login-form" onSubmit={loginUser}>
+      </h2>
+      <Form className="login-form" onSubmit={loginUser}>
         {formView}
         <br />
         <button type="submit">Login</button>
-      </form>
+      </Form>
       
     </div>
   </div>

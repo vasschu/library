@@ -1,6 +1,12 @@
 import React, {useState, Fragment} from 'react';
 import PropTypes from 'prop-types';
-import ReviewLikes from './ReviewLikes'
+import ReviewLikes from './ReviewLikes';
+import {
+  Card, CardImg, CardText, CardBody,
+  CardTitle, CardSubtitle, Button
+} from 'reactstrap';
+import { Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+
 
 
 const Review = (props) => {
@@ -75,8 +81,9 @@ const onChange = (ev) => {
 
 const formView = Object.values(form).map((input) => {
   return (
-    <Fragment key={input.name}>
-      <input
+    <FormGroup key={input.name}>
+      <Label htmlFor={input.name}>{input.name}</Label>
+      <Input
         style={
           input.valid
             ? { border: '1px solid grey' }
@@ -89,7 +96,7 @@ const formView = Object.values(form).map((input) => {
         onChange={onChange}
       />
       <br />
-    </Fragment>
+    </FormGroup>
   );
 });
 
@@ -106,29 +113,32 @@ const saveEdit = (ev) => {
 };
 
 	return (
-  <div className='review'>
+  <Card className='review'>
     {updateMode ? (
       <>
-        <form className="add-review-form" onSubmit={saveEdit}>
+        <Form className="add-review-form" onSubmit={saveEdit}>
           {formView}
           <br />
           <button type="submit">Save</button>
-        </form>
+        </Form>
         <button className='close-edit-review-button' onClick={() => setModeUpdate(false)}>Cancel</button>
       </>
       ) : ( 
         <>
           <hr />
-          <p>Title: {title}</p>
-          <p>Review:{content}</p>
-          <p>From: {username}</p>
-          {canEdit}
-          <ReviewLikes reviewId={id} userId={userId} />
+          <CardBody>
+            <h5>{title}</h5>
+            <hr />
+            <p>{content}</p>
+            <p>From: {username}</p>
+            {canEdit}
+            <ReviewLikes reviewId={id} userId={userId} />
+          </CardBody>
           <hr />
         </>
     )}
 
-  </div>
+  </Card>
   
 	);
 };
