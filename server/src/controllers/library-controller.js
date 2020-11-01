@@ -39,7 +39,6 @@ libraryController
 		let booksToShow = '';
 		if (search) {
 			booksToShow = await libraryService.filterBooksByName(search);
-			console.log(booksToShow)
 		} else {
 			booksToShow = await libraryService.getAllRecords();
 		}
@@ -111,7 +110,6 @@ libraryController
 		const bookToReturn = await libraryService.returnBook(id, req.user.id, username);
 
 		const { error, result, level } = await bookToReturn;
-		console.log(level)
 		if (!error) {
 			res.status(201).send({ res: result, level: level });
 		} else {

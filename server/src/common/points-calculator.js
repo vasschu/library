@@ -64,7 +64,6 @@ export const calculatePoints = async (userId) => {
  */
 export const changeLevel = async (userId, role) => {
 	const points = await calculatePoints(userId);
-	console.log(points);
 	let changeLevel;
 	if (
 		points <= userLevels.powerReader &&
