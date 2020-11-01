@@ -12,7 +12,7 @@ import LoginPage from './containers/LoginPage/LoginPage.jsx';
 import RegisterPage from './containers/RegisterPage/RegisterPage.jsx';
 import IndividualBook from './containers/IndividualBook/IndividualBook';
 import { AuthContext } from './context/AuthContext';
-import { BooksProvider } from './context/BooksContext';
+import { SearchBooksProvider } from './context/SearchBookContext';
 
 function App() {
 	const isAuth = !!localStorage.getItem('token');
@@ -31,7 +31,7 @@ function App() {
   <div className='App'>
     <BrowserRouter>
       <AuthContext.Provider value={{ isLoggedIn: auth, setLoginState }}>
-        <BooksProvider>
+        <SearchBooksProvider>
           <Header />
           <Switch>
             {auth ? (
@@ -52,7 +52,7 @@ function App() {
             <Route path='*' component={NotFound} />
           </Switch>
           {/* <Footer /> */}
-        </BooksProvider>
+        </SearchBooksProvider>
       </AuthContext.Provider>
     </BrowserRouter>
   </div>

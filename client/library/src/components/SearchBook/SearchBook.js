@@ -1,9 +1,9 @@
 import React, {useState, useContext} from 'react';
 import { useHistory } from 'react-router-dom';
-import {BooksContext} from '../../context/BooksContext.js';
+import {SearchBooksContext} from '../../context/SearchBookContext.js';
 
 const SearchBook = () => {
-    const { searchBook } = useContext(BooksContext);
+    const { searchBook } = useContext(SearchBooksContext);
     const [ searchTerm, setSearhTerm ] = useState('');
     const [ isValid, setIsValid ] = useState(true);
     const history = useHistory();

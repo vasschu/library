@@ -1,14 +1,12 @@
 /* eslint-disable react/prop-types */
-import React, { useContext } from 'react';
+import React from 'react';
 import {NavLink} from 'react-router-dom';
 import BorrowButton from './BorrowButton'
-import {BooksContext} from '../../context/BooksContext'
 import './Book.css'
 
-const Book = ({book, tokenData}) => {
+const Book = ({book, borrowBook, returnBook, tokenData}) => {
 
     const {id, image, title, author, borrowed, borrow_user } = book;
-  const { borrowBook, returnBook } = useContext(BooksContext);
   
 return (
   <div className="book">

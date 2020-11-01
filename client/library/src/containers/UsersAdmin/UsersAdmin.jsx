@@ -14,11 +14,8 @@ const getAllUsers = () => {
   .then(res => res.data)}
   const usersList = getAllUsers()
 
-console.log(usersList);
-
 const [userList, setUserList] = useState(usersList)
 setUserList(getAllUsers())
-console.log(userList);
 
 useEffect(()=>{}, [])
 

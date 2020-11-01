@@ -1,9 +1,8 @@
-import React, { Fragment, useState, useContext } from 'react';
+import React, { Fragment, useState } from 'react';
 import './AddBook.css';
-import { BooksContext } from '../../context/BooksContext.js';
+import PropTypes from 'prop-types';
 
-const AddBook = () => {
-  const { addBook } = useContext(BooksContext);
+const AddBook = ({addBook}) => {
   const [isHidden, changeVisibility] = useState(true);
   
   const setOpposite = (e) => {
@@ -143,6 +142,6 @@ const AddBook = () => {
 
 export default AddBook;
 
-// AddBook.propTypes = {
-//   book: PropTypes.func,
-// }
+AddBook.propTypes = {
+  addBook: PropTypes.func,
+}
