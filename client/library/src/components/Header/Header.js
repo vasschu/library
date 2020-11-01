@@ -7,6 +7,7 @@ import { useHistory } from 'react-router-dom';
 import SearchBook from '../SearchBook/SearchBook.js';
 import { toastSuccess, toastError } from './../../common/toaster';
 import { tokenData } from '../../common/common.js';
+import logo from './../../img/logo.png';
 
 const Header = () => {
 	const style = {
@@ -40,8 +41,9 @@ const Header = () => {
 
 	const header_option = !isLoggedIn ? (
   <div className='unauth'>
+    {/* <img src={logo} alt='logo' /> */}
     <NavLink to='/landing' style={style}>
-      <h1>Library</h1>
+      <h1>BestReads</h1>
     </NavLink>
     <div className='auth-buttons'>
       <NavLink to='/register'>
@@ -55,7 +57,7 @@ const Header = () => {
 	) : (
   <div className='auth'>
     <NavLink to='/books' style={style}>
-      <h1>Library</h1>
+      <h1>BestReads</h1>
     </NavLink>
     <div className='search'>
       <SearchBook />
