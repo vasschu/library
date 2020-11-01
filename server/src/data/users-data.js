@@ -92,6 +92,18 @@ const isBanned = async (userId) => {
 };
 
 /**
+ * check all banned users
+ * @return {object} all banned users
+ */
+const allBanned = async () => {
+	const sql = `select users_id from banned_users
+	WHERE ban_expired = 0;`;
+
+	const result = await pool.query(sql);
+	return result.map((el) => el.users_id);
+};
+
+/**
  * get the role of any given user by id
  * @param {string} id
  * @return {object} contians id, username, hash password and role
@@ -112,5 +124,6 @@ export default {
 	deleteUser,
 	banUser,
 	isBanned,
+	allBanned,
 	getWithRoleById,
 };

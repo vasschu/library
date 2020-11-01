@@ -100,11 +100,13 @@ const banUser = async (id, reason, role) => {
  */
 const getUsersList = async (column, value) => {
 	const allUsers = await usersData.getUserBy(column, value);
+	const bannedUsers = await usersData.allBanned();
 	const userInfo = allUsers.map((el) => {
 		return {
 			id: el.id,
 			username: el.username,
-			is_deleted: el.is_deleted,
+			// is_deleted: el.is_deleted === 1,
+			is_banned: bannedUsers.includes(el.id),
 			user_level: el.user_level,
 		};
 	});
