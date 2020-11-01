@@ -92,9 +92,29 @@ const banUser = async (id, reason, role) => {
 	}
 };
 
+/**
+ * Delete user
+ * @param {number} id the user to be deleted's id
+ * @param {string} role the role of the user initiating the deletion
+ * @returns {object} error and result key:value pairs
+ */
+const getUsersList = async (column, value) => {
+	const allUsers = await usersData.getUserBy(column, value);
+	const userInfo = allUsers.map((el) => {
+		return {
+			id: el.id,
+			username: el.username,
+			is_deleted: el.is_deleted,
+			user_level: el.user_level,
+		};
+	});
+	return { error: null, result: userInfo };
+};
+
 export default {
 	createUser,
 	logIn,
 	deleteUser,
 	banUser,
+	getUsersList,
 };

@@ -107,6 +107,23 @@ usersController
 				.status(404)
 				.send({ message: 'No books history found for this user.' });
 		}
+	})
+
+	/**
+	 * Get all users
+	 * @return {object} return 'error' if no books found or array containing book info {"id","title","author","borrowed","is_unlisted"}
+	 */
+	.get('/allusers', authMiddleware, async (req, res) => {
+		const allUsers = await usersService.getUsersList('is_deleted', 0);
+
+		const { error, result } = allUsers;
+		if (!error) {
+			res.status(200).send(result);
+		} else {
+			res
+				.status(404)
+				.send({ message: 'No books history found for this user.' });
+		}
 	});
 
 export default usersController;
