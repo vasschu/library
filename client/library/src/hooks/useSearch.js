@@ -1,14 +1,10 @@
-import React, { createContext, useState } from 'react';
+import { useState } from 'react';
 import BooksService from '../data/booksData.js';
-import PropTypes from 'prop-types';
 import 'react-toastify/dist/ReactToastify.css';
 import { toastError } from '../common/toaster.js'
 
-const initialState = [];
 
-export const SearchBooksContext = createContext(initialState);
-
-export const SearchBooksProvider = ({ children }) => {
+export const useSearch = () => {
 	const [searched, setSearched] = useState('');
 
 	const searchBook = (searchTerm) => {
@@ -28,18 +24,10 @@ export const SearchBooksProvider = ({ children }) => {
 		});
 	}
 
-	return (
-  <SearchBooksContext.Provider
-    value={{
+	return {
 				searched,
 				searchBook,
-    }}
-  >
-    {children}
-  </SearchBooksContext.Provider>
-	);
+    }
 };
 
-SearchBooksProvider.propTypes = {
-	children: PropTypes.array,
-};
+
