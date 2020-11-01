@@ -96,7 +96,6 @@ const AddReview = (props) => {
 
 		userData.addReview(bookId, newReviewData)
     .then(res => {
-      console.log(res.data)
     const newReview = {
     content: res.data.content,
     id: res.data.id,

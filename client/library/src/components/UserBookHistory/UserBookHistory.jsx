@@ -14,8 +14,6 @@ if(data.return_date){
 	data.borrowStatus = "Borrowed"
 	data.return_date = "n/a"
 }
-
-console.log(data);
 	
 	return (
   <div className='Borrowed book'>

@@ -25,7 +25,6 @@ const Header = () => {
 		userData
 			.logoutUser()
 			.then((res) => {
-				console.log(res);
 				toastSuccess(res.data.message);
 				setLoginState(false);
 				history.push('/landing');

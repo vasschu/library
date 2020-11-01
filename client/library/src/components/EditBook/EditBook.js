@@ -102,7 +102,6 @@ const EditBook = (props) => {
   const inputForm = Object.values(form).map(input => {
     return (
       <Fragment key={input.name}>
-        {console.log(input)}
         <input
           style={
             input.valid

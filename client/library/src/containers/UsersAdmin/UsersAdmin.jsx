@@ -23,9 +23,9 @@ const getAllUsers = () => {
 
 	return (
   <>
-  <div className='userslist'>
-    {currentUsers.map(entry => <UsersLists key={entry.id} data={entry} />)}
-  </div>
+    <div className='userslist'>
+      {currentUsers.map(entry => <UsersLists key={entry.id} data={entry} />)}
+    </div>
   </>
 	);
 };

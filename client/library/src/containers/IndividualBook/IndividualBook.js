@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import AddReview from '../../components/Review/AddReview';
 import BorrowButton from '../../components/Book/BorrowButton';
@@ -6,42 +6,154 @@ import Reviews from '../Reviews/Reviews';
 import EditBook from '../../components/EditBook/EditBook';
 import Rate from '../../components/Rate/Rate';
 import { tokenData } from '../../common/common.js';
-import { BooksContext } from '../../context/BooksContext';
 import PropTypes from 'prop-types';
 import reviewData from './../../data/reviewsData';
+import { toastSuccess, toastRole, toastError } from '../../common/toaster.js'
+import BooksService from '../../data/booksData.js'
 
 const IndividualBook = (props) => {
-	const {
-		book,
-		rate,
-		removeBook,
-		updateBook,
-		retrieveIndividualBook,
-		borrowBook,
-		returnBook,
-		getBookRating,
-		rateBook,
-	} = useContext(BooksContext);
 
 	const [addReviewToggle, setAddReviewToggle] = useState(false);
 	const [showReviewToggle, setShowReviewToggle] = useState(false);
-	const [reviews, setReview] = useState([]);
+  const [reviews, setReview] = useState([]);
+  const [book, setBook] = useState({});
+	const [rate, setRate] = useState('');
+	
 
 	const tokenPayload = tokenData();
 	const { id } = props.match.params;
 	const { image, title, author, borrowed, description, borrow_user } = book;
 	const { sub: logedUser, role, username } = tokenPayload;
 	const { rating } = rate;
-	const fixedRating = !rating ? 'none' : rating.toFixed();
+  const fixedRating = !rating ? 'none' : rating.toFixed();
+
+
+	const removeBook = (id) => {
+		BooksService.deleteBook(id)
+			.then((resBook) => {
+				setBook(resBook.data);
+				toastSuccess('The book was deleted successfully!');
+			})
+			.catch((err) => {
+				if (err.response) {
+					toastError(err.response.data.message);
+				} else if (err.request) {
+					toastError('Ooops, something went wrong!');
+				} else {
+					toastError('Ooops, something went wrong!');
+				}
+			});
+	};
+
+	const updateBook = (id, info) => {
+		BooksService.editBook(id, info)
+			.then((resBook) => {
+				setBook(resBook.data);
+				toastSuccess('The book was updated successfully!');
+			})
+			.catch((err) => {
+				if (err.response) {
+					toastError(err.response.data.message);
+				} else if (err.request) {
+					toastError('Ooops, something went wrong!');
+				} else {
+					toastError('Ooops, something went wrong!');
+				}
+			});
+	};
+
+	const retrieveIndividualBook = (id) => {
+		BooksService.getBookById(id)
+			.then((resBook) => setBook(resBook.data))
+			.catch((err) => {
+				if (err.response) {
+					toastError(err.response.data.message);
+				} else if (err.request) {
+					toastError('Ooops, something went wrong!');
+				} else {
+					toastError('Ooops, something went wrong!');
+				}
+			});
+	};
+
+	const borrowBook = (id) => {
+		BooksService.borrowBook(id)
+			.then((resBook) => setBook(resBook.data))
+			.catch((err) => {
+				if (err.response) {
+					toastError(err.response.data.message);
+				} else if (err.request) {
+					toastError('Ooops, something went wrong!');
+				} else {
+					toastError('Ooops, something went wrong!');
+				}
+			});
+	};
+
+	const returnBook = (id) => {
+		BooksService.returnBook(id)
+			.then((resBook) => {
+				setBook(resBook.data.res);
+				if (resBook.data.level && resBook.data.level !== tokenPayload.role) {
+					toastRole(resBook.data.level);
+				}
+			})
+			.catch((err) => {
+				if (err.response) {
+					toastError(err.response.data.message);
+				} else if (err.request) {
+					toastError('Ooops, something went wrong!');
+				} else {
+					toastError('Ooops, something went wrong!');
+				}
+			});
+	};
+
+	const getBookRating = (id) => {
+		BooksService.getBookRating(id)
+			.then((bookRate) => setRate(bookRate.data))
+			.catch((err) => {
+				if (err.response) {
+					toastError(err.response.data.message);
+				} else if (err.request) {
+					toastError('Ooops, something went wrong!');
+				} else {
+					toastError('Ooops, something went wrong!');
+				}
+			});
+	};
+
+	const rateBook = (id, rating) => {
+		BooksService.rateBook(id, rating)
+			.then((res) => {
+        const newRating = res.data.message;
+        const newBook = {...book, ...newRating};
+				setBook(newBook);
+				toastSuccess('The book was rated successfully!');
+
+				if (res.data.level && res.data.level !== tokenPayload.role) {
+					toastRole(res.data.level);
+				}
+			})
+			.catch((err) => {
+				if (err.response) {
+					toastError(err.response.data.message);
+				} else if (err.request) {
+					toastError('Ooops, something went wrong!');
+				} else {
+					toastError('Ooops, something went wrong!');
+				}
+			});
+	};
 
 	useEffect(() => {
 		retrieveIndividualBook(id);
 		fetchReviews(id);
-	}, [id, rate]);
+	}, [id]);
 
 	useEffect(() => {
 		getBookRating(id);
-	}, [id]);
+	}, [id, book]);
 
 	//fetch review data
 	const fetchReviews = (id) => {
