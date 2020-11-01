@@ -5,6 +5,7 @@ import './Header.css';
 import userData from './../../data/userData.js';
 import { useHistory } from 'react-router-dom';
 import { toastSuccess, toastError } from './../../common/toaster';
+import { tokenData } from '../../common/common.js';
 
 const Header = () => {
 	const style = {
@@ -13,6 +14,9 @@ const Header = () => {
 		color: 'black',
 	};
 	const { isLoggedIn, setLoginState } = useContext(AuthContext);
+
+	const tokenPayoad = tokenData();
+	const role = tokenPayoad.role;
 
 	let history = useHistory();
 
@@ -28,8 +32,13 @@ const Header = () => {
 			.catch((err) => toastError(err));
 	};
 
-	// this should check if user is authenticated - but we need to make auth first :)
-	// use 'auth' === 'auth' on line 10 for auth test version
+	// check if admin
+	const manageUsers = role === 'admin' && (
+		<NavLink to='/users' className='books-header'>
+			Admin
+		</NavLink>
+	);
+
 	const header_option = !isLoggedIn ? (
 		<div className='unauth'>
 			<NavLink to='/landing' style={style}>
@@ -54,6 +63,7 @@ const Header = () => {
 				<button>Search</button>
 			</div>
 			<div className='auth-header-links'>
+				{/* {manageUsers} */}
 				<NavLink to='/books' className='books-header'>
 					Books
 				</NavLink>

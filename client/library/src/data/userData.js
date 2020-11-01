@@ -20,10 +20,25 @@ const userBorrowdBooksHisotry = () => {
 	return http.get('/users/history');
 };
 
+const deleteUser = () => {
+	return http.delete('/users/');
+};
+
+const banUser = () => {
+	return http.put('/users/');
+};
+
+const getAllUser = () => {
+	return http.get('/users/allusers');
+};
+
 export default {
 	registerUser,
 	loginUser,
 	logoutUser,
 	userPoints,
 	userBorrowdBooksHisotry,
+	deleteUser,
+	banUser,
+	getAllUser,
 };

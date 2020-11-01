@@ -1,0 +1,35 @@
+.card {
+	box-shadow: 0 4px 8px 0 rgba(255, 116, 2, 0.897);
+	max-width: 800px;
+	margin: auto;
+	text-align: center;
+}
+
+.title {
+	color: grey;
+	font-size: 20px;
+}
+
+#userHistory {
+	border: none;
+	outline: 0;
+	display: inline-block;
+	padding: 8px;
+	color: white;
+	background-color: orange;
+	text-align: center;
+	cursor: pointer;
+	width: 33%;
+	font-size: 18px;
+}
+
+a {
+	text-decoration: none;
+	font-size: 22px;
+	color: black;
+}
+
+button:hover,
+a:hover {
+	opacity: 0.9;
+}
