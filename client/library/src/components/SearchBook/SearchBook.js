@@ -12,7 +12,7 @@ const SearchBook = () => {
         ev.preventDefault();
         const value = ev.target.value;
 
-        if (!value || value.length < 4 || value.length > 50) {
+        if (!value || !value.trim()) {
             setIsValid(false);
         } else {
             setIsValid(true);
