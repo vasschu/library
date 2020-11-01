@@ -37,7 +37,7 @@ const IndividualBook = (props) => {
 	useEffect(() => {
 		retrieveIndividualBook(id);
 		fetchReviews(id);
-	}, [id]);
+	}, [id, rate]);
 
 	useEffect(() => {
 		getBookRating(id);

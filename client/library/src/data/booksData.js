@@ -36,6 +36,10 @@ const rateBook = (id, body) => {
 	return http.put(`/books/${id}/rate`, body);
 };
 
+const searchBook = (searchTerm) => {
+	return http.get(`/books?search=${searchTerm}`)
+}
+
 export default {
 	getBooks,
 	create,
@@ -46,4 +50,5 @@ export default {
 	returnBook,
 	editBook,
 	rateBook,
+	searchBook,
 };

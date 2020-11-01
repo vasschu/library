@@ -1,7 +1,7 @@
 import React, {useState, useEffect } from 'react';
 import {useParams} from 'react-router-dom'
 import PropTypes from 'prop-types';
-import {toastError} from './../../../common/toaster'
+import {toastError, toastRole} from './../../../common/toaster'
 import reviewsData from './../../../data/reviewsData'
 
 
@@ -35,17 +35,21 @@ const [dislikeToggle, setDislikeToggle] = useState(false)
   //must implement logic here to update the numbers in proper way. must handle the errors
   const rateRevew = (bookId, reviewId, rating) => {
     reviewsData.likeReviewRating(bookId, reviewId, rating)
-    .then(res => {if (res.data.res.message){
-if(rating.rating)
-  {
-  setLikes(prev => prev + 1)
-  setLikeToggle(true)
-  setDislikeToggle(false)}
-  else {
-  setDislikes(prev => prev + 1) 
-  setLikeToggle(false) 
-  setDislikeToggle(true)} 
-    }
+    .then(res => {
+      if (res.data.level) {
+        toastRole(res.data.level);
+      }
+
+      if (res.data.res.message){
+        if(rating.rating) {
+          setLikes(prev => prev + 1)
+          setLikeToggle(true)
+          setDislikeToggle(false)}
+        else {
+          setDislikes(prev => prev + 1) 
+          setLikeToggle(false) 
+          setDislikeToggle(true)} 
+        }
   })
   .catch(err => toastError(err.response.data.message))
   }

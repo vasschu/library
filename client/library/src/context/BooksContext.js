@@ -4,45 +4,9 @@ import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { tokenData } from '../common/common.js';
+import { toastError, toastSuccess, toastRole } from '../common/toaster.js'
 
 toast.configure();
-
-const toastError = (message) => {
-	toast.error(message, {
-		position: 'top-right',
-		autoClose: 3000,
-		hideProgressBar: false,
-		closeOnClick: true,
-		pauseOnHover: true,
-		draggable: true,
-		progress: undefined,
-	});
-};
-
-const toastSuccess = (message) => {
-	toast.success(message, {
-		position: 'top-right',
-		autoClose: 3000,
-		hideProgressBar: false,
-		closeOnClick: true,
-		pauseOnHover: true,
-		draggable: true,
-		progress: undefined,
-	});
-};
-
-const toastRole = (role) => {
-	toast.info(`You changed levels! You are now ${role}`, {
-		position: 'top-right',
-		autoClose: 5000,
-		hideProgressBar: false,
-		closeOnClick: true,
-		pauseOnHover: true,
-		draggable: true,
-		progress: undefined,
-	});
-};
-
 const initialState = [];
 
 export const BooksContext = createContext(initialState);
@@ -51,6 +15,7 @@ export const BooksProvider = ({ children }) => {
 	const [books, setBooks] = useState([]);
 	const [book, setBook] = useState({});
 	const [rate, setRate] = useState('');
+	const [searched, setSearched] = useState('');
 	const tokenPayload = tokenData();
 
 	const getAllBooks = () => {
@@ -207,12 +172,32 @@ export const BooksProvider = ({ children }) => {
 			});
 	};
 
+	const searchBook = (searchTerm) => {
+		BooksService.searchBook(searchTerm)
+		.then((res) => {
+			console.log(res.data)
+			// setBooks(res.data)
+			setSearched(res.data)
+		})
+		.catch((err) => {
+			if (err.response) {
+				toastError(err.response.data.message);
+				setSearched([])
+			} else if (err.request) {
+				toastError('Ooops, something went wrong!');
+			} else {
+				toastError('Ooops, something went wrong!');
+			}
+		});
+	}
+
 	return (
-		<BooksContext.Provider
-			value={{
+  <BooksContext.Provider
+    value={{
 				books,
 				book,
 				rate,
+				searched,
 				getAllBooks,
 				addBook,
 				removeBook,
@@ -222,10 +207,11 @@ export const BooksProvider = ({ children }) => {
 				returnBook,
 				getBookRating,
 				rateBook,
-			}}
-		>
-			{children}
-		</BooksContext.Provider>
+				searchBook,
+    }}
+  >
+    {children}
+  </BooksContext.Provider>
 	);
 };
 
