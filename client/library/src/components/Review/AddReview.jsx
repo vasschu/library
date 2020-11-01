@@ -1,8 +1,8 @@
 import React, { useState, Fragment} from 'react';
 import PropTypes from 'prop-types';
-import {tokenData} from './../../../common/common'
-import userData from './../../../data/reviewsData'
-import {toastSuccess, toastError} from './../../../common/toaster'
+import {tokenData} from '../../common/common.js'
+import userData from '../../data/reviewsData'
+import {toastSuccess, toastError} from '../../common/toaster'
 
 const AddReview = (props) => {
 	const { bookId, addReviewToggle, reviews, setReview } = props;

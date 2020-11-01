@@ -1,7 +1,7 @@
 import React, { useState, Fragment } from 'react';
 import { useHistory } from 'react-router-dom';
-import userData from './../../data/userData';
-import {toastSuccess, toastError} from './../../common/toaster'
+import userData from '../../data/userData';
+import {toastSuccess, toastError} from '../../common/toaster'
 
 
 const RegisterPage = () => {

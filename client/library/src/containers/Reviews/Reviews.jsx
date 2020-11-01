@@ -1,8 +1,8 @@
 import React from 'react';
-import Review from './Review/Review';
+import Review from '../../components/Review/Review'
 import PropTypes from 'prop-types';
-import reviewData from './../../data/reviewsData'
-import {toastSuccess, toastError} from './../../common/toaster'
+import reviewData from '../../data/reviewsData'
+import {toastSuccess, toastError} from '../../common/toaster'
 
 
 
