@@ -15,7 +15,13 @@ import {
 
 const reviewsController = express.Router();
 reviewsController.use(authMiddleware);
-reviewsController.use(roleMiddleware('regular', 'admin'));
+reviewsController.use(roleMiddleware(
+	'regular',
+	'admin',
+	'powerReader',
+	'masterReader',
+	'moderator',
+));
 reviewsController.use(tokenExtract());
 reviewsController.use(tokenIsBlacklisted());
 
