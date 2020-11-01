@@ -63,10 +63,6 @@ useEffect(() => {
     <button id='userHistory' onClick={() => setBooksHistoryToggle(prev => !prev)}>Books History</button>
     {showBookHistory}
     <br />
-    <button id='userHistory'>Review History</button>
-    <br />
-    <button id='userHistory'>Likes History</button>
-    <br />
   </div>
 	);
 };

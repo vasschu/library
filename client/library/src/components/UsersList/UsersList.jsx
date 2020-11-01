@@ -1,9 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 
-
-
-
 const UsersList = (props) => {
 const {data, banUser, deleteUser} = props
 
@@ -17,16 +14,20 @@ const deleteEntry = () => {
   deleteUser(data.id)
   }
 
+  const banStatus = data.is_banned ? 'Banned' : 'Not Banned';
+
 	return (
-  <div className='user-info'>
-    <div>{`user: ${data.username}`}</div>
-    <br />
-    <div>{`Ban status: ${data.is_banned}`}</div>
-    <br />
-    <button className='close-edit-review-button' onClick={deleteEntry}>Delete</button>
-    <button className='close-edit-review-button' onClick={banEntry}>Ban</button>
-    <hr />
-  </div>
+  <>
+    <tbody>
+      <tr>
+        <th>{data.id}</th>
+        <td>{data.username}</td>
+        <td>{banStatus}</td>
+        <td><button className='close-edit-review-button' onClick={deleteEntry}>Delete</button></td>
+        <td><button className='close-edit-review-button' onClick={banEntry}>Ban</button></td>
+      </tr>
+    </tbody>
+  </>
 	);
   }
 

@@ -33,47 +33,47 @@ const Header = () => {
 	};
 
 	const manageUsers = role === 'admin' && (
-		<NavLink to='/users/allusers' className='books-header'>
-			Admin
-		</NavLink>
+  <NavLink to='/users/allusers' className='books-header'>
+    Admin
+  </NavLink>
 	);
 
 	const header_option = !isLoggedIn ? (
-		<div className='unauth'>
-			<NavLink to='/landing' style={style}>
-				<h1>Library</h1>
-			</NavLink>
-			<div className='auth-buttons'>
-				<NavLink to='/register'>
-					<button className='register'>Register</button>
-				</NavLink>
-				<NavLink to='/login'>
-					<button className='login'>Login</button>
-				</NavLink>
-			</div>
-		</div>
+  <div className='unauth'>
+    <NavLink to='/landing' style={style}>
+      <h1>Library</h1>
+    </NavLink>
+    <div className='auth-buttons'>
+      <NavLink to='/register'>
+        <button className='register'>Register</button>
+      </NavLink>
+      <NavLink to='/login'>
+        <button className='login'>Login</button>
+      </NavLink>
+    </div>
+  </div>
 	) : (
-		<div className='auth'>
-			<NavLink to='/books' style={style}>
-				<h1>Library</h1>
-			</NavLink>
-			<div className='search'>
-				<SearchBook />
-			</div>
+  <div className='auth'>
+    <NavLink to='/books' style={style}>
+      <h1>Library</h1>
+    </NavLink>
+    <div className='search'>
+      <SearchBook />
+    </div>
 
-			<div className='auth-header-links'>
-				{manageUsers}
-				<NavLink to='/books' className='books-header'>
-					Books
-				</NavLink>
-				<NavLink to='/user' className='user-header'>
-					Profile
-				</NavLink>
-				<button className='logout' onClick={logout}>
-					Logout
-				</button>
-			</div>
-		</div>
+    <div className='auth-header-links'>
+      {manageUsers}
+      <NavLink to='/books' className='books-header'>
+        Books
+      </NavLink>
+      <NavLink to='/user' className='user-header'>
+        Profile
+      </NavLink>
+      <button className='logout' onClick={logout}>
+        Logout
+      </button>
+    </div>
+  </div>
 	);
 
 	return <header className='header'>{header_option}</header>;

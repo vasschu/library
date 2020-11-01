@@ -4,6 +4,7 @@ import userData from '../../data/userData';
 import UsersLists from './../../components/UsersList/UsersList'
 import { handleError } from '../../common/handleErrors';
 import { toastSuccess } from '../../common/toaster';
+import { Table } from 'reactstrap';
 
 const UsersAdmin = () => {
 
@@ -50,9 +51,18 @@ const getAllUsers = () => {
 
 	return (
   <>
-    <div className='userslist'>
+    <Table className='userslist'>
+      <thead>
+        <tr>
+          <th>id</th>
+          <th>Username</th>
+          <th>Ban Status</th>
+          <th>Delete</th>
+          <th>Ban</th>
+        </tr>
+      </thead>
       {currentUsers.map(entry => <UsersLists key={entry.id} data={entry} banUser={banUser} deleteUser={deleteUser} />)}
-    </div>
+    </Table>
   </>
 	);
 };

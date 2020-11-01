@@ -126,7 +126,7 @@ const EditBook = (props) => {
 	) : (
   <>
     <h2>{title}</h2>
-    <p>{author}</p>
+    <h5>{author}</h5>
     <p>{description}</p>
     <br />
     <br />
