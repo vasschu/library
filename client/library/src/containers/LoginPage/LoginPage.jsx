@@ -3,6 +3,8 @@ import { AuthContext } from '../../context/AuthContext';
 import { useHistory } from 'react-router-dom';
 import userData from '../../data/userData'
 import {toastSuccess, toastError} from '../../common/toaster'
+import { handleError } from '../../common/handleErrors.js'
+
 
 const LoginPage = () => {
 
@@ -99,7 +101,7 @@ const LoginPage = () => {
           toastSuccess('Successful login.')
           setLoginState(true, res.data.token);
           history.push('/books')}})
-    .catch((err) => toastError(err.response.data.message));
+    .catch(handleError);
 	};  
 
 	return (

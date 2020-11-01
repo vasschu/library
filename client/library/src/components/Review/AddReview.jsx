@@ -2,7 +2,8 @@ import React, { useState, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {tokenData} from '../../common/common.js'
 import userData from '../../data/reviewsData'
-import {toastSuccess, toastError} from '../../common/toaster'
+import {toastSuccess } from '../../common/toaster'
+import { handleError } from '../../common/handleErrors.js';
 
 const AddReview = (props) => {
 	const { bookId, addReviewToggle, reviews, setReview } = props;
@@ -94,21 +95,21 @@ const AddReview = (props) => {
       users_id: tokenPayload.sub
     }
 
-		userData.addReview(bookId, newReviewData)
-    .then(res => {
-    const newReview = {
-    content: res.data.content,
-    id: res.data.id,
-    title: res.data.title,
-    username: res.data.username,
-    }
-    const reviewsCopy = [...reviews, newReview]
+	userData.addReview(bookId, newReviewData)
+      .then(res => {
+        const newReview = {
+          content: res.data.content,
+          id: res.data.id,
+          title: res.data.title,
+          username: res.data.username,
+        }
+        const reviewsCopy = [...reviews, newReview]
 
-    setReview(reviewsCopy)
-    {addReviewToggle(false)}
-  toastSuccess('Review Added')
-  })
-.catch(err => toastError(err.response.data.message))	
+        setReview(reviewsCopy)
+        {addReviewToggle(false)}
+        toastSuccess('Review Added')
+    })
+    .catch(handleError)	
   }
 
 	return (

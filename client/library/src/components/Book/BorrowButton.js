@@ -2,12 +2,6 @@
 import React from 'react';
 
 const BorrowButton = ({borrowed, borrowBook, borrowUser, logedUser, returnBook}) => {
-    // const borrowButton = borrowed ? (
-    //     // we can add onClick borrow button after auth -> we need userid
-    //   <button className="borrow-unavailable-btn">Borrowed</button>            
-    //     ) : (
-    //       <button className="borrow-available-btn" onClick={borrowBook}>Borrow</button>
-    // )
 
     const borrow = () => {
       if (borrowed && borrowUser === logedUser) {

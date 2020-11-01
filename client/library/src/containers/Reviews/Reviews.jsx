@@ -3,6 +3,7 @@ import Review from '../../components/Review/Review'
 import PropTypes from 'prop-types';
 import reviewData from '../../data/reviewsData'
 import {toastSuccess, toastError} from '../../common/toaster'
+import { handleError } from '../../common/handleErrors';
 
 
 
@@ -16,24 +17,24 @@ const Reviews = (props) => {
 			setReview(reviewsWithoutDeleted)
 			toastSuccess('Review Removed')
 			})
-			.catch(err => toastError(err.response.data.message))
+			.catch(handleError)
 		  };
 			
 	const updateReviews = (bookId, reviewId, data) => {
 		reviewData.editReview(bookId, reviewId, data)
-		.then((res) => { if(!res.data.message)
-		{
-		const reviewIndex = reviews.findIndex(el=> el.id === reviewId)
-		const copy = [...reviews]
-		const updatedReview = reviews[reviewIndex]
-		updatedReview.title = res.data.title
-		updatedReview.content = res.data.content
-		copy[reviewIndex] = updatedReview
+		.then((res) => { 
+			if(!res.data.message) {
+				const reviewIndex = reviews.findIndex(el=> el.id === reviewId)
+				const copy = [...reviews]
+				const updatedReview = reviews[reviewIndex]
+				updatedReview.title = res.data.title
+				updatedReview.content = res.data.content
+				copy[reviewIndex] = updatedReview
 
-		setReview(copy)
-		toastSuccess('Review Updated')
+				setReview(copy)
+				toastSuccess('Review Updated')
 		}})
-		.catch(err => toastError(err.response.data.message))	
+		.catch(handleError)	
 	}
 
 

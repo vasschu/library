@@ -3,6 +3,7 @@ import './UsersAdmin.css';
 import {tokenData} from '../../common/common'
 import userData from '../../data/userData';
 import UsersLists from './../../components/UsersList/UsersList'
+import { handleError } from '../../common/handleErrors';
 
 const UsersAdmin = () => {
 const tokenPayload = tokenData()
@@ -14,7 +15,8 @@ const getAllUsers = () => {
   userData.getAllUser()
   .then(res => {
     setCurrentUsers([...res.data])
-  })}
+  })
+  .catch(handleError)}
 
 	useEffect(() => {
 		getAllUsers();

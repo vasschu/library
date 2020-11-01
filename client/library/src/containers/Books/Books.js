@@ -7,13 +7,14 @@ import { SearchBooksContext } from '../../context/SearchBookContext';
 import { useLocation } from 'react-router-dom';
 import { toastError, toastRole, toastSuccess } from '../../common/toaster.js'
 import BooksService from '../../data/booksData.js'
+import { handleError } from '../../common/handleErrors.js'
+
 
 
 const Books = () => {
 	const { searched } = useContext(SearchBooksContext);
 	const tokenPayload = tokenData();
 	const { search } = useLocation()
-
 	const [books, setBooks] = useState([]);
 
 	const getAllBooks = () => {
@@ -21,18 +22,7 @@ const Books = () => {
 			.then((resBooks) => {
 				setBooks(resBooks.data);
 			})
-			.catch((err) => {
-				if (err.response) {
-					// client received an error response (5xx, 4xx)
-					toastError(err.response.data);
-				} else if (err.request) {
-					// client never received a response, or request never left
-					toastError('Ooops, something went wrong!');
-				} else {
-					// anything else
-					toastError('Ooops, something went wrong!');
-				}
-			});
+			.catch(handleError);
 	};
 
 	const addBook = (book) => {
@@ -43,15 +33,7 @@ const Books = () => {
 					toastSuccess('The book was uploaded successfully!');
 				}
 			})
-			.catch((err) => {
-				if (err.response) {
-					toastError(err.response.data.message);
-				} else if (err.request) {
-					toastError('Ooops, something went wrong!');
-				} else {
-					toastError('Ooops, something went wrong!');
-				}
-			});
+			.catch(handleError);
 	};
 
 	const borrowBook = (id) => {
@@ -63,15 +45,7 @@ const Books = () => {
 
 				setBooks(copy);
 			})
-			.catch((err) => {
-				if (err.response) {
-					toastError(err.response.data.message);
-				} else if (err.request) {
-					toastError('Ooops, something went wrong!');
-				} else {
-					toastError('Ooops, something went wrong!');
-				}
-			});
+			.catch(handleError);
 	};
 
 	const returnBook = (id) => {
@@ -86,15 +60,7 @@ const Books = () => {
 					toastRole(resBook.data.level);
 				}
 			})
-			.catch((err) => {
-				if (err.response) {
-					toastError(err.response.data.message);
-				} else if (err.request) {
-					toastError('Ooops, something went wrong!');
-				} else {
-					toastError('Ooops, something went wrong!');
-				}
-			});
+			.catch(handleError);
 	};
 
 	
