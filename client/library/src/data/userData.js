@@ -20,12 +20,12 @@ const userBorrowdBooksHisotry = () => {
 	return http.get('/users/history');
 };
 
-const deleteUser = () => {
-	return http.delete('/users/');
+const deleteUser = (userId) => {
+	return http.delete('/users/', userId);
 };
 
-const banUser = () => {
-	return http.put('/users/');
+const banUser = (data) => {
+	return http.put('/users/', data);
 };
 
 const getAllUser = () => {
