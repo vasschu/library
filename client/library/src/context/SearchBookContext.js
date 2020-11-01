@@ -2,7 +2,6 @@ import React, { createContext, useState } from 'react';
 import BooksService from '../data/booksData.js';
 import PropTypes from 'prop-types';
 import 'react-toastify/dist/ReactToastify.css';
-import { toastError } from '../common/toaster.js'
 import { handleError } from '../common/handleErrors.js'
 
 const initialState = [];

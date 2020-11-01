@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './Rate.css';
-import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { Form, Label, Input } from 'reactstrap';
 
 const Rate = ({ rate }) => {
 

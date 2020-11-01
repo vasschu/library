@@ -5,7 +5,7 @@ import { tokenData } from '../../common/common.js';
 import './Books.css';
 import { SearchBooksContext } from '../../context/SearchBookContext';
 import { useLocation } from 'react-router-dom';
-import { toastError, toastRole, toastSuccess } from '../../common/toaster.js'
+import { toastRole, toastSuccess } from '../../common/toaster.js'
 import BooksService from '../../data/booksData.js'
 import { handleError } from '../../common/handleErrors.js'
 

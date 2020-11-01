@@ -2,7 +2,7 @@ import React from 'react';
 import Review from '../../components/Review/Review'
 import PropTypes from 'prop-types';
 import reviewData from '../../data/reviewsData'
-import {toastSuccess, toastError} from '../../common/toaster'
+import {toastSuccess } from '../../common/toaster'
 import { handleError } from '../../common/handleErrors';
 
 

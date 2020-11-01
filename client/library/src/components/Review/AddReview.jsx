@@ -1,10 +1,10 @@
-import React, { useState, Fragment} from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {tokenData} from '../../common/common.js'
 import userData from '../../data/reviewsData'
 import {toastSuccess } from '../../common/toaster'
 import { handleError } from '../../common/handleErrors.js';
-import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { Form, FormGroup, Input } from 'reactstrap';
 
 
 const AddReview = (props) => {

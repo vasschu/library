@@ -1,11 +1,8 @@
-import React, {useState, Fragment} from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import ReviewLikes from './ReviewLikes';
-import {
-  Card, CardImg, CardText, CardBody,
-  CardTitle, CardSubtitle, Button
-} from 'reactstrap';
-import { Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { Card, CardBody } from 'reactstrap';
+import { Form, FormGroup, Label, Input } from 'reactstrap';
 
 
 

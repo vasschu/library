@@ -1,10 +1,10 @@
-import React, { useContext, useState, Fragment } from 'react';
+import React, { useContext, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { useHistory } from 'react-router-dom';
 import userData from '../../data/userData'
-import {toastSuccess, toastError} from '../../common/toaster'
+import {toastSuccess } from '../../common/toaster'
 import { handleError } from '../../common/handleErrors.js'
-import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import {  Form, FormGroup, Label, Input } from 'reactstrap';
 import './LoginPage.css'
 
 

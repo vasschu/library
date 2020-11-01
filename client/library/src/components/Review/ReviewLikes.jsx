@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { toastRole } from '../../common/toaster.js'
 import reviewsData from '../../data/reviewsData.js'
 import { handleError } from '../../common/handleErrors.js';
+import './ReviewLikes.css'
 
 
 const ReviewLikes = (props) => {
