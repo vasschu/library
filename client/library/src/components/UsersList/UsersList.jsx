@@ -15,7 +15,7 @@ banUser(data.id, reason)
 
 const deleteEntry = () => {
   deleteUser(data.id)
-}
+  }
 
 	return (
   <div className='user-info'>

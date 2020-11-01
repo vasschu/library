@@ -21,8 +21,15 @@ const getAllUsers = () => {
 
   const deleteUser = (userId) => {
     userData.deleteUser(userId)
-    .then(res =>console.log(res.data))
-    .catch(handleError)}
+    .then(res => {
+      console.log(res.data);
+    const newUsersList = currentUsers.filter(el => el.id !== userId)
+    console.log(newUsersList);
+    setCurrentUsers([...newUsersList])
+    toastSuccess(res.data.message)
+    })
+    .catch(handleError)
+  }
 
   const banUser = (userId, reason) => {
     const banData = {
