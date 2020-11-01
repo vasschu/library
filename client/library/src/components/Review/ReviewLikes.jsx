@@ -1,8 +1,9 @@
 import React, {useState, useEffect } from 'react';
 import {useParams} from 'react-router-dom'
 import PropTypes from 'prop-types';
-import {toastError, toastRole} from '../../common/toaster.js'
+import { toastRole } from '../../common/toaster.js'
 import reviewsData from '../../data/reviewsData.js'
+import { handleError } from '../../common/handleErrors.js';
 
 
 const ReviewLikes = (props) => {
@@ -16,20 +17,22 @@ const [dislikeToggle, setDislikeToggle] = useState(false)
 
   const reviewRatings = (bookId, reviewId) => {
   reviewsData.getReviewLikes(bookId, reviewId)
-  .then(res => {if(res.data.message){
+  .then(res => {
+    if(res.data.message) {
     setLikes(0)
     setDislikes(0)
-  } else {
-  const likesAndDislikes =res.data.reduce((acc, el) => {
-    el.rating ? acc.likes++ : acc.dislikes++
-    if(el.user_id === userId) {
-      el.rating ? setLikeToggle(true) : setDislikeToggle(true)
-    }
-    return acc
-  }, {likes: 0, dislikes: 0})
-  setLikes(likesAndDislikes.likes)
-  setDislikes(likesAndDislikes.dislikes)
-  }})
+    } else {
+      const likesAndDislikes = res.data.reduce((acc, el) => {
+        el.rating ? acc.likes++ : acc.dislikes++
+        if(el.user_id === userId) {
+          el.rating ? setLikeToggle(true) : setDislikeToggle(true)
+        }
+        return acc
+      }, {likes: 0, dislikes: 0})
+    setLikes(likesAndDislikes.likes)
+    setDislikes(likesAndDislikes.dislikes)
+    }})
+  .catch(handleError)
 }
 
   //must implement logic here to update the numbers in proper way. must handle the errors
@@ -51,7 +54,7 @@ const [dislikeToggle, setDislikeToggle] = useState(false)
           setDislikeToggle(true)} 
         }
   })
-  .catch(err => toastError(err.response.data.message))
+  .catch(handleError)
   }
 
   useEffect(() => {

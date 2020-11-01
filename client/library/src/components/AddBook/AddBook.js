@@ -66,8 +66,8 @@ const AddBook = ({addBook}) => {
 
   const onChange = (ev) => {
     const { name, value } = ev.target;
-
     const currentTarget = { ...form[name] };
+    
     currentTarget.value = value;
     currentTarget.valid = true;
 

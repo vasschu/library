@@ -3,6 +3,7 @@ import BooksService from '../data/booksData.js';
 import PropTypes from 'prop-types';
 import 'react-toastify/dist/ReactToastify.css';
 import { toastError } from '../common/toaster.js'
+import { handleError } from '../common/handleErrors.js'
 
 const initialState = [];
 
@@ -17,14 +18,8 @@ export const SearchBooksProvider = ({ children }) => {
 			setSearched(res.data)
 		})
 		.catch((err) => {
-			if (err.response) {
-				toastError(err.response.data.message);
+                handleError(err)
 				setSearched([])
-			} else if (err.request) {
-				toastError('Ooops, something went wrong!');
-			} else {
-				toastError('Ooops, something went wrong!');
-			}
 		});
 	}
 

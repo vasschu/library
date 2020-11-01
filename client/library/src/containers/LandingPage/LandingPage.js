@@ -8,10 +8,12 @@ const LandingPage = () => {
 	const [book, setBook] = useState();
 
 	useEffect(() => {
-		const random = Math.ceil(Math.random() * 4);
-		axios.get(`http://localhost:5500/landing/${random}`).then((bookRes) => {
-			setBook(bookRes.data);
-		});
+    const random = Math.ceil(Math.random() * 4);
+    
+    axios.get(`http://localhost:5500/landing/${random}`)
+      .then((bookRes) => {
+        setBook(bookRes.data);
+      });
 	}, []);
 
 	return (

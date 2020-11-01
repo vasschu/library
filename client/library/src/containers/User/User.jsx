@@ -3,6 +3,7 @@ import './User.css';
 import {tokenData} from '../../common/common'
 import userData from './../../data/userData';
 import UserBookHistory from './../../components/UserBookHistory/UserBookHistory'
+import { handleError } from '../../common/handleErrors';
 
 const User = () => {
 const tokenPayload = tokenData()
@@ -12,20 +13,22 @@ const [booksHistoryToggle, setBooksHistoryToggle] = useState(false)
 const {sub, username, role} = tokenPayload
 
 const readingPoints = () => {
-userData.userPoints()
-.then(res => setPoints(res.data.result))
+  userData.userPoints()
+    .then(res => setPoints(res.data.result))
+    .catch(handleError)
 }
 
 const borrowedBooksHistory = () => {
 userData.userBorrowdBooksHisotry()
-.then(res => {
-if(res.data.message){
-  return res.data.message
-} else {
-  setBooksHistory(res.data)
-}
-})
-}
+  .then(res => {
+    if(res.data.message){
+      return res.data.message
+    } else {
+      setBooksHistory(res.data)
+    }
+    })
+  .catch(handleError)
+  }
 
 const showBookHistory = booksHistoryToggle ? (
   <div className='bookHistory'>

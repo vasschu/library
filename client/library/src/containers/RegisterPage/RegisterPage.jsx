@@ -2,6 +2,7 @@ import React, { useState, Fragment } from 'react';
 import { useHistory } from 'react-router-dom';
 import userData from '../../data/userData';
 import {toastSuccess, toastError} from '../../common/toaster'
+import { handleError } from '../../common/handleErrors';
 
 
 const RegisterPage = () => {
@@ -99,7 +100,7 @@ const RegisterPage = () => {
           throw new Error (res.data.message)
         }
 			})
-      .catch((err) => toastError(err.response.data.message))
+      .catch(handleError)
 	};
 
 	return (
