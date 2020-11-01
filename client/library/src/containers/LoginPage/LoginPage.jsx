@@ -1,8 +1,8 @@
 import React, { useContext, useState, Fragment } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { useHistory } from 'react-router-dom';
-import userData from './../../data/userData'
-import {toastSuccess, toastError} from './../../common/toaster'
+import userData from '../../data/userData'
+import {toastSuccess, toastError} from '../../common/toaster'
 
 const LoginPage = () => {
 

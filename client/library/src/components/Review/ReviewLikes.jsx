@@ -1,8 +1,8 @@
 import React, {useState, useEffect } from 'react';
 import {useParams} from 'react-router-dom'
 import PropTypes from 'prop-types';
-import {toastError, toastRole} from './../../../common/toaster'
-import reviewsData from './../../../data/reviewsData'
+import {toastError, toastRole} from '../../common/toaster.js'
+import reviewsData from '../../data/reviewsData.js'
 
 
 const ReviewLikes = (props) => {

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
-import AddReview from '../../components/Reviews/Review/AddReview';
+import AddReview from '../../components/Review/AddReview';
 import BorrowButton from '../../components/Book/BorrowButton';
-import Reviews from '../../components/Reviews/Reviews';
+import Reviews from '../Reviews/Reviews';
 import EditBook from '../../components/EditBook/EditBook';
 import Rate from '../../components/Rate/Rate';
 import { tokenData } from '../../common/common.js';
