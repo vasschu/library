@@ -31,29 +31,28 @@ function App() {
 		<div className='App'>
 			<BrowserRouter>
 				<AuthContext.Provider value={{ isLoggedIn: auth, setLoginState }}>
-					<Header />
-					<Switch>
-						{auth ? (
-							<Redirect path='/' exact to='/books' />
-						) : (
-							<Redirect path='/' exact to='/landing' />
-						)}
-						<Route path='/register' component={RegisterPage} />
-						<Route path='/login' component={LoginPage} />
-						<Route path='/landing' component={LandingPage} />
-						{auth && (
-							<>
-								<BooksProvider>
+					<BooksProvider>
+						<Header />
+						<Switch>
+							{auth ? (
+								<Redirect path='/' exact to='/books' />
+							) : (
+								<Redirect path='/' exact to='/landing' />
+							)}
+							<Route path='/register' component={RegisterPage} />
+							<Route path='/login' component={LoginPage} />
+							<Route path='/landing' component={LandingPage} />
+							{auth && (
+								<>
 									<Route path='/books' exact component={Books} />
 									<Route path='/books/:id' component={IndividualBook} />
-								</BooksProvider>
-								<Route path='/users' exact component={UsersAdmin} />
-								<Route path='/user' exact component={User} />
-							</>
-						)}
-						<Route path='*' component={NotFound} />
-					</Switch>
-					{/* <Footer /> */}
+									<Route path='/user' exact component={User} />
+								</>
+							)}
+							<Route path='*' component={NotFound} />
+						</Switch>
+						{/* <Footer /> */}
+					</BooksProvider>
 				</AuthContext.Provider>
 			</BrowserRouter>
 		</div>

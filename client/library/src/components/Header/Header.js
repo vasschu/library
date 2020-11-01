@@ -4,6 +4,7 @@ import { AuthContext } from '../../context/AuthContext';
 import './Header.css';
 import userData from './../../data/userData.js';
 import { useHistory } from 'react-router-dom';
+import SearchBook from '../SearchBook/SearchBook.js';
 import { toastSuccess, toastError } from './../../common/toaster';
 import { tokenData } from '../../common/common.js';
 
@@ -16,7 +17,7 @@ const Header = () => {
 	const { isLoggedIn, setLoginState } = useContext(AuthContext);
 
 	const tokenPayoad = tokenData();
-	const role = tokenPayoad.role;
+	// const role = tokenPayoad.role;
 
 	let history = useHistory();
 
@@ -33,11 +34,11 @@ const Header = () => {
 	};
 
 	// check if admin
-	const manageUsers = role === 'admin' && (
-		<NavLink to='/users' className='books-header'>
-			Admin
-		</NavLink>
-	);
+	// const manageUsers = role === 'admin' && (
+	// 	<NavLink to='/users' className='books-header'>
+	// 		Admin
+	// 	</NavLink>
+	// );
 
 	const header_option = !isLoggedIn ? (
 		<div className='unauth'>
@@ -59,11 +60,9 @@ const Header = () => {
 				<h1>Library</h1>
 			</NavLink>
 			<div className='search'>
-				<input type='text' placeholder='Search a book...' />
-				<button>Search</button>
+				<SearchBook />
 			</div>
 			<div className='auth-header-links'>
-				{/* {manageUsers} */}
 				<NavLink to='/books' className='books-header'>
 					Books
 				</NavLink>
