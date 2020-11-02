@@ -72,10 +72,17 @@ usersController
 				message: 'This user was not banned.',
 			});
 		} else {
+			if (level) {
+				res
+					.status(202)
+					.send(
+						`User ${result.username}, with id ${result.id} is banned. Their level is now ${level}`,
+					);
+			}
 			res
 				.status(202)
 				.send(
-					`User ${result.username}, with id ${result.id} is banned. Their level is now ${level}`,
+					`User ${result.username}, with id ${result.id} is banned.`,
 				);
 		}
 	})

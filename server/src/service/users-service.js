@@ -79,7 +79,8 @@ const banUser = async (id, reason, role) => {
 			return { error: serviceErrors.NO_DATABASE_CHANGES, result: null };
 		}
 		const userData = await usersData.getWithRoleById(id);
-		const chanagedLevel = await changeLevel(id, userData.user_level);
+		console.log(userData)
+		const chanagedLevel = await changeLevel(id, userData.level);
 
 		return {
 			error: null,
